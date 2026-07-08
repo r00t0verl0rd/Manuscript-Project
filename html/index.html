@@ -1,24 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#053312">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#053312" />
     <title>MANUSCRIPT PROJECT</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
     <div id="particles-js"></div>
     <div id="content" class="content">
-        <!-- ШАПКА САЙТА: Содержит инструменты управления (кошелек и выбор языка) -->
         <header class="header-container">
-            <!-- Логотип бренда удален для соблюдения минималистичного дизайна -->
-            <div class="header-controls" style="width: 100%; justify-content: flex-end;">
+            <div class="header-controls" style="width: 100%; justify-content: flex-end">
                 <!-- Секция авторизации: Кнопка для входа через Web3Auth (социалки + кошельки) -->
                 <div id="wallet-mini-section">
-                    <button id="connect-wallet-btn" class="simple-btn" data-i18n="connect_wallet_btn">Connect</button>
+                    <button id="connect-wallet-btn" class="simple-btn" data-i18n="connect_wallet_btn">
+                        Connect
+                    </button>
                 </div>
                 <!-- Переключатель языков: Переключает интерфейс между Русским и Английским -->
                 <div class="lang-switcher">
@@ -35,32 +35,39 @@
 
             <!-- ИНФОРМАЦИОННЫЙ БЛОК: Краткий манифест проекта. Можно закрыть, нажав на крестик -->
             <div id="project-info" class="simple-card">
-                <button id="close-info-btn" class="close-icon">&times;</button>
+                <button id="close-info-btn" class="close-icon">
+                    &times;
+                </button>
                 <h2 data-i18n="info_title">Manifesto</h2>
                 <p data-i18n="info_desc">
-                    A decentralized registry of ideas. Mint your thoughts on Solana.
+                    A decentralized registry of ideas. Mint your thoughts on
+                    Solana.
                 </p>
             </div>
 
             <!-- ФОРМА СОЗДАНИЯ ИДЕИ: Изначально скрыта (display: none), становится видимой после подключения кошелька -->
-            <div id="nft-section" class="simple-card" style="display: none;">
-                <h2 data-i18n="create_idea_title">Next Evolutionary Step</h2>
+            <div id="nft-section" class="simple-card" style="display: none">
+                <h2 data-i18n="create_idea_title">
+                    Next Evolutionary Step
+                </h2>
                 <form id="create-nft-form">
                     <!-- Выбор типа идеи: Определяет, в какой колонке (Люди/Роботы) появится запись -->
                     <div class="type-selector">
                         <label class="radio-label">
-                            <input type="radio" name="idea-type" value="human" checked>
+                            <input type="radio" name="idea-type" value="human" checked />
                             <span class="radio-custom human">For Humans</span>
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="idea-type" value="robot">
+                            <input type="radio" name="idea-type" value="robot" />
                             <span class="radio-custom robot">For Robots</span>
                         </label>
                     </div>
 
                     <input type="text" id="idea-text" placeholder="..." class="simple-input" required
-                        data-i18n-placeholder="idea_placeholder">
-                    <button type="submit" class="simple-btn primary" data-i18n="mint_btn">Mint Proposal</button>
+                        data-i18n-placeholder="idea_placeholder" />
+                    <button type="submit" class="simple-btn primary" data-i18n="mint_btn">
+                        Mint Proposal
+                    </button>
                 </form>
                 <!-- Контейнер для вывода статуса транзакции в реальном времени (отправка, успех, ошибка) -->
                 <div id="transaction-status"></div>
@@ -68,22 +75,28 @@
 
             <!-- ЛЕНТА ИДЕЙ: Двухколоночный макет для разделения концепций -->
             <div id="ideas-feed">
-                <h2 data-i18n="community_ideas_title">Метрики Цивилизации</h2>
+                <h2 data-i18n="community_ideas_title">
+                    Метрики Цивилизации
+                </h2>
 
                 <div class="dual-feed-container">
-                    <!-- КОЛОНКА РОБОТОВ: Сюда попадают идеи технического и алгоритмического характера -->
-                    <div class="feed-column robot-col">
-                        <h3 data-i18n="feed_robots_title">Future: Robots 🤖</h3>
-                        <div id="feed-robots">
-                            <p class="loading-msg">Loading Code...</p>
+                    <!-- КОЛОНКА ЛЮДЕЙ: Сюда попадают идеи, направленные на биологическое и социальное наследие -->
+                    <div class="feed-column human-col">
+                        <h3 data-i18n="feed_humans_title">
+                            Legacy: Humans 🧬
+                        </h3>
+                        <div id="feed-humans">
+                            <p class="loading-msg">Loading DNA...</p>
                         </div>
                     </div>
 
-                    <!-- КОЛОНКА ЛЮДЕЙ: Сюда попадают идеи, направленные на биологическое и социальное наследие -->
-                    <div class="feed-column human-col">
-                        <h3 data-i18n="feed_humans_title">Legacy: Humans 🧬</h3>
-                        <div id="feed-humans">
-                            <p class="loading-msg">Loading DNA...</p>
+                    <!-- КОЛОНКА РОБОТОВ: Сюда попадают идеи технического и алгоритмического характера -->
+                    <div class="feed-column robot-col">
+                        <h3 data-i18n="feed_robots_title">
+                            Future: Robots 🤖
+                        </h3>
+                        <div id="feed-robots">
+                            <p class="loading-msg">Loading Code...</p>
                         </div>
                     </div>
                 </div>
@@ -97,11 +110,6 @@
 
     <!-- Библиотеки -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://unpkg.com/@solana/web3.js@1.73.0/lib/index.iife.min.js"></script>
-
-    <!-- Web3Auth SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@9.4.0/dist/modal.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/solana-provider@9.4.0/dist/solanaProvider.umd.min.js"></script>
 
     <!-- Основной скрипт -->
     <script src="script.js"></script>

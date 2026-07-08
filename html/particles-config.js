@@ -9,7 +9,20 @@ particlesJS("particles-js", {
             }
         },
         color: {
-            value: ["#FF6F61", "#6B5B93", "#88B04B", "#F7CAC9", "#92A8D1"],  // Массив цветов для частиц (можно использовать несколько цветов)
+            // более яркие, контрастные неон-оттенки + больше разнообразия
+            // particles.js сам рандомизирует цвет для частиц из этого массива
+            value: [
+                "#00E5FF", // cyan
+                "#39FF14", // neon green
+                "#FF3D81", // hot pink
+                "#FF6B00", // neon orange
+                "#FFD400", // neon yellow
+                "#7C4DFF", // vivid purple
+                "#00FFA3", // mint/green-cyan
+                "#FF2E2E", // red
+                "#00A3FF", // electric blue
+                "#FF00F5" // magenta
+            ],
         },
         shape: {
             type: "circle", // Форма частиц: можно использовать "circle", "edge", "triangle", "polygon", "star", "image"

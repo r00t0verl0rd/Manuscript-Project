@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500;700&family=Russo+One&display=swap');
 
-/* --- СБРОС СТИЛЕЙ И БАЗОВЫЕ НАСТРОЙКИ --- */
+
 :root {
     /* Основная цветовая палитра в неоновом стиле */
     --neon-green: #39ff14;
@@ -16,13 +16,14 @@
 }
 
 * {
-    /* Включаем правильный расчет размеров: padding и border не увеличивают ширину элемента */
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 html {
     /* Фон для overscroll области - темный цвет из градиента */
-    background-color: #053312;
+    background-color: #743909;
     overflow-x: hidden;
     height: 100%;
 }
@@ -41,7 +42,7 @@ body {
     /* Основной шрифт сайта */
 
     /* ФОНОВЫЙ ГРАДИЕНТ: создает глубокий переход от темно-зеленого к фиолетовому */
-    background: linear-gradient(160deg, #053312 30%, #2f0a35 70%) no-repeat;
+    background: linear-gradient(160deg, #743909 30%, #2f0a35 70%) no-repeat;
     background-attachment: fixed;
     /* Фон остается неподвижным при прокрутке */
     color: #253b41;
@@ -69,7 +70,7 @@ body {
 
 #content {
     position: relative;
-    z-index: 2;
+    z-index: 1;
     max-width: 1400px;
     margin: 0 auto;
     /* Добавляем отступы с учетом безопасных зон */
@@ -141,7 +142,6 @@ body {
         min-height: 60px;
     }
 
-    /* Удалено правило .simple-card { padding: 15px; } */
 
     /* Адаптация бейджа и кнопки голосования для Mobile (≤400px) */
     .like-badge {
@@ -461,6 +461,7 @@ h2 {
     pointer-events: none;
 }
 
+
 /* РЕГИСТРАЦИЯ ПЕРЕМЕННОЙ УГЛА: Позволяет анимировать градиент (conic-gradient) */
 @property --angle {
     syntax: '<angle>';
@@ -474,12 +475,56 @@ h2 {
     }
 }
 
-.simple-card:hover::before {
-    opacity: 1;
-    /* Показываем рамку при наведении мыши */
-    animation: rotateBorder 2s linear infinite;
-    /* Запускаем бесконечное вращение света */
+.simple-card::before {
+    opacity: 0;
+    animation: none;
 }
+
+/* Описание (project-info / nft-section): обводка крутится всегда */
+#project-info.simple-card::before,
+#nft-section.simple-card::before {
+    opacity: 1;
+    animation: rotateBorder 2s linear infinite;
+}
+
+/* Блоки с идеями: удаляем обводку по кругу (псевдоэлемент), оставляем только подсветку */
+#feed-humans .simple-card::before,
+#feed-robots .simple-card::before {
+    opacity: 0;
+    animation: none;
+}
+
+/* Плавное пульсирование подсветки карточек при наведении */
+@keyframes ideaPulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 rgba(0, 229, 255, 0);
+        background: rgba(0, 229, 255, 0.18);
+    }
+
+    50% {
+        box-shadow: 0 0 35px rgba(0, 229, 255, 0.35);
+        background: rgba(0, 229, 255, 0.28);
+    }
+}
+
+@keyframes ideaPulseGlowHuman {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 rgba(255, 94, 0, 0);
+        background: rgba(255, 94, 0, 0.12);
+    }
+
+    50% {
+        box-shadow: 0 0 35px rgba(255, 94, 0, 0.35);
+        background: rgba(255, 94, 0, 0.22);
+    }
+}
+
+
+
 
 #project-info:hover,
 #nft-section:hover,
@@ -654,22 +699,42 @@ h2 {
     /* Голубой для роботов */
 }
 
+/* Текст Author ID: label жёлтый, сам ID зелёный */
+.author-id-label {
+    color: #e1c432;
+    /* жёлтый */
+}
+
+.author-id-label-text {
+    color: #e1c432;
+}
+
+.author-id-value {
+    color: #30c715;
+    /* приятный зелёный */
+}
+
+
 /* ЭФФЕКТЫ ХОВЕРА: Карточки светятся соответствующим цветом при наведении */
 #feed-humans .human-idea:hover {
-    background: rgba(255, 0, 255, 0.25);
-    border-color: #ff00ff;
+
+    /* Оставляем подсветку и делаем её пульсирующей */
     transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 15px 40px rgba(255, 0, 255, 0.5);
     z-index: 20;
+
+    animation: ideaPulseGlowHuman 1.6s ease-in-out infinite;
+    box-shadow: 0 0 35px rgba(255, 94, 0, 0.35);
 }
 
 #feed-robots .robot-idea:hover {
-    background: rgba(0, 229, 255, 0.25);
-    border-color: #00e5ff;
+    /* Оставляем подсветку и делаем её пульсирующей */
     transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 15px 40px rgba(0, 229, 255, 0.5);
     z-index: 20;
+
+    animation: ideaPulseGlow 1.6s ease-in-out infinite;
+    box-shadow: 0 0 35px rgba(0, 229, 255, 0.35);
 }
+
 
 
 #ideas-feed p {

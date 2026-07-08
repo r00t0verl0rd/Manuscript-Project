@@ -1,107 +1,69 @@
-/* 
-ПРОЕКТ MANUSCRIPT — МУЛЬТИЯЗЫЧНАЯ ВЕРСИЯ
-Этот скрипт управляет логикой сайта: подключением кошелька Solana, 
-отправкой идей в блокчейн, хранением лайков (локально) и переключением языков.
-*/
+document.addEventListener('DOMContentLoaded', () => {
+    // === МУЛЬТИЯЗЫЧНОСТЬ ===
+    let currentLang = 'ru';
 
-document.addEventListener('DOMContentLoaded', async () => {
-
-    // === МОДУЛЬ ЛОКАЛИЗАЦИИ (Система перевода) ===
-    let currentLang = 'ru'; // Язык при загрузке страницы по умолчанию
-
-    // КОНСТАНТЫ ПРОЕКТА
-    const APP_ADDRESS = "MemoTxngwMQPfQo3zswv3i4z5t5z5z5z5z5z5z5z5z5";
-    // ЗАМЕНИТЕ ЭТОТ CLIENT_ID НА ВАШ ИЗ https://dashboard.web3auth.io/
-    const WEB3AUTH_CLIENT_ID = "BLwcm5ZHxLBDSfryZMsbbU0gy8iKkEkF_LAic1bcUoGlRh5uys9YO0Tfv0gpSXiHbGbUWGtLGcwr4ayEfUmqqaE";
-
-    // Словарь переводов
     const translations = {
-        'ru': {
-            'header_title': 'MANUSCRIPT PROJECT',
-            'connect_wallet_btn': 'Подключить',
-            'wallet_connected_btn': 'Подключено',
-            'not_connected': 'Оффлайн',
-            'create_idea_title': 'Следующий Шаг Эволюции',
-            'idea_placeholder': 'Какую глобальную проблему нам нужно решить?',
-            'mint_btn': 'Записать в Историю',
-            'community_ideas_title': 'Метрики Цивилизации',
-            'loading_text': 'Сканирование...',
-            'sending_tx': 'Синхронизация...',
-            'success_tx': 'Данные внесены в блокчейн.',
-            'error_tx': 'Ошибка протокола: ',
-            'waiting_confirm': 'Подтверждение узлов...',
-            'no_ideas': 'Нет данных.',
-            'wallet_install_alert': 'Ошибка инициализации Web3Auth!',
-            'connect_error': 'Сбой подключения',
-            'view_in_explorer': 'Explorer',
-            'idea_sent_status': 'Hash: ',
-            'idea_confirm_wait': '... ожидание.',
-            'info_title': 'Global Mission',
-            'info_desc': 'Мы строим архитектуру Цивилизации I типа. Каждая идея — это чертеж будущего. Каждый Лайк майнит токен управления (MNSPT). Мы используем коллективный разум и AI-фильтры (anti-cheat) для поиска решений, способных изменить физическую реальность планеты.',
-            'feed_humans_title': 'Для Людей 🧬',
-            'feed_robots_title': 'Для Роботов 🤖'
+        ru: {
+            header_title: 'MANUSCRIPT PROJECT',
+            community_ideas_title: 'Следующие шаги в новую реальность',
+            loading_text: 'Сканирование...',
+            feed_humans_title: 'Для Людей 🧬',
+            feed_robots_title: 'Для Роботов 🤖',
+            connect_wallet_btn: 'Подключить',
+            mint_btn: 'Записать в Историю',
+            idea_placeholder: 'Каким должен быть мир завтра? Какой шаг изменит будущее? Напиши свою идею:',
+            author_id_label: 'ID Автора',
+
+
+            // Миссия (info-блок в index.html)
+            info_title: 'Намерение',
+            info_desc: 'Мы строим децентрализованную платформу, где каждая идея закрепляется за автором и превращается в нестираемую запись в блокчейне. Этот интеллектуальный капитал – твой вклад в общий интеллект человечества хранится вечно! Твоя идея становится частью глобальной цепи решений, а не просто текстом в интернете. Мы формируем сценарий развития человечества. Каждая мысль, записанная в блокчейн, становится кирпичиком в фундаменте нового мира. \n\n Это Web3, где ценность каждого пользователя определяется его вкладом во благо. Твоя идея может стать следующим шагом человечества. Зафиксируй её в блокчейне. Начни сегодня!'
         },
-        'en': {
-            'header_title': 'MANUSCRIPT PROJECT',
-            'connect_wallet_btn': 'Connect',
-            'wallet_connected_btn': 'Online',
-            'not_connected': 'Offline',
-            'create_idea_title': 'Next Evolutionary Step',
-            'idea_placeholder': 'What global problem must be solved?',
-            'mint_btn': 'Record to History',
-            'community_ideas_title': 'Civilization Metrics',
-            'loading_text': 'Scanning...',
-            'sending_tx': 'Syncing...',
-            'success_tx': 'Data recorded on-chain.',
-            'error_tx': 'Protocol Error: ',
-            'waiting_confirm': 'Confirming nodes...',
-            'no_ideas': 'No data.',
-            'wallet_install_alert': 'Web3Auth Init Error!',
-            'connect_error': 'Connection failure',
-            'view_in_explorer': 'Explorer',
-            'idea_sent_status': 'Hash: ',
-            'idea_confirm_wait': '... waiting.',
-            'info_title': 'Global Mission',
-            'info_desc': 'We are architecting a Type I Civilization. Every idea is a blueprint. Every Like mines a governance token (MNSPT). We use collective intelligence and AI filters (anti-cheat) to find solutions that will terraform our physical reality.',
-            'feed_humans_title': 'For Humans 🧬',
-            'feed_robots_title': 'For Robots 🤖'
+        en: {
+            header_title: 'MANUSCRIPT PROJECT',
+            community_ideas_title: 'Next steps into a new reality',
+            loading_text: 'Scanning...',
+            feed_humans_title: 'For Humans 🧬',
+            feed_robots_title: 'For Robots 🤖',
+            connect_wallet_btn: 'Connect',
+            mint_btn: 'Record to History',
+            idea_placeholder: 'What should the world be like tomorrow? What step will change the future? Write your idea:',
+            author_id_label: 'Author ID',
+
+
+            // Mission (info block in index.html)
+            info_title: 'Intent',
+            info_desc: 'We are building a decentralized platform where every idea is permanently linked to its author and recorded as an immutable entry on the blockchain. This intellectual capital is your contribution to humanity\'s collective intelligence, preserved forever. Your idea becomes part of a global chain of solutions, not just another piece of text on the internet. Together, we are shaping humanity\'s future. Every thought recorded on the blockchain becomes a building block in the foundation of a new world.\n\nThis is Web3, where the value of every user is defined by their contribution to the common good. Your idea could become humanity\'s next breakthrough. Record it on the blockchain. Start today!'
         }
     };
 
-    // Функция перевода
-    const t = (key) => translations[currentLang][key] || key;
+    const t = (key) => (translations[currentLang] && translations[currentLang][key]) || key;
 
-    // Обновление интерфейса
     const updateTexts = () => {
-        document.querySelectorAll('[data-i18n]').forEach(el => {
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
             const key = el.getAttribute('data-i18n');
-            if (translations[currentLang][key]) {
-                el.innerText = translations[currentLang][key];
-                if (key === 'header_title') {
-                    el.setAttribute('data-glitch', translations[currentLang][key]);
-                }
-            }
+            el.innerText = t(key);
+            if (key === 'header_title') el.setAttribute('data-glitch', el.innerText);
         });
 
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
             const key = el.getAttribute('data-i18n-placeholder');
-            if (translations[currentLang][key]) {
-                el.placeholder = translations[currentLang][key];
-            }
+            el.placeholder = t(key);
         });
+
+        // Обновляем только текст подписи (значение ID не трогаем)
+        document.querySelectorAll('.author-id-label-text').forEach((el) => {
+            el.textContent = t('author_id_label');
+        });
+
 
         const ruBtn = document.getElementById('lang-ru');
         const enBtn = document.getElementById('lang-en');
         if (ruBtn) ruBtn.classList.toggle('active', currentLang === 'ru');
         if (enBtn) enBtn.classList.toggle('active', currentLang === 'en');
-
-        const connectBtn = document.getElementById('connect-wallet-btn');
-        if (connectBtn && walletPublicKey) {
-            connectBtn.innerText = t('wallet_connected_btn');
-        }
     };
 
-    // Слушатели языка
+
     const btnRu = document.getElementById('lang-ru');
     const btnEn = document.getElementById('lang-en');
     if (btnRu) btnRu.addEventListener('click', () => { currentLang = 'ru'; updateTexts(); });
@@ -114,209 +76,62 @@ document.addEventListener('DOMContentLoaded', async () => {
         closeInfoBtn.addEventListener('click', () => { infoBox.style.display = 'none'; });
     }
 
-    // --- ПЕРЕМЕННЫЕ И ЭЛЕМЕНТЫ ---
-    const connectBtn = document.getElementById('connect-wallet-btn');
-    const nftSection = document.getElementById('nft-section');
-    const createForm = document.getElementById('create-nft-form');
-    const transactionStatus = document.getElementById('transaction-status');
+    // === ПОДГРУЗКА ИДЕЙ (MOK) ===
     const feedHumans = document.getElementById('feed-humans');
     const feedRobots = document.getElementById('feed-robots');
 
-    let walletPublicKey = null;
-    let connection = null;
-    let web3auth = null;
-    let solanaWallet = null;
-
-    // Инициализация Web3Auth
-    // Инициализация Web3Auth
-    const initWeb3Auth = async () => {
-        try {
-            if (connectBtn) {
-                // Блокируем кнопку до полной загрузки, чтобы избежать ошибок "Wallet not ready"
-                connectBtn.disabled = true;
-                connectBtn.style.opacity = '0.5';
-                connectBtn.style.cursor = 'wait';
-                connectBtn.innerText = t('loading_text');
-            }
-
-            const chainConfig = {
-                chainNamespace: "solana",
-                chainId: "0x2", // Testnet (Correct ID)
-                rpcTarget: "https://api.testnet.solana.com",
-                displayName: "Solana Testnet",
-                blockExplorer: "https://explorer.solana.com/?cluster=testnet",
-                ticker: "SOL",
-                tickerName: "Solana",
-            };
-
-            const privateKeyProvider = new window.SolanaProvider.SolanaPrivateKeyProvider({
-                config: { chainConfig: chainConfig }
-            });
-
-            web3auth = new window.Modal.Web3Auth({
-                clientId: WEB3AUTH_CLIENT_ID,
-                privateKeyProvider: privateKeyProvider,
-                web3AuthNetwork: "sapphire_devnet"
-            });
-
-            await web3auth.initModal();
-
-            if (typeof solanaWeb3 !== 'undefined') {
-                connection = new solanaWeb3.Connection("https://api.testnet.solana.com", 'confirmed');
-            }
-
-            // Разблокируем интерфейс после успеха
-            if (connectBtn) {
-                connectBtn.disabled = false;
-                connectBtn.style.opacity = '1';
-                connectBtn.style.cursor = 'pointer';
-                updateTexts(); // Вернуть правильный текст кнопки
-            }
-
-            if (web3auth.connected) {
-                await setupWallet();
-            }
-        } catch (error) {
-            console.error("Web3Auth Init Error:", error);
-            // При фатальной ошибке оставляем кнопку заблокированной или возвращаем как есть
-            if (connectBtn) {
-                connectBtn.disabled = false;
-                connectBtn.style.opacity = '1';
-                connectBtn.style.cursor = 'pointer';
-                connectBtn.innerText = "Error (Reload)";
-            }
-        }
-    };
+    // --- ПЕРЕМЕННЫЕ И ЭЛЕМЕНТЫ ---
+    const nftSection = document.getElementById('nft-section'); // пока не используется, оставляем для совместимости
+    const createForm = document.getElementById('create-nft-form');
+    const transactionStatus = document.getElementById('transaction-status'); // пока не используется (версия без on-chain)
 
 
-    const setupWallet = async () => {
-        try {
-            const provider = web3auth.provider;
-            solanaWallet = new window.SolanaProvider.SolanaWallet(provider);
-            const accounts = await solanaWallet.requestAccounts();
-            walletPublicKey = new solanaWeb3.PublicKey(accounts[0]);
 
-            // Обновляем UI
-            if (connectBtn) {
-                connectBtn.innerText = t('wallet_connected_btn');
-                connectBtn.disabled = true;
-                connectBtn.style.opacity = '0.8';
-                connectBtn.style.cursor = 'default';
-            }
-            if (nftSection) nftSection.style.display = 'block';
 
-            loadIdeas();
-        } catch (err) {
-            console.error("Ошибка настройки кошелька:", err);
-        }
-    };
+
 
     // --- ОСНОВНЫЕ ФУНКЦИИ ---
 
-    /* 1. Функция подключения Web3Auth
-       Вызывает модальное окно для входа через соцсети или кошельки.
-    */
-    const connectWallet = async () => {
-        if (!web3auth) return;
-        try {
-            await web3auth.connect();
-            if (web3auth.connected) {
-                await setupWallet();
-            }
-        } catch (err) {
-            console.error("Connect Error:", err);
-            // Если Web3Auth не готов или ошибка сети
-            alert(t('connect_error') + ": " + (err.message || "Unknown"));
-        }
-    };
-
-    /* 2. Функция создания и отправки идеи в блокчейн
-       Использует программу Memo Program для записи текста через провайдер Web3Auth.
-    */
     const createIdea = async (e) => {
         e.preventDefault();
-
-        const text = document.getElementById('idea-text').value;
-        const typeInit = document.querySelector('input[name="idea-type"]:checked').value;
-
-        if (!text || !walletPublicKey || !solanaWallet) return;
-        if (!transactionStatus) return;
-
-        transactionStatus.innerHTML = `<p style="color: yellow;">${t('sending_tx')}</p>`;
-
-        try {
-            const ideaPayload = {
-                text: text,
-                type: typeInit,
-                timestamp: Date.now()
-            };
-            const jsonString = JSON.stringify(ideaPayload);
-
-            const encoder = new TextEncoder();
-            const data = encoder.encode(jsonString);
-
-            const transaction = new solanaWeb3.Transaction().add(
-                new solanaWeb3.TransactionInstruction({
-                    keys: [{ pubkey: walletPublicKey, isSigner: true, isWritable: true }],
-                    data: data,
-                    programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcQb"),
-                })
-            );
-
-            transaction.feePayer = walletPublicKey;
-            const { blockhash } = await connection.getLatestBlockhash();
-            transaction.recentBlockhash = blockhash;
-
-            // Подпись и отправка через провайдер Web3Auth
-            const { signature } = await solanaWallet.signAndSendTransaction(transaction);
-
-            transactionStatus.innerHTML = `<p style="color: yellow;">${t('idea_sent_status')}${signature.slice(0, 8)}...</p>`;
-
-            await connection.confirmTransaction(signature, 'confirmed');
-
-            transactionStatus.innerHTML = `<p style="color: lightgreen;">${t('success_tx')}</p>`;
-            document.getElementById('idea-text').value = '';
-
-            setTimeout(loadIdeas, 2000);
-
-        } catch (err) {
-            console.error("Ошибка при отправке транзакции через Web3Auth:", err);
-            transactionStatus.innerHTML = `<p style="color: red;">${t('error_tx')} ${err.message}</p>`;
-        }
+        // Идеи остаются только локальными (без on-chain отправки)
+        alert('On-chain minting disabled in this version.');
     };
 
     /* ANTI-CHEAT: Система предотвращения накрутки голосов
-       Использует LocalStorage браузера для запоминания, за что вы уже голосовали.
-    */
+        спользует LocalStorage браузера для запоминания, за что вы уже голосовали.
+                          
     const hasVoted = (id) => {
         return localStorage.getItem(`voted_${id}`) === 'true';
-    };
-
+       
+    
     // Функция обработки голоса (лайка)
     const voteIdea = (id, change) => {
         if (hasVoted(id)) {
-            // Если в хранилище есть метка о голосовании — запрещаем повторное действие
-            alert("ANTI-CHEAT: Вы уже поддержали этот сигнал.");
+            // Если в LocalStorage уже есть метка голосования — повторное действие запрещаем.
+            alert('ANTI-CHEAT: Вы уже поддержали этот сигнал.');
             return;
         }
 
-        // Помечаем в браузере, что голос отдан
+        // Помечаем в браузере, что голос отдан.
         localStorage.setItem(`voted_${id}`, 'true');
 
-        // Визуальное обновление счетчика (имитация работы в реальном времени)
+        // Счетчик лайков.
         const el = document.getElementById(`likes-${id}`);
-        if (el) {
-            // Достаем число из строки вида "💎 123"
-            let current = parseInt(el.innerText.split(' ')[1]);
-            // Обновляем текст с пометкой о процессе майнинга
-            el.innerText = `💎 ${current + change} (Mining...)`;
-        }
+        if (!el) return;
+
+        const current = Number(el.dataset.likes || 0);
+        const next = current + change;
+
+        el.dataset.likes = String(next);
+        el.innerText = `💎 ${next} (Mining...)`;
     };
 
-    /* 3. Функция загрузки идей (Главный механизм сбора данных)
-       Собирает идеи из двух источников: моковые данные и реальные транзакции из Solana.
-    */
+    . Функция загрузки идей (Главный механизм сбора данных)
+   Собирает идеи из двух источников: моковые данные и реальные транзакции из Solana.
+*/
     const loadIdeas = async () => {
+
         // Устанавливаем статус загрузки в колонках
         if (feedHumans) feedHumans.innerHTML = `<p class="loading-msg">${t('loading_text')}</p>`;
         if (feedRobots) feedRobots.innerHTML = `<p class="loading-msg">${t('loading_text')}</p>`;
@@ -349,60 +164,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ];
         ideas.push(...mockIdeas); // Добавляем заготовленные идеи в общий список
 
-        // ИСТОЧНИК 2: Реальные данные из блокчейна Solana
-        // Мы сканируем последние транзакции, совершенные по вашему адресу
-        if (walletPublicKey) {
-            try {
-                // Получаем список подписей (хэшей) последних 10 транзакций кошелька
-                const signatures = await connection.getSignaturesForAddress(walletPublicKey, { limit: 10 });
-                for (const info of signatures) {
-                    if (info.err) continue; // Пропускаем неудачные транзакции
-
-                    // Запрашиваем детали каждой транзакции
-                    const tx = await connection.getParsedTransaction(info.signature, 'confirmed');
-                    if (tx && tx.transaction.message.instructions) {
-                        // Ищем в транзакции инструкцию программы Memo
-                        const memo = tx.transaction.message.instructions.find(ix => ix.programId.toString() === "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcQb");
-
-                        if (memo && memo.parsed) {
-                            try {
-                                let content = memo.parsed;
-                                let type = 'human'; // По умолчанию — для людей
-                                let text = content;
-
-                                // Пытаемся распарсить JSON (если мы сами его туда записали)
-                                if (content.startsWith('{')) {
-                                    const parsed = JSON.parse(content);
-                                    if (parsed.text) text = parsed.text;
-                                    if (parsed.type) type = parsed.type;
-                                }
-
-                                // Имитируем количество лайков для новых записей
-                                const randomLikes = Math.floor(Math.random() * 50);
-                                ideas.push({
-                                    id: info.signature.slice(0, 8), // Используем начало хэша как ID
-                                    text: text,
-                                    type: type,
-                                    likes: randomLikes,
-                                    isUser: true // Отметка, что это идея текущего пользователя
-                                });
-                            } catch (e) {
-                                // Если это не JSON, просто выводим текст как есть
-                                ideas.push({
-                                    id: info.signature.slice(0, 8),
-                                    text: memo.parsed,
-                                    type: 'human',
-                                    likes: 5,
-                                    isUser: true
-                                });
-                            }
-                        }
-                    }
-                }
-            } catch (err) {
-                console.error("Ошибка при сканировании блокчейна:", err);
-            }
-        }
+        // ИСТОЧНИК 2 удален: on-chain сканирование отключено.
 
         // Запускаем отрисовку итогового списка идей на экране
         renderFeed(ideas);
@@ -417,7 +179,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (feedRobots) feedRobots.innerHTML = '';
 
         // Сортировка: Сначала самые популярные (больше лайков)
-        const sorted = allIdeas.sort((a, b) => b.likes - a.likes);
+        // Создаем копию массива, чтобы не портить оригинальные данные.
+        const sorted = [...allIdeas].sort((a, b) => b.likes - a.likes);
+
 
         sorted.forEach(item => {
             const div = document.createElement('div');
@@ -433,17 +197,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             div.innerHTML = `
                 <p>"${item.text}"</p>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 10px;">
-                    <span id="likes-${item.id}" class="like-badge">💎 ${item.likes}</span>
-                    <button class="vote-btn up" onclick="window.voteIdea('${item.id}', 1)">
+                    <span id="likes-${item.id}" class="like-badge" data-likes="${item.likes}">💎 ${item.likes}</span>
+                    <button
+                        class="vote-btn up"
+                        type="button"
+                        data-vote-id="${item.id}"
+                        data-vote-change="1"
+                        aria-label="Vote"
+                    >
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 3L4 11H9V21H15V11H20L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                 </div>
-                <div style="text-align:right; margin-top:5px;">
-                    <small>ID: ${item.id && item.id.length > 10 ? item.id.slice(0, 4) + '...' + item.id.slice(-4) : (item.id || 'N/A')}</small>
-                </div>
+                    <div style="text-align:right; margin-top:5px;">
+                        <small class="author-id-label"><span class="author-id-label-text">${t('author_id_label')}</span>: <span class="author-id-value">${item.id && item.id.length > 10 ? item.id.slice(0, 4) + '...' + item.id.slice(-4) : (item.id || 'N/A')}</span></small>
+
+                    </div>
+
+
             `;
+
 
             // Добавляем готовую карточку в нужную колонку
             if (item.type === 'robot') {
@@ -454,23 +228,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     };
 
-    // Делаем функцию голосования доступной глобально, чтобы работали атрибуты onclick
-    window.voteIdea = voteIdea;
-
     // --- ЗАПУСК (INITIALIZATION) ---
 
-    // Привязываем функции к кнопкам интерфейса
-    if (connectBtn) connectBtn.addEventListener('click', connectWallet);
+    // Голосование: обработка клика через event delegation.
+    // Это убирает необходимость в глобальной функции и inline onclick,
+    // при этом внешний вид карточек не меняется.
+    const ideasFeedRoot = document.getElementById('ideas-feed');
+    if (ideasFeedRoot) {
+        ideasFeedRoot.addEventListener('click', (e) => {
+            const btn = e.target instanceof Element ? e.target.closest('.vote-btn') : null;
+            if (!btn) return;
+
+            const id = btn.dataset.voteId;
+            const change = Number(btn.dataset.voteChange || 1);
+            if (!id) return;
+
+            voteIdea(id, change);
+        });
+    }
+
+
+    // Привязываем функцию создания идеи только для локального режима
     if (createForm) createForm.addEventListener('submit', createIdea);
 
-    // Применяем переводы текстов
-    updateTexts();
 
     // Загружаем начальные идеи
     loadIdeas();
 
-    // Инициализируем Web3Auth
-    initWeb3Auth();
+    // Применяем переводы текстов (после отрисовки карточек)
+    updateTexts();
+
+
+
+
+    // Инициализация Web3Auth отключена (подключение кошелька удалено).
+
 
     // Установка текущего года в подвале сайта (footer)
     const yearEl = document.getElementById('current-year');
