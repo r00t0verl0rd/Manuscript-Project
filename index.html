@@ -10,17 +10,17 @@
 </head>
 
 <body>
+    <!-- Фоновые частицы (canvas) -->
     <div id="particles-js"></div>
+
+    <!-- Основной контент страницы -->
     <div id="content" class="content">
+        <!-- Блок частиц дублировался — убран, оставлен только основной -->
         <header class="header-container">
             <div class="header-controls" style="width: 100%; justify-content: flex-end">
-                <!-- Секция авторизации: Кнопка для входа через Web3Auth (социалки + кошельки) -->
                 <div id="wallet-mini-section">
-                    <button id="connect-wallet-btn" class="simple-btn" data-i18n="connect_wallet_btn">
-                        Connect
-                    </button>
+                    <button id="connect-wallet-btn" class="simple-btn" data-i18n="connect_wallet_btn">Connect</button>
                 </div>
-                <!-- Переключатель языков: Переключает интерфейс между Русским и Английским -->
                 <div class="lang-switcher">
                     <button id="lang-ru" class="lang-text-btn active">RU</button>
                     <span>/</span>
@@ -29,66 +29,63 @@
             </div>
         </header>
 
+        <!-- Контент: шапка + лента идей -->
         <main class="main-wrapper">
-            <!-- ГЛАВНЫЙ ЗАГОЛОВОК (HERO SECTION): Основное название проекта с эффектом глитча -->
             <h1 data-i18n="header_title">MANUSCRIPT PROJECT</h1>
 
-            <!-- ИНФОРМАЦИОННЫЙ БЛОК: Краткий манифест проекта. Можно закрыть, нажав на крестик -->
             <div id="project-info" class="simple-card">
-                <button id="close-info-btn" class="close-icon">
-                    &times;
-                </button>
+                <button id="close-info-btn" class="close-icon">&times;</button>
                 <h2 data-i18n="info_title"></h2>
                 <p data-i18n="info_desc"></p>
             </div>
 
-            <!-- ФОРМА СОЗДАНИЯ ИДЕИ: Изначально скрыта (display: none), становится видимой после подключения кошелька -->
             <div id="nft-section" class="simple-card" style="display: none">
                 <h2 data-i18n="create_idea_title"></h2>
                 <form id="create-nft-form">
-                    <!-- Выбор типа идеи: Определяет, в какой колонке (Люди/Роботы) появится запись -->
-                    <div class="type-selector">
-                        <label class="radio-label">
-                            <input type="radio" name="idea-type" value="human" checked />
-                            <span class="radio-custom human">For Humans</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="idea-type" value="robot" />
-                            <span class="radio-custom robot">For Robots</span>
-                        </label>
-                    </div>
-
                     <input type="text" id="idea-text" placeholder="..." class="simple-input" required
                         data-i18n-placeholder="idea_placeholder" />
-                    <button type="submit" class="simple-btn primary" data-i18n="mint_btn">
-                        Mint Proposal
-                    </button>
+                    <button type="submit" class="simple-btn primary" data-i18n="mint_btn">Mint Proposal</button>
                 </form>
-                <!-- Контейнер для вывода статуса транзакции в реальном времени (отправка, успех, ошибка) -->
                 <div id="transaction-status"></div>
             </div>
 
-            <!-- ЛЕНТА ИДЕЙ: Двухколоночный макет для разделения концепций -->
             <div id="ideas-feed">
                 <h2 data-i18n="community_ideas_title"></h2>
 
-                <div class="dual-feed-container">
-                    <!-- КОЛОНКА ЛЮДЕЙ: Сюда попадают идеи, направленные на биологическое и социальное наследие -->
-                    <div class="feed-column human-col">
-                        <h3 data-i18n="feed_humans_title">
-                            Legacy: Humans 🧬
-                        </h3>
-                        <div id="feed-humans">
+                <div class="sort-row">
+                    <div class="sort-label" data-i18n="sort_label"></div>
+                    <div class="type-selector" role="group" aria-label="Idea sorting">
+                        <label class="radio-label">
+                            <input type="radio" name="sort" value="diamonds_desc" checked />
+                            <span class="radio-custom">💎 Max</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="sort" value="diamonds_asc" />
+                            <span class="radio-custom">💎 Min</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="sort" value="created_desc" />
+                            <span class="radio-custom">⏱ New</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="feed-columns">
+                    <div class="feed-column" data-feed-col="1">
+                        <h3 data-i18n="feed_1_title">Feed 1</h3>
+                        <div id="feed-1">
                             <p class="loading-msg">Loading...</p>
                         </div>
                     </div>
-
-                    <!-- КОЛОНКА РОБОТОВ: Сюда попадают идеи технического и алгоритмического характера -->
-                    <div class="feed-column robot-col">
-                        <h3 data-i18n="feed_robots_title">
-                            Future: Robots 🤖
-                        </h3>
-                        <div id="feed-robots">
+                    <div class="feed-column" data-feed-col="2">
+                        <h3 data-i18n="feed_2_title">Feed 2</h3>
+                        <div id="feed-2">
+                            <p class="loading-msg">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="feed-column" data-feed-col="3">
+                        <h3 data-i18n="feed_3_title">Feed 3</h3>
+                        <div id="feed-3">
                             <p class="loading-msg">Loading...</p>
                         </div>
                     </div>
@@ -97,14 +94,14 @@
         </main>
     </div>
 
+    <!-- Подвал -->
     <footer>
         <p>&copy; <span id="current-year"></span> Manuscript Project.</p>
     </footer>
 
-    <!-- Библиотеки -->
+    <!-- Подключение скриптов -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
-    <!-- Основной скрипт -->
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
     <script src="particles-config.js"></script>
 </body>

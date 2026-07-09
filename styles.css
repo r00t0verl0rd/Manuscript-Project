@@ -1,18 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500;700&family=Russo+One&display=swap');
 
-
+/* Базовые переменные цветов (неон) */
 :root {
-    /* Основная цветовая палитра в неоновом стиле */
     --neon-green: #39ff14;
-    /* Ярко-зеленый (для текстов и акцентов) */
+
     --neon-purple: #bd00ff;
-    /* Насыщенный фиолетовый (для кнопок и свечения) */
     --neon-cyan: #00e5ff;
-    /* Цвет морской волны (для роботов и голосования) */
     --neon-orange: #ff5e00;
-    /* Неоновый оранжевый (для человеческого наследия) */
-    --deep-bg: rgba(10, 15, 20, 0.15);
-    /* Полупрозрачный темный фон для карточек */
 }
 
 * {
@@ -21,41 +15,33 @@
     box-sizing: border-box;
 }
 
+/* Основной фон и общие ограничения прокрутки */
 html {
-    /* Фон для overscroll области - темный цвет из градиента */
     background-color: #743909;
+
     overflow-x: hidden;
     height: 100%;
 }
 
 body {
     overflow-x: hidden;
-    /* Запрещаем горизонтальную прокрутку */
     width: 100%;
     height: 100%;
     position: relative;
     -webkit-overflow-scrolling: touch;
-    /* Плавная прокрутка на iOS */
     margin: 0;
     padding: 0;
     font-family: 'Comfortaa', cursive;
-    /* Основной шрифт сайта */
-
-    /* ФОНОВЫЙ ГРАДИЕНТ: создает глубокий переход от темно-зеленого к фиолетовому */
     background: linear-gradient(160deg, #743909 30%, #2f0a35 70%) no-repeat;
     background-attachment: fixed;
-    /* Фон остается неподвижным при прокрутке */
     color: #253b41;
     line-height: 1.6;
     min-height: 100vh;
-    /* Минимальная высота - на весь экран */
-    /* Поддержка всех зон безопасности iPhone */
     padding-top: env(safe-area-inset-top, 0px);
     padding-right: env(safe-area-inset-right, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
     padding-left: env(safe-area-inset-left, 0px);
 }
-
 
 #particles-js {
     position: fixed;
@@ -68,12 +54,13 @@ body {
     pointer-events: none;
 }
 
+/* Обёртка контента (центрирование и отступы) */
 #content {
     position: relative;
+
     z-index: 1;
     max-width: 1400px;
     margin: 0 auto;
-    /* Добавляем отступы с учетом безопасных зон */
     padding: 20px;
     padding-left: max(20px, env(safe-area-inset-left));
     padding-right: max(20px, env(safe-area-inset-right));
@@ -88,7 +75,7 @@ body {
         width: 100vw;
     }
 
-    .dual-feed-container {
+    .feed-columns {
         gap: 6px;
     }
 
@@ -103,15 +90,13 @@ body {
         line-height: 1.3;
     }
 
-    #feed-humans .simple-card,
-    #feed-robots .simple-card {
+    #ideas-feed .simple-card {
         padding: 8px;
         margin-bottom: 8px;
         min-height: 80px;
     }
 }
 
-/* Дополнительная оптимизация для узких экранов */
 @media (max-width: 415px) {
     #content {
         padding: 6px;
@@ -119,7 +104,7 @@ body {
         padding-right: max(6px, env(safe-area-inset-right));
     }
 
-    .dual-feed-container {
+    .feed-columns {
         gap: 4px;
     }
 
@@ -142,8 +127,6 @@ body {
         min-height: 60px;
     }
 
-
-    /* Адаптация бейджа и кнопки голосования для Mobile (≤400px) */
     .like-badge {
         font-size: clamp(0.65rem, 2.2vw, 0.85rem);
         padding: 4px 10px;
@@ -163,7 +146,6 @@ body {
     }
 }
 
-/* Экстремально узкие экраны */
 @media (max-width: 350px) {
     #content {
         padding: 4px;
@@ -189,7 +171,6 @@ body {
         min-height: 50px;
     }
 
-    /* Адаптация бейджа и кнопки для экстремально узких экранов (≤350px) */
     .like-badge {
         font-size: clamp(0.6rem, 2vw, 0.75rem);
         padding: 3px 8px;
@@ -209,9 +190,6 @@ body {
     }
 }
 
-/* --- АНИМАЦИИ (Keyframes) --- */
-
-/* Анимация появления элементов: плавно выплывают снизу вверх */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -224,8 +202,8 @@ body {
     }
 }
 
-/* Эффект бесконечной прокрутки полосатого фона (используется в заголовках) */
 @keyframes stripeScroll {
+
     0% {
         background-position: 0 0;
     }
@@ -235,7 +213,6 @@ body {
     }
 }
 
-/* Небольшое покачивание стрелки вверх при наведении */
 @keyframes arrowBounceUp {
 
     0%,
@@ -248,26 +225,11 @@ body {
     }
 }
 
-/* Небольшое покачивание стрелки вниз (если понадобится) */
-@keyframes arrowBounceDown {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(4px);
-    }
-}
-
-
-/* --- ШАПКА САЙТА (HEADER) --- */
 .header-container {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /* Отступ сверху с учетом челки/Dynamic Island */
+
     padding-top: max(10px, env(safe-area-inset-top, 10px));
     padding-bottom: 10px;
     padding-left: 0;
@@ -290,7 +252,6 @@ body {
         gap: 8px;
     }
 
-    /* Уменьшаем размер кнопок и текста в header */
     .simple-btn {
         padding: 8px 16px;
         font-size: 0.75rem;
@@ -316,27 +277,18 @@ body {
     }
 }
 
-/* --- ГЛАВНЫЙ ЗАГОЛОВОК (HERO) --- */
-.hero-section {
-    text-align: center;
-    margin-bottom: 50px;
-    width: 100%;
-    overflow: visible;
-}
-
 h1 {
     font-family: 'Russo One', sans-serif;
     font-weight: 400;
-    /* Более агрессивное масштабирование для узких экранов */
+
     font-size: clamp(1.1rem, 5.5vw, 3.2rem);
     margin: 0 0 20px 0;
     text-align: center;
-    /* Разрешаем перенос на узких экранах */
+
     white-space: normal;
     word-break: break-word;
     hyphens: auto;
 
-    /* MULTI-COLOR STRIPES (Green/Purple) */
     background: repeating-linear-gradient(180deg,
             #ffffff 0px,
             #ffffff 2px,
@@ -350,7 +302,7 @@ h1 {
     will-change: background-position;
 
     text-transform: uppercase;
-    /* Уменьшаем letter-spacing на узких экранах */
+
     letter-spacing: clamp(0.5px, 0.5vw, 2px);
     filter: drop-shadow(0 0 15px rgba(57, 255, 20, 0.4));
 
@@ -361,7 +313,6 @@ h1 {
     line-height: 1.2;
 }
 
-/* Специальная оптимизация заголовка для узких экранов */
 @media (max-width: 415px) {
     h1 {
         font-size: clamp(0.95rem, 5vw, 1.5rem);
@@ -397,16 +348,13 @@ h2 {
     animation: stripeScroll 10s linear infinite;
 }
 
-/* --- КАРТОЧКИ СО СКОШЕННЫМИ УГЛАМИ (Stealth Cards) --- */
 .simple-card {
     background: rgba(10, 15, 20, 0.15);
-    /* Темный, почти прозрачный фон */
-    backdrop-filter: blur(5px);
-    /* Эффект матового стекла */
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    /* Едва заметная рамка */
 
-    /* ГЕОМЕТРИЯ: Сложная форма со скошенными углами через clip-path */
+    backdrop-filter: blur(5px);
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
     clip-path: polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
 
     padding: 30px;
@@ -414,28 +362,27 @@ h2 {
     position: relative;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 
-    /* Плавные переходы для всех интерактивных свойств */
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
         box-shadow 0.4s ease,
         background 0.4s ease,
         border-color 0.4s ease;
 
     animation: fadeInUp 0.7s ease-out forwards;
-    /* Анимация появления при загрузке */
+
     transform: translateZ(0);
-    /* Оптимизация для видеокарты (Hardware Acceleration) */
+
     will-change: transform, box-shadow;
-    /* Подсказка браузеру для плавной анимации */
+
     contain: content;
-    /* Оптимизация отрисовки */
+
     word-wrap: break-word;
-    /* Автоперенос длинных слов */
+
     overflow-x: hidden;
     color: #ffffff;
 }
 
-/* КИБЕРПАНК-ЭФФЕКТ: Световая обводка карточки при наведении (через псевдоэлемент) */
 .simple-card::before {
+
     content: "";
     position: absolute;
     top: 0;
@@ -443,12 +390,9 @@ h2 {
     right: 0;
     bottom: 0;
     padding: 2px;
-    /* Толщина светящейся линии */
 
-    /* Цветной градиент, который будет вращаться */
     background: conic-gradient(from var(--angle), transparent 70%, var(--neon-green), var(--neon-purple), var(--neon-cyan));
 
-    /* Маска, чтобы оставить только тонкую рамку */
     clip-path: polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -456,13 +400,11 @@ h2 {
     mask-composite: exclude;
 
     opacity: 0;
-    /* Изначально рамка скрыта */
+
     transition: opacity 0.4s ease;
     pointer-events: none;
 }
 
-
-/* РЕГИСТРАЦИЯ ПЕРЕМЕННОЙ УГЛА: Позволяет анимировать градиент (conic-gradient) */
 @property --angle {
     syntax: '<angle>';
     initial-value: 0deg;
@@ -480,21 +422,19 @@ h2 {
     animation: none;
 }
 
-/* Описание (project-info / nft-section): обводка крутится всегда */
 #project-info.simple-card::before,
+
 #nft-section.simple-card::before {
     opacity: 1;
-    animation: rotateBorder 2s linear infinite;
+    animation: rotateBorder 5s linear infinite;
 }
 
-/* Блоки с идеями: удаляем обводку по кругу (псевдоэлемент), оставляем только подсветку */
 #feed-humans .simple-card::before,
 #feed-robots .simple-card::before {
     opacity: 0;
     animation: none;
 }
 
-/* Плавное пульсирование подсветки карточек при наведении */
 @keyframes ideaPulseGlow {
 
     0%,
@@ -523,9 +463,6 @@ h2 {
     }
 }
 
-
-
-
 #project-info:hover,
 #nft-section:hover,
 .simple-card:hover {
@@ -536,7 +473,15 @@ h2 {
     z-index: 10;
 }
 
-/* --- ФОРМЫ И ВВОД ДАННЫХ --- */
+#project-info h2 {
+    font-size: clamp(1.05rem, 2.4vw, 1.55rem);
+}
+
+#project-info p {
+    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+    line-height: 1.4;
+}
+
 .simple-input {
     width: 100%;
     padding: 15px;
@@ -556,7 +501,6 @@ h2 {
     background: rgba(10, 30, 20, 0.8);
 }
 
-/* --- КНОПКИ (Акцентный цвет: Фиолетовый) --- */
 .simple-btn {
     background: transparent;
     border: 1px solid var(--neon-purple);
@@ -589,44 +533,86 @@ h2 {
     box-shadow: 0 0 40px #fff;
 }
 
-/* --- ДВОЙНАЯ ЛЕНТА ИДЕЙ --- */
 #ideas-feed {
     text-align: center;
 }
 
 #ideas-feed h2 {
     display: inline-block;
-    margin-top: 80px;
-    margin-bottom: 40px;
+    margin-top: 48px;
+    margin-bottom: 24px;
 }
 
-/* Адаптивные размеры для заголовка идей на узких экранах */
+#ideas-feed h2 {
+    font-size: clamp(1rem, 2.2vw, 1.55rem);
+}
+
 @media (max-width: 415px) {
     #ideas-feed h2 {
-        margin-top: 40px;
-        margin-bottom: 20px;
-        font-size: 1.2rem;
+        margin-top: 32px;
+        margin-bottom: 16px;
     }
 }
 
 @media (max-width: 350px) {
     #ideas-feed h2 {
-        margin-top: 30px;
-        margin-bottom: 15px;
-        font-size: 1rem;
+        margin-top: 26px;
+        margin-bottom: 12px;
     }
 }
 
-.dual-feed-container {
+.feed-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
     width: 100%;
+    align-items: start;
 }
 
-@media(max-width: 415px) {
-    .dual-feed-container {
+@media (min-width: 900px) {
+    .feed-columns {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 899px) {
+    .feed-columns {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .feed-columns {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .feed-column[data-feed-col="3"] {
+        display: none;
+    }
+}
+
+@media (max-width: 415px) {
+    .feed-columns {
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
+    }
+
+    .feed-column[data-feed-col="3"] {
+        display: none;
+    }
+
+    .feed-column {
+        min-width: 0;
+    }
+
+    .feed-column h3 {
+        display: none;
+    }
+}
+
+@media (max-width: 350px) {
+    .feed-columns {
+        gap: 8px;
     }
 }
 
@@ -646,7 +632,6 @@ h2 {
     animation: stripeScroll 12s linear infinite;
 }
 
-/* Дополнительные адаптивные размеры для заголовков колонок */
 @media (max-width: 415px) {
     .feed-column h3 {
         font-size: 0.75rem;
@@ -663,46 +648,18 @@ h2 {
     }
 }
 
-/* VARIETY: Neon Orange & Cyan */
-.human-col h3 {
-    background-image: repeating-linear-gradient(180deg, #fff 0px, #fff 2px, var(--neon-orange) 3px, var(--neon-orange) 4px);
-    /* Orange */
-}
-
-.robot-col h3 {
-    background-image: repeating-linear-gradient(180deg, #fff 0px, #fff 2px, var(--neon-cyan) 3px, var(--neon-cyan) 4px);
-    /* Cyan */
-}
-
-/* СТИЛИЗАЦИЯ КАРТОЧЕК В ЛЕНТЕ: Специальные настройки для идей в колонках */
-#feed-humans .simple-card,
-#feed-robots .simple-card {
+#ideas-feed .simple-card {
     padding: 20px;
     min-height: 120px;
     margin-bottom: 25px;
     display: flex;
-    /* Используем Flexbox для удобного выравнивания содержимого внутри */
     flex-direction: column;
-    /* Элементы внутри карточки располагаются вертикально */
     justify-content: space-between;
-    /* Распределяем контент: текст сверху, кнопка снизу */
 }
 
-/* ЦВЕТОВЫЕ ИНДИКАТОРЫ: Верхняя граница карточки подчеркивает тип идеи */
-.simple-card.human-idea {
-    border-top: 3px solid #ff5e00;
-    /* Оранжевый для людей */
-}
-
-.simple-card.robot-idea {
-    border-top: 3px solid #00e5ff;
-    /* Голубой для роботов */
-}
-
-/* Текст Author ID: label жёлтый, сам ID зелёный */
 .author-id-label {
     color: #e1c432;
-    /* жёлтый */
+
 }
 
 .author-id-label-text {
@@ -711,14 +668,11 @@ h2 {
 
 .author-id-value {
     color: #30c715;
-    /* приятный зелёный */
+
 }
 
-
-/* ЭФФЕКТЫ ХОВЕРА: Карточки светятся соответствующим цветом при наведении */
 #feed-humans .human-idea:hover {
 
-    /* Оставляем подсветку и делаем её пульсирующей */
     transform: translateY(-8px) scale(1.05);
     z-index: 20;
 
@@ -727,7 +681,7 @@ h2 {
 }
 
 #feed-robots .robot-idea:hover {
-    /* Оставляем подсветку и делаем её пульсирующей */
+
     transform: translateY(-8px) scale(1.05);
     z-index: 20;
 
@@ -735,13 +689,11 @@ h2 {
     box-shadow: 0 0 35px rgba(0, 229, 255, 0.35);
 }
 
-
-
 #ideas-feed p {
-    /* Базовый размер для больших экранов */
+
     font-size: clamp(0.55rem, 2vw, 1rem);
     color: #ffffff;
-    /* Ultra contrast white */
+
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     margin: 0 0 10px 0;
     line-height: 1.35;
@@ -750,7 +702,6 @@ h2 {
     hyphens: auto;
 }
 
-/* --- СИСТЕМА ГОЛОСОВАНИЯ --- */
 .vote-section {
     display: flex;
     justify-content: space-between;
@@ -761,7 +712,7 @@ h2 {
 .like-badge {
     font-family: 'Comfortaa', cursive;
     font-weight: 700;
-    /* Динамический размер шрифта для предотвращения переполнения */
+
     font-size: clamp(0.7rem, 2.5vw, 1.0rem);
     color: var(--neon-cyan);
     background: rgba(0, 229, 255, 0.12);
@@ -772,7 +723,7 @@ h2 {
     align-items: center;
     gap: 8px;
     box-shadow: 0 0 8px rgba(0, 229, 255, 0.1);
-    /* Запрет переноса строк */
+
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -796,7 +747,7 @@ h2 {
     width: 28px;
     height: 28px;
     color: var(--neon-cyan);
-    /* Тонкая светящаяся обводка самой стрелки */
+
     filter: drop-shadow(0 0 1px var(--neon-cyan)) drop-shadow(0 0 3px rgba(0, 229, 255, 0.5));
     transition: transform 0.3s ease;
 }
@@ -827,7 +778,6 @@ h2 {
     transform: scale(0.9) translateY(0);
 }
 
-/* --- ЭЛЕМЕНТЫ УПРАВЛЕНИЯ В ШАПКЕ --- */
 .lang-switcher button {
     background: transparent;
     border: none;
@@ -891,8 +841,60 @@ h2 {
 footer {
     text-align: center;
     margin-top: 50px;
-    /* Отступ снизу с учетом Home Indicator */
+
     padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
     color: #555;
     font-size: 0.8rem;
+}
+
+.sort-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 0 auto 18px auto;
+    width: 100%;
+    max-width: 900px;
+}
+
+.sort-label {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.type-selector {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.radio-label {
+    display: inline-flex;
+    align-items: center;
+}
+
+.radio-label input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.type-selector .radio-custom {
+    cursor: pointer;
+}
+
+@media (max-width: 415px) {
+    .sort-row {
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .sort-label {
+        font-size: 0.8rem;
+    }
+
+    .type-selector {
+        gap: 6px;
+    }
 }
