@@ -114,8 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
           : item.id || 'N/A';
 
       div.innerHTML = `
-        <p>"${item.text}"</p>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 10px;">
+        <p class="idea-text">"${item.text}"</p>
+
+        <div class="idea-vote-row">
           <span id="likes-${item.id}" class="like-badge" data-likes="${item.likes}">💎 ${item.likes}</span>
           <button class="vote-btn up" type="button" data-vote-id="${item.id}" data-vote-change="1" aria-label="Vote">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -123,14 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
             </svg>
           </button>
         </div>
-        <div style="text-align:right; margin-top:5px;">
-          <small class="author-id-label">
+
+        <div class="idea-meta">
+          <small class="author-meta">
             <span class="author-id-label-text">${t('author_id_label')}</span>:
             <span class="author-id-value">${shortId}</span>
           </small>
-          <div style="margin-top:6px; text-align:right;">
-            <small style="color: rgba(255,255,255,0.65);">${formatDateYYYYMMDD(item.createdAt)}</small>
-          </div>
+
+          <small class="created-at">${formatDateYYYYMMDD(item.createdAt)}</small>
         </div>
       `;
 
