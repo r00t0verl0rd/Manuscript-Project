@@ -914,9 +914,67 @@ footer {
 }
 
 .sort-label {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.75);
+    /* убираем текст, оставляем только иконку */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 26px;
+    height: 26px;
+
+    font-size: 0;
+    line-height: 0;
+    color: transparent;
+
+    position: relative;
+
+    /* чтобы низ не “косячило” из‑за градиентов */
+    overflow: hidden;
 }
+
+.sort-label::before {
+    content: '';
+
+    /* жёстко центрируем внутренний рисунок */
+    position: absolute;
+    inset: 0;
+    margin: auto;
+
+    width: 18px;
+    height: 18px;
+
+    /* только 3 палочки */
+    background:
+        linear-gradient(var(--neon-cyan), var(--neon-cyan)) 0px 1px / 18px 2px no-repeat,
+        linear-gradient(var(--neon-cyan), var(--neon-cyan)) 3px 7px / 12px 2px no-repeat,
+        linear-gradient(var(--neon-cyan), var(--neon-cyan)) 6px 13px / 6px 2px no-repeat;
+
+
+    filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.35));
+
+    border-radius: 4px;
+}
+
+
+@media (max-width: 415px) {
+    .sort-label {
+        width: 22px;
+        height: 22px;
+    }
+
+    .sort-label::before {
+        width: 16px;
+        height: 16px;
+
+        /* подгоняем внутренние отступы, чтобы низ был ровный */
+        background:
+            linear-gradient(var(--neon-cyan), var(--neon-cyan)) 0px 1px / 16px 2px no-repeat,
+            linear-gradient(var(--neon-cyan), var(--neon-cyan)) 2.5px 6px / 11px 2px no-repeat,
+            linear-gradient(var(--neon-cyan), var(--neon-cyan)) 5px 11px / 6px 2px no-repeat;
+
+    }
+}
+
 
 .type-selector {
     display: flex;
