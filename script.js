@@ -95,47 +95,109 @@ document.addEventListener('DOMContentLoaded', () => {
     return copy;
   };
 
+  const formatShortId = (id) => {
+    if (!id) return 'N/A';
+    return id.length > 10 ? `${id.slice(0, 4)}...${id.slice(-4)}` : id;
+  };
+
+  // Перерисовка с keyed-переиспользованием DOM.
+  // Идея: не очищаем feed полностью (innerHTML=''), а перемещаем/обновляем существующие карточки.
   const renderFeed = (items, sortMode) => {
     const activeFeeds = getActiveFeeds();
 
-    activeFeeds.forEach((f) => {
-      f.innerHTML = '';
-    });
-
     const sorted = sortIdeas(items, sortMode);
 
+    // Получаем текущие карточки из DOM, чтобы переиспользовать
+    const cardById = new Map();
+    const allCurrentCards = document.querySelectorAll('.simple-card[data-idea-id]');
+    allCurrentCards.forEach((el) => {
+      const ideaId = el.getAttribute('data-idea-id');
+      if (ideaId) cardById.set(ideaId, el);
+    });
+
+    // Быстрое обновление метаданных карточек (текст/дата/likes/shortId)
+    const ensureCardContent = (cardEl, item) => {
+      let ideaTextEl = cardEl.querySelector('.idea-text');
+      let likeBadgeEl = cardEl.querySelector('.like-badge');
+      let shortIdEl = cardEl.querySelector('.author-id-value');
+      let createdAtEl = cardEl.querySelector('.created-at');
+
+      if (!ideaTextEl) {
+        ideaTextEl = document.createElement('p');
+        ideaTextEl.className = 'idea-text';
+        cardEl.insertBefore(ideaTextEl, cardEl.firstChild);
+      }
+      if (!likeBadgeEl) {
+        likeBadgeEl = cardEl.querySelector('.like-badge');
+      }
+      if (!shortIdEl) {
+        shortIdEl = cardEl.querySelector('.author-id-value');
+      }
+      if (!createdAtEl) {
+        createdAtEl = cardEl.querySelector('.created-at');
+      }
+
+      // Всегда обновляем то, что может отличаться
+      ideaTextEl.textContent = `"${item.text}"`;
+      if (likeBadgeEl) {
+        likeBadgeEl.textContent = `💎 ${item.likes}`;
+        likeBadgeEl.setAttribute('data-likes', String(item.likes));
+      }
+      if (shortIdEl) shortIdEl.textContent = formatShortId(item.id);
+      if (createdAtEl) createdAtEl.textContent = formatDateYYYYMMDD(item.createdAt);
+
+      // На всякий случай синхронизируем data-* у кнопки, если потребуется
+      const btn = cardEl.querySelector('.vote-btn');
+      if (btn) {
+        btn.dataset.voteId = item.id;
+      }
+    };
+
+    // 1) Убираем карточки из активных колонок (не пересоздаём)
+    activeFeeds.forEach((f) => {
+      while (f.firstChild) f.removeChild(f.firstChild);
+    });
+
+    // 2) Добавляем в нужный порядок, переиспользуя существующие элементы
     sorted.forEach((item, index) => {
-      const div = document.createElement('div');
-      div.className = 'simple-card';
+      const targetFeed = activeFeeds[index % activeFeeds.length];
+      if (!targetFeed) return;
 
-      const shortId =
-        item.id && item.id.length > 10
-          ? `${item.id.slice(0, 4)}...${item.id.slice(-4)}`
-          : item.id || 'N/A';
+      let cardEl = cardById.get(item.id);
+      if (!cardEl) {
+        cardEl = document.createElement('div');
+        cardById.set(item.id, cardEl);
+        cardEl.className = 'simple-card';
+        cardEl.setAttribute('data-idea-id', item.id);
 
-      div.innerHTML = `
-        <p class="idea-text">"${item.text}"</p>
+        const shortId = formatShortId(item.id);
 
-        <div class="idea-vote-row">
-          <span id="likes-${item.id}" class="like-badge" data-likes="${item.likes}">💎 ${item.likes}</span>
-          <button class="vote-btn up" type="button" data-vote-id="${item.id}" data-vote-change="1" aria-label="Vote">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 3L4 11H9V21H15V11H20L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
+        cardEl.innerHTML = `
+          <p class="idea-text">"${item.text}"</p>
 
-        <div class="idea-meta">
-          <small class="author-meta">
-            <span class="author-id-label-text">${t('author_id_label')}</span>:
-            <span class="author-id-value">${shortId}</span>
-          </small>
+          <div class="idea-vote-row">
+            <span id="likes-${item.id}" class="like-badge" data-likes="${item.likes}">💎 ${item.likes}</span>
+            <button class="vote-btn up" type="button" data-vote-id="${item.id}" data-vote-change="1" aria-label="Vote">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3L4 11H9V21H15V11H20L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
 
-          <small class="created-at">${formatDateYYYYMMDD(item.createdAt)}</small>
-        </div>
-      `;
+          <div class="idea-meta">
+            <small class="author-meta">
+              <span class="author-id-label-text">${t('author_id_label')}</span>:
+              <span class="author-id-value">${shortId}</span>
+            </small>
 
-      activeFeeds[index % activeFeeds.length]?.appendChild(div);
+            <small class="created-at">${formatDateYYYYMMDD(item.createdAt)}</small>
+          </div>
+        `;
+      } else {
+        ensureCardContent(cardEl, item);
+      }
+
+      targetFeed.appendChild(cardEl);
     });
   };
 
@@ -148,13 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Загрузка/отрисовка идей на странице
   const loadIdeas = () => {
-    const activeFeeds = getActiveFeeds();
-
-    activeFeeds.forEach(
-
-      (f) => (f.innerHTML = `<p class="loading-msg">${t('loading_text')}</p>`)
-    );
-
+    // Не делаем тяжёлый innerHTML-пересоз при каждом вызове,
+    // renderFeed сам переиспользует карточки и перемещает их по колонкам.
     renderFeed(mockIdeas, sortMode);
   };
 
@@ -178,7 +235,20 @@ document.addEventListener('DOMContentLoaded', () => {
     loadIdeas();
   });
 
-  window.addEventListener('resize', loadIdeas);
+  // Дребаунс/коалесинг на resize: чтобы снизить шанс микрофризов.
+  // Рендер переносим на следующий кадр и выполняем только после того, как resize "успокоился".
+  let resizeTimer = 0;
+  let resizeRaf = 0;
+  window.addEventListener('resize', () => {
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        loadIdeas();
+      }, 120);
+    });
+  });
+
 
   window.updateTexts?.();
 
