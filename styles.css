@@ -3,7 +3,6 @@
 /* Базовые переменные цветов (неон) */
 :root {
     --neon-green: #39ff14;
-
     --neon-purple: #bd00ff;
     --neon-cyan: #00e5ff;
     --neon-orange: #ff5e00;
@@ -18,7 +17,6 @@
 /* Основной фон и общие ограничения прокрутки */
 html {
     background-color: #743909;
-
     overflow-x: hidden;
     height: 100%;
 }
@@ -57,7 +55,6 @@ body {
 /* Обёртка контента (центрирование и отступы) */
 #content {
     position: relative;
-
     z-index: 1;
     max-width: 1400px;
     margin: 0 auto;
@@ -232,7 +229,6 @@ body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
     padding-top: max(10px, env(safe-area-inset-top, 10px));
     padding-bottom: 10px;
     padding-left: 0;
@@ -283,7 +279,6 @@ body {
 h1 {
     font-family: 'Russo One', sans-serif;
     font-weight: 400;
-
     font-size: clamp(1.1rem, 5.5vw, 3.2rem);
     margin: 0 0 20px 0;
     text-align: center;
@@ -303,12 +298,9 @@ h1 {
     -webkit-text-fill-color: transparent;
     animation: stripeScroll 6s linear infinite;
     will-change: background-position;
-
     text-transform: uppercase;
-
     letter-spacing: clamp(0.5px, 0.5vw, 2px);
     filter: drop-shadow(0 0 15px rgba(57, 255, 20, 0.4));
-
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -327,12 +319,13 @@ h1 {
 
 @media (max-width: 350px) {
     h1 {
-        font-size: clamp(0.85rem, 4.8vw, 1.3rem);
+        font-size: clamp(0.9rem, 5vw, 1.35rem);
         margin: 0 0 12px 0;
         letter-spacing: 0.3px;
         padding: 0 2px;
     }
 }
+
 
 h2 {
     font-family: 'Russo One', sans-serif;
@@ -342,7 +335,6 @@ h2 {
     border-bottom: 2px solid var(--neon-green);
     display: inline-block;
     padding-bottom: 5px;
-
     background: repeating-linear-gradient(180deg, #fff 0px, #fff 2px, #39ff14 3px, #39ff14 4px);
     background-size: 100% 200%;
     -webkit-background-clip: text;
@@ -353,39 +345,27 @@ h2 {
 
 .simple-card {
     background: rgba(10, 15, 20, 0.15);
-
     backdrop-filter: blur(5px);
-
     border: 1px solid rgba(255, 255, 255, 0.05);
-
     clip-path: polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
-
     padding: 30px;
     margin-bottom: 30px;
     position: relative;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
         box-shadow 0.4s ease,
         background 0.4s ease,
         border-color 0.4s ease;
-
     animation: fadeInUp 0.7s ease-out forwards;
-
     transform: translateZ(0);
-
     will-change: transform, box-shadow;
-
     contain: content;
-
     word-wrap: break-word;
-
     overflow-x: hidden;
     color: #ffffff;
 }
 
 .simple-card::before {
-
     content: "";
     position: absolute;
     top: 0;
@@ -393,17 +373,13 @@ h2 {
     right: 0;
     bottom: 0;
     padding: 2px;
-
     background: conic-gradient(from var(--angle), transparent 70%, var(--neon-green), var(--neon-purple), var(--neon-cyan));
-
     clip-path: polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     mask-composite: exclude;
-
     opacity: 0;
-
     transition: opacity 0.4s ease;
     pointer-events: none;
 }
@@ -677,19 +653,15 @@ h2 {
 }
 
 #feed-humans .human-idea:hover {
-
     transform: translateY(-8px) scale(1.05);
     z-index: 20;
-
     animation: ideaPulseGlowHuman 1.6s ease-in-out infinite;
     box-shadow: 0 0 35px rgba(255, 94, 0, 0.35);
 }
 
 #feed-robots .robot-idea:hover {
-
     transform: translateY(-8px) scale(1.05);
     z-index: 20;
-
     animation: ideaPulseGlow 1.6s ease-in-out infinite;
     box-shadow: 0 0 35px rgba(0, 229, 255, 0.35);
 }
@@ -699,7 +671,6 @@ h2 {
 #ideas-feed .idea-text {
     font-size: clamp(0.65rem, 2.1vw, 1.02rem);
     color: #ffffff;
-
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     margin: 0 0 10px 0;
     line-height: 1.35;
@@ -762,7 +733,6 @@ h2 {
 .like-badge {
     font-family: 'Comfortaa', cursive;
     font-weight: 700;
-
     font-size: clamp(0.7rem, 2.5vw, 1.0rem);
     color: var(--neon-cyan);
     background: rgba(0, 229, 255, 0.12);
@@ -773,7 +743,6 @@ h2 {
     align-items: center;
     gap: 8px;
     box-shadow: 0 0 8px rgba(0, 229, 255, 0.1);
-
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -797,7 +766,6 @@ h2 {
     width: clamp(18px, 3.2vw, 28px);
     height: clamp(18px, 3.2vw, 28px);
     color: var(--neon-cyan);
-
     filter: drop-shadow(0 0 1px var(--neon-cyan)) drop-shadow(0 0 3px rgba(0, 229, 255, 0.5));
     transition: transform 0.3s ease;
 }
@@ -914,44 +882,30 @@ footer {
 }
 
 .sort-label {
-    /* убираем текст, оставляем только иконку */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 26px;
     height: 26px;
-
     font-size: 0;
     line-height: 0;
     color: transparent;
-
     position: relative;
-
-    /* чтобы низ не “косячило” из‑за градиентов */
     overflow: hidden;
 }
 
 .sort-label::before {
     content: '';
-
-    /* жёстко центрируем внутренний рисунок */
     position: absolute;
     inset: 0;
     margin: auto;
-
     width: 18px;
     height: 18px;
-
-    /* только 3 палочки */
     background:
         linear-gradient(var(--neon-cyan), var(--neon-cyan)) 0px 1px / 18px 2px no-repeat,
         linear-gradient(var(--neon-cyan), var(--neon-cyan)) 3px 7px / 12px 2px no-repeat,
         linear-gradient(var(--neon-cyan), var(--neon-cyan)) 6px 13px / 6px 2px no-repeat;
-
-
     filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.35));
-
     border-radius: 4px;
 }
 
@@ -965,8 +919,6 @@ footer {
     .sort-label::before {
         width: 16px;
         height: 16px;
-
-        /* подгоняем внутренние отступы, чтобы низ был ровный */
         background:
             linear-gradient(var(--neon-cyan), var(--neon-cyan)) 0px 1px / 16px 2px no-repeat,
             linear-gradient(var(--neon-cyan), var(--neon-cyan)) 2.5px 6px / 11px 2px no-repeat,
