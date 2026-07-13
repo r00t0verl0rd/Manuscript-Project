@@ -77,8 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Закрытие по клику не нужно — удаляем обработчик.
     });
 
-    wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Не делаем scrollIntoView на iOS: при переключении режима браузер может
+    // пересчитать safe-area и визуально сдвинуть шапку под notch.
+    // Делаем простой показ без принудительной прокрутки.
+    // wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+
 
   document.getElementById('about-back-btn')?.addEventListener('click', () => {
     const aboutInfo = document.getElementById('about-info');
