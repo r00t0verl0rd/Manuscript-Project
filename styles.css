@@ -23,6 +23,8 @@ html {
 
 body {
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+
     width: 100%;
     height: 100%;
     position: relative;
@@ -51,6 +53,15 @@ body {
     opacity: 0.4;
     pointer-events: none;
 }
+
+/* iOS иногда даёт кратковременный "flash"/перерисовку слоёв при клике.
+   Стабилизируем компоновку: делаем фон/фоновые эффекты отдельным слоем. */
+body {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
 
 /* Обёртка контента (центрирование и отступы) */
 #content {
