@@ -3,10 +3,118 @@ document.addEventListener('DOMContentLoaded', () => {
   // Доступ к переводам (fallback на ключ, если i18n не подключён)
   const t = (key) => (window.t ? window.t(key) : key);
 
+  const infoBox = document.getElementById('project-info');
+
   document.getElementById('close-info-btn')?.addEventListener('click', () => {
-    const infoBox = document.getElementById('project-info');
     if (infoBox) infoBox.style.display = 'none';
+
+    // Возвращаем обратно намерение/сортировку/идеи
+    const contentToShow = [
+      document.getElementById('nft-section'),
+      document.getElementById('ideas-feed'),
+    ];
+
+    contentToShow.forEach((el) => {
+      if (el) el.style.display = '';
+    });
   });
+
+
+
+  document.getElementById('about-btn')?.addEventListener('click', () => {
+    const aboutBtn = document.getElementById('about-btn');
+    const aboutBackBtn = document.getElementById('about-back-btn');
+
+    if (aboutBtn) aboutBtn.style.display = 'none';
+    if (aboutBackBtn) aboutBackBtn.style.display = '';
+
+    // Создаём отдельный чистый блок “About”, чтобы не дублировать/не переиспользовать “Intent”
+    const existing = document.getElementById('about-info');
+    if (existing) existing.remove();
+
+    // Скрываем остальной контент (намерение/сортировка/идеи)
+    const contentToHide = [
+      document.getElementById('nft-section'),
+      document.getElementById('ideas-feed'),
+      document.getElementById('project-info'),
+    ];
+
+    contentToHide.forEach((el) => {
+      if (el) el.style.display = 'none';
+    });
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'about-info';
+    wrapper.className = 'simple-card';
+    wrapper.style.marginBottom = '30px';
+
+    wrapper.innerHTML = `
+      <h2 class="about-title">
+        <span data-i18n="about_title">АААААААА</span>
+      </h2>
+      <p class="about-desc">
+        <span data-i18n="about_desc">BBBBBBB</span>
+      </p>
+    `;
+
+    // Вставляем ВЫШЕ контента About так, чтобы MANUSCRIPT PROJECT оставался сверху:
+    // вставляем сразу после заголовка H1
+    const main = document.querySelector('main.main-wrapper');
+    const headerEl = document.querySelector('main.main-wrapper > h1');
+
+    if (headerEl && headerEl.parentNode) {
+      headerEl.insertAdjacentElement('afterend', wrapper);
+    } else if (main) {
+      main.insertBefore(wrapper, main.firstChild);
+    } else {
+      document.body.appendChild(wrapper);
+    }
+
+    // Применяем переводы к новому блоку
+    window.updateTexts?.();
+
+    wrapper.addEventListener('click', (e) => {
+      // Закрытие по клику не нужно — удаляем обработчик.
+    });
+
+    wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  document.getElementById('about-back-btn')?.addEventListener('click', () => {
+    const aboutInfo = document.getElementById('about-info');
+    if (aboutInfo) aboutInfo.remove();
+
+    // Возвращаем исходное состояние главной страницы:
+
+    // nft-section (форма создания) изначально скрыта.
+    const contentToShow = [
+      document.getElementById('project-info'),
+      document.getElementById('ideas-feed'),
+    ];
+
+    // nft-section должен быть скрыт, чтобы не показывать create_idea_title
+    const nftSection = document.getElementById('nft-section');
+    if (nftSection) nftSection.style.display = 'none';
+
+
+    contentToShow.forEach((el) => {
+      if (el) el.style.display = '';
+    });
+
+    const aboutBtn = document.getElementById('about-btn');
+    const aboutBackBtn = document.getElementById('about-back-btn');
+
+    if (aboutBtn) aboutBtn.style.display = '';
+    if (aboutBackBtn) aboutBackBtn.style.display = 'none';
+
+    // Не делаем скролл при возврате, чтобы не было "скачков".
+    // Страница должна просто отрисовать верхний блок по новой вёрстке.
+
+
+
+  });
+
+
 
   // Ссылки на ленты (колонки) с идеями
   const feeds = [
@@ -208,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sortMode = checked?.value || 'diamonds_desc';
   };
 
+
   // Загрузка/отрисовка идей на странице
   const loadIdeas = () => {
     // Не делаем тяжёлый innerHTML-пересоз при каждом вызове,
@@ -257,3 +366,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('current-year').textContent = new Date().getFullYear();
 });
+

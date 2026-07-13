@@ -17,7 +17,12 @@
             feed_2_title: "Feed 2",
             feed_3_title: "Feed 3",
             connect_wallet_btn: "Подключить",
+            about_btn: "Подробнее",
+
+            about_back_btn: "Назад",
+            partners_title: "Партнёры",
             mint_btn: "Записать в Историю",
+
             idea_placeholder:
                 "Каким должен быть мир завтра? Какой шаг изменит будущее? Напиши свою идею:",
             author_id_label: "ID Автора",
@@ -36,7 +41,12 @@
             feed_3_title: "Feed 3",
             connect_wallet_btn: "Connect",
 
+            about_btn: "More details",
+
+            about_back_btn: "Back",
+            partners_title: "Partners",
             mint_btn: "Record to History",
+
             idea_placeholder:
                 "What should the world be like tomorrow? What step will change the future? Write your idea:",
             author_id_label: "Author ID",

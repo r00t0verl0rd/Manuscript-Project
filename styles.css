@@ -421,6 +421,27 @@ h2 {
     line-height: 1.4;
 }
 
+/* About block */
+.about-title {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.about-desc {
+    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+    line-height: 1.5;
+}
+
+#about-info.simple-card::before {
+    opacity: 1;
+    animation: rotateBorder 4s linear infinite;
+}
+
+#about-info {
+    position: relative;
+    animation: fadeInUp 0.7s ease-out forwards;
+}
+
 .simple-input {
     width: 100%;
     padding: 15px;

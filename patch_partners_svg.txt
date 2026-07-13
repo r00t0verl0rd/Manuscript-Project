@@ -1,0 +1,1 @@
+Use a bulk edit: replace every <rect ... fill="rgba(255,255,255,0.06)" ... /> inside partners' SVGs with nothing. Since edit_file requires exact unique match, do it manually by editing index.html with multiple precise old_str blocks per rect line or by editing whole partners section block at once.

@@ -1,0 +1,108 @@
+.partners-section {
+    margin-top: 70px;
+    padding: 14px 14px;
+
+    background: rgba(255, 94, 0, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+    z-index: 1;
+}
+
+@media (max-width: 415px) {
+    .partners-section {
+        margin-top: 50px;
+        padding: 12px 10px;
+    }
+}
+
+.partners-section h2 {
+    font-family: 'Russo One', sans-serif;
+    color: var(--neon-green);
+    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+    margin: 0 0 10px 0;
+
+    /* зелёная полоска под заголовком как в других секциях */
+    border-bottom: 2px solid var(--neon-green);
+    padding-bottom: 4px;
+    display: inline-block;
+}
+
+/* разнообразим цвет надписей внутри SVG (за счёт текущегоColor) */
+.partner-logo svg {
+    color: var(--neon-green);
+}
+
+.partners-logos {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    align-items: center;
+}
+
+/* уточняем отступы на маленьких экранах */
+@media (max-width: 600px) {
+    .partners-logos {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 415px) {
+    .partners-logos {
+        gap: 6px;
+    }
+}
+
+@media (max-width: 900px) {
+    .partners-logos {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .partners-logos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.partner-logo {
+    height: 56px;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+/* Логотипы + надписи внутри SVG */
+.partner-logo svg {
+    width: auto;
+    height: 42px;
+    display: block;
+}
+
+
+.partners-logos {
+    gap: 10px;
+}
+
+@media (max-width: 600px) {
+    .partner-logo svg {
+        height: 34px;
+    }
+}
+
+@media (max-width: 415px) {
+    .partner-logo svg {
+        height: 30px;
+    }
+}
+
+
+/* никаких анимаций/реакций при наведении */
+.partner-logo:hover {
+    transform: none;
+    box-shadow: none;
+}
