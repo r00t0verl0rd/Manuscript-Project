@@ -73,22 +73,16 @@ body {
     z-index: 1;
     max-width: 1400px;
 
-    /* iOS landscape иногда добавляет горизонтальный "дрейф" из‑за комбинации width: 95vw + safe-area.
-       Гарантируем центрирование через auto-маргины и фиксируем ширину в процентах. */
+    /* Делаем центрирование устойчивым на iOS Safari:
+       - убираем опасные ширины на основе vw
+       - даём сайту работать от реальной ширины контейнера через padding */
     margin: 0 auto;
     padding: 20px;
     padding-left: max(20px, env(safe-area-inset-left));
     padding-right: max(20px, env(safe-area-inset-right));
-    width: 100%;
+    width: min(95vw, 1400px);
 }
 
-@media (orientation: landscape) and (max-width: 900px) {
-    #content {
-        /* слегка ограничиваем ширину, чтобы не появлялись горизонтальные полосы/дрейф */
-        width: 100vw;
-        max-width: 1400px;
-    }
-}
 
 
 @media (max-width: 768px) {
