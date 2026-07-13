@@ -348,15 +348,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // Рендер переносим на следующий кадр и выполняем только после того, как resize "успокоился".
   let resizeTimer = 0;
   let resizeRaf = 0;
-  window.addEventListener('resize', () => {
+  const scheduleLoadIdeas = () => {
     if (resizeRaf) cancelAnimationFrame(resizeRaf);
     resizeRaf = requestAnimationFrame(() => {
       clearTimeout(resizeTimer);
+      // Убрали лишнюю задержку: при резком изменении ширины колонки
+      // должны успевать перестроиться без «подвисания».
       resizeTimer = window.setTimeout(() => {
         loadIdeas();
-      }, 120);
+      }, 0);
     });
-  });
+  };
+
+  window.addEventListener('resize', scheduleLoadIdeas, { passive: true });
+
+  // На некоторых браузерах media-query могут «пробиваться» без событий resize.
+  // Быстро подстрахуемся, чтобы колонки не отставали от ширины.
+  if (window.matchMedia) {
+    const mql = window.matchMedia('(max-width: 768px)');
+    mql.addEventListener?.('change', scheduleLoadIdeas);
+  }
 
 
   window.updateTexts?.();

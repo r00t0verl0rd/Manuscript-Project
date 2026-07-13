@@ -273,10 +273,10 @@ h1 {
 
 @media (max-width: 415px) {
     h1 {
-        /* мобильный: базово чуть крупнее, без лишней ступеньки */
-        font-size: clamp(1.0rem, 6vw, 1.55rem);
-        margin: 0 0 15px 0;
-        letter-spacing: 0.5px;
+        /* мобильный: чуть компактнее для гармонии */
+        font-size: clamp(0.98rem, 5.6vw, 1.45rem);
+        margin: 0 0 14px 0;
+        letter-spacing: 0.45px;
         padding: 0 2px;
     }
 }
@@ -413,7 +413,7 @@ h2 {
 }
 
 #project-info h2 {
-    font-size: clamp(1.05rem, 2.4vw, 1.55rem);
+    font-size: clamp(1.0rem, 2.2vw, 1.45rem);
 }
 
 #project-info p {
@@ -424,12 +424,14 @@ h2 {
 /* About block */
 .about-title {
     margin-top: 0;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    font-size: clamp(0.95rem, 3.6vw, 1.25rem);
+    line-height: 1.2;
 }
 
 .about-desc {
-    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
-    line-height: 1.5;
+    font-size: clamp(0.78rem, 1.5vw, 1.02rem);
+    line-height: 1.45;
 }
 
 #about-info.simple-card::before {
@@ -550,6 +552,14 @@ h2 {
 
     .feed-column[data-feed-col="3"] {
         display: none;
+    }
+}
+
+/* На стыке мобильный/планшет без дерганий: фиксируем отображение 3-й колонки
+   в промежутке, где JS может успевать/не успевать перерисовать DOM. */
+@media (min-width: 769px) and (max-width: 899px) {
+    .feed-column[data-feed-col="3"] {
+        display: block;
     }
 }
 
