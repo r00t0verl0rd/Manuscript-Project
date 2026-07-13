@@ -497,6 +497,22 @@ h2 {
     transform: scale(1.05);
 }
 
+/* iOS Safari при клике иногда "переклеивает" :hover/ :active,
+   из-за чего выглядит как мерцание фона кнопки. Зафиксируем состояние. */
+.simple-btn:active {
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .simple-btn:active {
+        background: #bd00ff;
+        color: #fff;
+        transform: scale(1.05);
+        box-shadow: 0 0 40px #bd00ff;
+    }
+}
+
+
 .simple-btn.primary {
     background: #bd00ff;
     color: #fff;
