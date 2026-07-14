@@ -64,6 +64,12 @@ body {
     width: 95vw;
 }
 
+@media (orientation: landscape) and (max-width: 900px) {
+    #content {
+        width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     #content {
         /* фиксируем гармонию отступов: меньше скачков между режимами */
@@ -533,9 +539,6 @@ h2 {
     display: inline-block;
     margin-top: 48px;
     margin-bottom: 24px;
-}
-
-#ideas-feed h2 {
     font-size: clamp(1rem, 2.2vw, 1.55rem);
 }
 

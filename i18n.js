@@ -20,8 +20,11 @@
             about_btn: "Подробнее",
 
             about_back_btn: "Назад",
-            partners_title: "Партнёры",
+            about_title: "Манифест проекта",
+            about_desc:
+                "Добро пожаловать в Manuscript Project",
             mint_btn: "Записать в Историю",
+
 
             idea_placeholder:
                 "Каким должен быть мир завтра? Какой шаг изменит будущее? Напиши свою идею:",
@@ -44,8 +47,12 @@
             about_btn: "More details",
 
             about_back_btn: "Back",
+            about_title: "Project Manifest",
+            about_desc:
+                "Welcome to Manuscript Project...",
             partners_title: "Partners",
             mint_btn: "Record to History",
+
 
             idea_placeholder:
                 "What should the world be like tomorrow? What step will change the future? Write your idea:",
