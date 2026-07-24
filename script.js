@@ -88,20 +88,92 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el) el.remove();
   };
 
+  // ===== ROAD MAP SNAKE TIMELINE =====
+  const getRoadmapStages = () => [
+    { num: 1, titleKey: 'stage_1_title', descKey: 'stage_1_desc', statusKey: 'stage_1_status', icon: '🔬' },
+    { num: 2, titleKey: 'stage_2_title', descKey: 'stage_2_desc', statusKey: 'stage_2_status', icon: '🎨' },
+    { num: 3, titleKey: 'stage_3_title', descKey: 'stage_3_desc', statusKey: 'stage_3_status', icon: '📱' },
+    { num: 4, titleKey: 'stage_4_title', descKey: 'stage_4_desc', statusKey: 'stage_4_status', icon: '📝' },
+    { num: 5, titleKey: 'stage_5_title', descKey: 'stage_5_desc', statusKey: 'stage_5_status', icon: '🪙' },
+    { num: 6, titleKey: 'stage_6_title', descKey: 'stage_6_desc', statusKey: 'stage_6_status', icon: '🤝' },
+    { num: 7, titleKey: 'stage_7_title', descKey: 'stage_7_desc', statusKey: 'stage_7_status', icon: '🌉' },
+    { num: 8, titleKey: 'stage_8_title', descKey: 'stage_8_desc', statusKey: 'stage_8_status', icon: '👤' },
+    { num: 9, titleKey: 'stage_9_title', descKey: 'stage_9_desc', statusKey: 'stage_9_status', icon: '🗳️' },
+  ];
+
+  const getRoadmapHTML = (tFn) => {
+    const stages = getRoadmapStages();
+    let itemsHTML = '';
+
+    stages.forEach((s, i) => {
+      const statusVal = tFn(s.statusKey);
+      const isLeft = i % 2 === 0;
+      const sideClass = isLeft ? 'step-left' : 'step-right';
+
+      // Step block
+      itemsHTML += `
+        <div class="roadmap-step ${sideClass}" data-step="${s.num}">
+          <div class="step-marker">
+            <span class="step-num">${String(s.num).padStart(2, '0')}</span>
+            <span class="step-icon">${s.icon}</span>
+          </div>
+          <div class="step-card">
+            <div class="step-status status-${statusVal}">${tFn('status_' + statusVal)}</div>
+            <h3 class="step-title">${tFn(s.titleKey)}</h3>
+            <p class="step-desc">${tFn(s.descKey)}</p>
+          </div>
+        </div>
+      `;
+
+      // Connector arrow between steps
+      if (i < stages.length - 1) {
+        const arrowDir = isLeft ? 'arrow-right' : 'arrow-left';
+        itemsHTML += `
+          <div class="step-connector ${arrowDir}" data-connector="${s.num}">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M8 20h24M22 10l10 10-10 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        `;
+      }
+    });
+
+    return `
+      <div class="roadmap-section">
+        <div class="roadmap-snake-track">
+          ${itemsHTML}
+        </div>
+        <div class="roadmap-bg-glow"></div>
+      </div>
+    `;
+  };
+
   const createPageBlock = (cfg) => {
     const wrapper = document.createElement('div');
     wrapper.id = cfg.id;
-    wrapper.className = 'simple-card';
-    wrapper.style.marginBottom = '30px';
 
-    wrapper.innerHTML = `
-      <h2 class="about-title">
-        <span data-i18n="${cfg.titleI18nKey}">${cfg.defaultTitle}</span>
-      </h2>
-      <p class="content-text">
-        <span data-i18n="${cfg.descI18nKey}">${cfg.defaultDesc}</span>
-      </p>
-    `;
+    // Special rendering for road map
+    if (cfg.id === 'road-map-info') {
+      wrapper.className = 'roadmap-wrapper';
+      wrapper.style.marginBottom = '30px';
+      wrapper.innerHTML = `
+        <h2 class="about-title" style="text-align:center;margin-bottom:40px;">
+          <span data-i18n="${cfg.titleI18nKey}">${cfg.defaultTitle}</span>
+        </h2>
+        ${getRoadmapHTML(t)}
+      `;
+    } else {
+      wrapper.className = 'simple-card';
+      wrapper.style.marginBottom = '30px';
+      wrapper.innerHTML = `
+        <h2 class="about-title">
+          <span data-i18n="${cfg.titleI18nKey}">${cfg.defaultTitle}</span>
+        </h2>
+        <p class="content-text">
+          <span data-i18n="${cfg.descI18nKey}">${cfg.defaultDesc}</span>
+        </p>
+      `;
+    }
 
     const headerEl = document.querySelector('main.main-wrapper > h1');
     if (headerEl && headerEl.parentNode) {
