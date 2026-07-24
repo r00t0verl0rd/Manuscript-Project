@@ -17,7 +17,8 @@
             feed_2_title: "Feed 2",
             feed_3_title: "Feed 3",
             connect_wallet_btn: "Подключить",
-            about_btn: "Подробнее",
+            more_btn: "Подробнее",
+            intent_more_btn: "ещё",
 
             about_back_btn: "Назад",
             about_title: "Манифест проекта",
@@ -45,7 +46,8 @@
             feed_3_title: "Feed 3",
             connect_wallet_btn: "Connect",
 
-            about_btn: "More details",
+            more_btn: "More details",
+            intent_more_btn: "more",
 
             about_back_btn: "Back",
             about_title: "Project Manifest",

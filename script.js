@@ -21,12 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  document.getElementById('about-btn')?.addEventListener('click', () => {
-    const aboutBtn = document.getElementById('about-btn');
-    const aboutBackBtn = document.getElementById('about-back-btn');
+  // Функция показа блока About (Manifest) — вызывается из кнопок more-btn и intent-more-btn
+  const showAboutBlock = () => {
+    const moreBtn = document.getElementById('more-btn');
+    const moreBackBtn = document.getElementById('more-back-btn');
 
-    if (aboutBtn) aboutBtn.style.display = 'none';
-    if (aboutBackBtn) aboutBackBtn.style.display = '';
+    if (moreBtn) moreBtn.style.display = 'none';
+    if (moreBackBtn) moreBackBtn.style.display = '';
 
     // Создаём отдельный чистый блок “About”, чтобы не дублировать/не переиспользовать “Intent”
     const existing = document.getElementById('about-info');
@@ -72,10 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Применяем переводы к новому блоку
     window.updateTexts?.();
-  });
+  };
+
+  // Назначаем обработчики для обеих кнопок, ведущих в About
+  document.getElementById('more-btn')?.addEventListener('click', showAboutBlock);
+  document.getElementById('intent-more-btn')?.addEventListener('click', showAboutBlock);
 
 
-  document.getElementById('about-back-btn')?.addEventListener('click', () => {
+  document.getElementById('more-back-btn')?.addEventListener('click', () => {
     const aboutInfo = document.getElementById('about-info');
     if (aboutInfo) aboutInfo.remove();
 
@@ -96,17 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (el) el.style.display = '';
     });
 
-    const aboutBtn = document.getElementById('about-btn');
-    const aboutBackBtn = document.getElementById('about-back-btn');
+    const moreBtn = document.getElementById('more-btn');
+    const moreBackBtn = document.getElementById('more-back-btn');
 
-    if (aboutBtn) aboutBtn.style.display = '';
-    if (aboutBackBtn) aboutBackBtn.style.display = 'none';
+    if (moreBtn) moreBtn.style.display = '';
+    if (moreBackBtn) moreBackBtn.style.display = 'none';
 
     // Не делаем скролл при возврате, чтобы не было "скачков".
     // Страница должна просто отрисовать верхний блок по новой вёрстке.
-
-
-
   });
 
 

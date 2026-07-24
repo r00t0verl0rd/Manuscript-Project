@@ -19,22 +19,20 @@
     <div id="content" class="content">
         <!-- Блок частиц дублировался — убран, оставлен только основной -->
         <header class="header-container">
-            <div class="header-controls" style="width: 100%; justify-content: space-between">
-                <div id="about-mini-section">
-                    <button id="about-btn" class="simple-btn" data-i18n="about_btn">About</button>
-                    <button id="about-back-btn" class="simple-btn" style="display:none"
-                        data-i18n="about_back_btn">Back</button>
+            <div id="about-mini-section">
+                <button id="more-btn" class="simple-btn" data-i18n="more_btn">About</button>
+                <button id="more-back-btn" class="simple-btn" style="display:none"
+                    data-i18n="about_back_btn">Back</button>
+            </div>
+            <div class="header-end">
+                <div id="wallet-mini-section">
+                    <button id="connect-wallet-btn" class="simple-btn"
+                        data-i18n="connect_wallet_btn">Connect</button>
                 </div>
-                <div style="display: flex; gap: 20px; align-items: center; justify-content: flex-end">
-                    <div id="wallet-mini-section">
-                        <button id="connect-wallet-btn" class="simple-btn"
-                            data-i18n="connect_wallet_btn">Connect</button>
-                    </div>
-                    <div class="lang-switcher">
-                        <button id="lang-ru" class="lang-text-btn active">RU</button>
-                        <span>/</span>
-                        <button id="lang-en" class="lang-text-btn">EN</button>
-                    </div>
+                <div class="lang-switcher">
+                    <button id="lang-ru" class="lang-text-btn active">RU</button>
+                    <span>/</span>
+                    <button id="lang-en" class="lang-text-btn">EN</button>
                 </div>
             </div>
         </header>
@@ -47,6 +45,9 @@
                 <button id="close-info-btn" class="close-icon">&times;</button>
                 <h2 data-i18n="info_title">ААААААА</h2>
                 <p data-i18n="info_desc">BBBBBBB</p>
+                <div class="intent-more-wrapper">
+                    <button id="intent-more-btn" class="simple-btn" data-i18n="intent_more_btn">ещё</button>
+                </div>
             </div>
 
             <div id="nft-section" class="simple-card" style="display: none">

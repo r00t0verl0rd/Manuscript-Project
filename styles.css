@@ -195,9 +195,14 @@ body {
 }
 
 .header-container {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    gap: 20px;
 
     /* Безопасная зона под "чёлкой" (iPhone). */
     padding-top: env(safe-area-inset-top, 10px);
@@ -208,6 +213,14 @@ body {
     margin-bottom: 20px;
     width: 100%;
     flex-wrap: wrap;
+
+    /* Фон, чтобы контент не просвечивал сквозь sticky-шапку */
+    backdrop-filter: blur(5px);
+        background: radial-gradient(
+        circle at center,
+        rgba(0, 0, 0, 1) 0%,        /* В центре - непрозрачный */
+        rgba(0, 0, 0, 0) 70%        /* По краям - прозрачный */
+    );
 }
 
 /* iOS иногда визуально "подминает" верх. Если safe-area поддерживается,
@@ -218,17 +231,18 @@ body {
     }
 }
 
-
-.header-controls {
+.header-end {
     display: flex;
     align-items: center;
     gap: 20px;
-    justify-content: flex-end;
-    width: 100%;
 }
 
 @media (max-width: 415px) {
-    .header-controls {
+    .header-container {
+        gap: 8px;
+    }
+
+    .header-end {
         gap: 8px;
     }
 
@@ -243,7 +257,11 @@ body {
 }
 
 @media (max-width: 350px) {
-    .header-controls {
+    .header-container {
+        gap: 6px;
+    }
+
+    .header-end {
         gap: 6px;
     }
 
@@ -437,6 +455,17 @@ h2 {
 #project-info p {
     font-size: clamp(0.85rem, 1.6vw, 1.05rem);
     line-height: 1.4;
+}
+
+.intent-more-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+#intent-more-btn {
+    font-size: clamp(0.7rem, 1.3vw, 0.85rem);
+    padding: clamp(6px, 1vw, 10px) clamp(12px, 2.5vw, 24px);
 }
 
 /* About block */
