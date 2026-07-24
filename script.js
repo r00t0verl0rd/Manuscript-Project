@@ -21,19 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// ===== WALLET CONNECT CLICK =====
+  // ===== WALLET CONNECT CLICK =====
   document.getElementById('connect-wallet-btn')?.addEventListener('click', () => {
     alert(t('wallet_disconnected'));
   });
 
-  // ===== NAVIGATION SYSTEM (data-driven) =====
-  // To add a page: add entry to pagesConfig, add two buttons in HTML, add i18n keys.
-  // Each page has: id, btnId, backBtnId, titleI18nKey, descI18nKey, defaultTitle, defaultDesc
+  // ===== NAVIGATION SYSTEM (static menu, always visible) =====
+  // Each page has: id, btnId, titleI18nKey, descI18nKey, defaultTitle, defaultDesc
   const pagesConfig = [
     {
       id: 'about-info',
       btnId: 'more-btn',
-      backBtnId: 'more-back-btn',
       titleI18nKey: 'about_title',
       descI18nKey: 'about_desc',
       defaultTitle: 'АААААААА',
@@ -42,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 'road-map-info',
       btnId: 'road-map-btn',
-      backBtnId: 'road-map-back-btn',
       titleI18nKey: 'road_map_title',
       descI18nKey: 'road_map_desc',
       defaultTitle: 'Road Map',
@@ -51,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       id: 'meme-part-info',
       btnId: 'meme-part-btn',
-      backBtnId: 'meme-part-back-btn',
       titleI18nKey: 'meme_part_title',
       descI18nKey: 'meme_part_desc',
       defaultTitle: 'Meme Part',
@@ -59,97 +55,117 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   ];
 
-  // Hide all nav buttons, show all back buttons
-  const showBackMode = (pageConfigItem) => {
-    document.querySelectorAll('.nav-btn').forEach((el) => (el.style.display = 'none'));
-    document.querySelectorAll('.nav-back-btn').forEach((el) => (el.style.display = 'none'));
-    const backBtn = document.getElementById(pageConfigItem.backBtnId);
-    if (backBtn) backBtn.style.display = '';
-  };
+  // Track currently open page id (null = main content)
+  let activePageId = null;
 
-  // Show all nav buttons, hide all back buttons
-  const showNavMode = () => {
-    document.querySelectorAll('.nav-btn').forEach((el) => (el.style.display = ''));
-    document.querySelectorAll('.nav-back-btn').forEach((el) => (el.style.display = 'none'));
-  };
-
-  const showPage = (pageConfigItem) => {
-    showBackMode(pageConfigItem);
-
-    // Remove any existing page blocks
-    pagesConfig.forEach((cfg) => {
-      const el = document.getElementById(cfg.id);
-      if (el) el.remove();
-    });
-
-    // Hide main content
-    const contentToHide = [
-      document.getElementById('nft-section'),
-      document.getElementById('ideas-feed'),
+  const showMainContent = () => {
+    const els = [
       document.getElementById('project-info'),
+      document.getElementById('ideas-feed'),
     ];
-    contentToHide.forEach((el) => {
-      if (el) el.style.display = 'none';
-    });
+    els.forEach((el) => { if (el) el.style.display = ''; });
+  };
 
-    // Create page block
+  const hideMainContent = () => {
+    const els = [
+      document.getElementById('project-info'),
+      document.getElementById('ideas-feed'),
+      document.getElementById('nft-section'),
+    ];
+    els.forEach((el) => { if (el) el.style.display = 'none'; });
+  };
+
+  const removePageBlock = (cfg) => {
+    const el = document.getElementById(cfg.id);
+    if (el) el.remove();
+  };
+
+  const createPageBlock = (cfg) => {
     const wrapper = document.createElement('div');
-    wrapper.id = pageConfigItem.id;
+    wrapper.id = cfg.id;
     wrapper.className = 'simple-card';
     wrapper.style.marginBottom = '30px';
 
     wrapper.innerHTML = `
       <h2 class="about-title">
-        <span data-i18n="${pageConfigItem.titleI18nKey}">${pageConfigItem.defaultTitle}</span>
+        <span data-i18n="${cfg.titleI18nKey}">${cfg.defaultTitle}</span>
       </h2>
       <p class="about-desc">
-        <span data-i18n="${pageConfigItem.descI18nKey}">${pageConfigItem.defaultDesc}</span>
+        <span data-i18n="${cfg.descI18nKey}">${cfg.defaultDesc}</span>
       </p>
     `;
 
-    // Insert after H1
-    const main = document.querySelector('main.main-wrapper');
     const headerEl = document.querySelector('main.main-wrapper > h1');
     if (headerEl && headerEl.parentNode) {
       headerEl.insertAdjacentElement('afterend', wrapper);
-    } else if (main) {
-      main.insertBefore(wrapper, main.firstChild);
     } else {
-      document.body.appendChild(wrapper);
+      const main = document.querySelector('main.main-wrapper');
+      if (main) main.prepend(wrapper);
     }
 
     window.updateTexts?.();
   };
 
-  const hidePage = (pageConfigItem) => {
-    const el = document.getElementById(pageConfigItem.id);
-    if (el) el.remove();
-
-    showNavMode();
-
-    // Show main content
-    const contentToShow = [
-      document.getElementById('project-info'),
-      document.getElementById('ideas-feed'),
-    ];
-    const nftSection = document.getElementById('nft-section');
-    if (nftSection) nftSection.style.display = 'none';
-
-    contentToShow.forEach((el) => {
-      if (el) el.style.display = '';
-    });
+  // Restore a nav button to its original label (from data-i18n)
+  const restoreBtnLabel = (cfg) => {
+    const btn = document.getElementById(cfg.btnId);
+    if (!btn) return;
+    const key = btn.dataset.i18nOriginal || btn.getAttribute('data-i18n');
+    if (key) {
+      btn.textContent = t(key);
+      btn.dataset.i18n = key;
+    }
   };
 
-  // Register handlers for all pages
+  // Set a nav button to show "Back" label
+  const setBtnBackLabel = (cfg) => {
+    const btn = document.getElementById(cfg.btnId);
+    if (!btn) return;
+    // Store the original i18n key if not already saved
+    if (!btn.dataset.i18nOriginal) {
+      btn.dataset.i18nOriginal = btn.getAttribute('data-i18n') || '';
+    }
+    btn.textContent = t('about_back_btn');
+    btn.dataset.i18n = 'about_back_btn';
+  };
+
+  const navigateTo = (cfg) => {
+    // Restore all other buttons to their original labels
+    pagesConfig.forEach((c) => {
+      if (c.id !== cfg.id) restoreBtnLabel(c);
+    });
+
+    // Remove any other page blocks
+    pagesConfig.forEach((c) => {
+      if (c.id !== cfg.id) removePageBlock(c);
+    });
+
+    // If clicking the same button, toggle back to main
+    if (activePageId === cfg.id) {
+      removePageBlock(cfg);
+      activePageId = null;
+      restoreBtnLabel(cfg);
+      showMainContent();
+      return;
+    }
+
+    // Hide main content, show new page
+    hideMainContent();
+    removePageBlock(cfg); // remove if stale
+    createPageBlock(cfg);
+    activePageId = cfg.id;
+    setBtnBackLabel(cfg);
+  };
+
+  // Register handlers
   pagesConfig.forEach((cfg) => {
-    document.getElementById(cfg.btnId)?.addEventListener('click', () => showPage(cfg));
-    document.getElementById(cfg.backBtnId)?.addEventListener('click', () => hidePage(cfg));
+    document.getElementById(cfg.btnId)?.addEventListener('click', () => navigateTo(cfg));
   });
 
-  // Also intent-more-btn triggers the about page
+  // intent-more-btn also triggers the about page
   document.getElementById('intent-more-btn')?.addEventListener('click', () => {
     const aboutCfg = pagesConfig.find((p) => p.id === 'about-info');
-    if (aboutCfg) showPage(aboutCfg);
+    if (aboutCfg) navigateTo(aboutCfg);
   });
 
 
