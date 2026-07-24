@@ -21,7 +21,7 @@
             wallet_balance: "Баланс: __",
             more_btn: "Подробнее",
             intent_more_btn: "ещё",
-            road_map_btn: "Дорожная карта",
+            road_map_btn: "Роадмап",
             meme_part_btn: "Меме часть",
 
             road_map_title: "Дорожная карта",

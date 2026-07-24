@@ -212,31 +212,31 @@ body {
 
 .header-container {
     position: sticky;
-    top: 0;
+    top: 6px;
     z-index: 100;
 
     display: flex;
     flex-direction: column;
     gap: 8px;
 
-    /* Безопасная зона под "чёлкой" (iPhone). */
-    padding-top: env(safe-area-inset-top, 10px);
-
+    padding-top: env(safe-area-inset-top, 8px);
     padding-bottom: 10px;
-    padding-left: 0;
-    padding-right: 0;
-    margin-bottom: 20px;
-    width: 100%;
+    padding-left: 14px;
+    padding-right: 14px;
+    margin: 0 8px 20px 8px;
 
-    /* Фон, чтобы контент не просвечивал сквозь sticky-шапку */
+    /* Чистое стекло — эффект линзы как в iOS */
     backdrop-filter: blur(5px);
+    border-radius: 10px;
 }
 
-/* iOS иногда визуально "подминает" верх. Если safe-area поддерживается,
-   то убираем любые лишние фиксированные отступы и кладём шапку строго ниже notch. */
+/* iOS safe-area */
 @supports (padding: max(0px)) {
     .header-container {
-        padding-top: max(env(safe-area-inset-top, 0px), 6px);
+        top: max(env(safe-area-inset-top, 0px), 4px);
+        padding-top: max(env(safe-area-inset-top, 0px), 8px);
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
     }
 }
 
