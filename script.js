@@ -21,48 +21,95 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  // Функция показа блока About (Manifest) — вызывается из кнопок more-btn и intent-more-btn
-  const showAboutBlock = () => {
-    const moreBtn = document.getElementById('more-btn');
-    const moreBackBtn = document.getElementById('more-back-btn');
+// ===== WALLET CONNECT CLICK =====
+  document.getElementById('connect-wallet-btn')?.addEventListener('click', () => {
+    alert(t('wallet_disconnected'));
+  });
 
-    if (moreBtn) moreBtn.style.display = 'none';
-    if (moreBackBtn) moreBackBtn.style.display = '';
+  // ===== NAVIGATION SYSTEM (data-driven) =====
+  // To add a page: add entry to pagesConfig, add two buttons in HTML, add i18n keys.
+  // Each page has: id, btnId, backBtnId, titleI18nKey, descI18nKey, defaultTitle, defaultDesc
+  const pagesConfig = [
+    {
+      id: 'about-info',
+      btnId: 'more-btn',
+      backBtnId: 'more-back-btn',
+      titleI18nKey: 'about_title',
+      descI18nKey: 'about_desc',
+      defaultTitle: 'АААААААА',
+      defaultDesc: 'BBBBBBB',
+    },
+    {
+      id: 'road-map-info',
+      btnId: 'road-map-btn',
+      backBtnId: 'road-map-back-btn',
+      titleI18nKey: 'road_map_title',
+      descI18nKey: 'road_map_desc',
+      defaultTitle: 'Road Map',
+      defaultDesc: 'Road map content placeholder — coming soon.',
+    },
+    {
+      id: 'meme-part-info',
+      btnId: 'meme-part-btn',
+      backBtnId: 'meme-part-back-btn',
+      titleI18nKey: 'meme_part_title',
+      descI18nKey: 'meme_part_desc',
+      defaultTitle: 'Meme Part',
+      defaultDesc: 'Meme part content placeholder — coming soon.',
+    },
+  ];
 
-    // Создаём отдельный чистый блок “About”, чтобы не дублировать/не переиспользовать “Intent”
-    const existing = document.getElementById('about-info');
-    if (existing) existing.remove();
+  // Hide all nav buttons, show all back buttons
+  const showBackMode = (pageConfigItem) => {
+    document.querySelectorAll('.nav-btn').forEach((el) => (el.style.display = 'none'));
+    document.querySelectorAll('.nav-back-btn').forEach((el) => (el.style.display = 'none'));
+    const backBtn = document.getElementById(pageConfigItem.backBtnId);
+    if (backBtn) backBtn.style.display = '';
+  };
 
-    // Скрываем остальной контент (намерение/сортировка/идеи)
+  // Show all nav buttons, hide all back buttons
+  const showNavMode = () => {
+    document.querySelectorAll('.nav-btn').forEach((el) => (el.style.display = ''));
+    document.querySelectorAll('.nav-back-btn').forEach((el) => (el.style.display = 'none'));
+  };
+
+  const showPage = (pageConfigItem) => {
+    showBackMode(pageConfigItem);
+
+    // Remove any existing page blocks
+    pagesConfig.forEach((cfg) => {
+      const el = document.getElementById(cfg.id);
+      if (el) el.remove();
+    });
+
+    // Hide main content
     const contentToHide = [
       document.getElementById('nft-section'),
       document.getElementById('ideas-feed'),
       document.getElementById('project-info'),
     ];
-
     contentToHide.forEach((el) => {
       if (el) el.style.display = 'none';
     });
 
+    // Create page block
     const wrapper = document.createElement('div');
-    wrapper.id = 'about-info';
+    wrapper.id = pageConfigItem.id;
     wrapper.className = 'simple-card';
     wrapper.style.marginBottom = '30px';
 
     wrapper.innerHTML = `
       <h2 class="about-title">
-        <span data-i18n="about_title">АААААААА</span>
+        <span data-i18n="${pageConfigItem.titleI18nKey}">${pageConfigItem.defaultTitle}</span>
       </h2>
       <p class="about-desc">
-        <span data-i18n="about_desc">BBBBBBB</span>
+        <span data-i18n="${pageConfigItem.descI18nKey}">${pageConfigItem.defaultDesc}</span>
       </p>
     `;
 
-    // Вставляем ВЫШЕ контента About так, чтобы MANUSCRIPT PROJECT оставался сверху:
-    // вставляем сразу после заголовка H1
+    // Insert after H1
     const main = document.querySelector('main.main-wrapper');
     const headerEl = document.querySelector('main.main-wrapper > h1');
-
     if (headerEl && headerEl.parentNode) {
       headerEl.insertAdjacentElement('afterend', wrapper);
     } else if (main) {
@@ -71,44 +118,38 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(wrapper);
     }
 
-    // Применяем переводы к новому блоку
     window.updateTexts?.();
   };
 
-  // Назначаем обработчики для обеих кнопок, ведущих в About
-  document.getElementById('more-btn')?.addEventListener('click', showAboutBlock);
-  document.getElementById('intent-more-btn')?.addEventListener('click', showAboutBlock);
+  const hidePage = (pageConfigItem) => {
+    const el = document.getElementById(pageConfigItem.id);
+    if (el) el.remove();
 
+    showNavMode();
 
-  document.getElementById('more-back-btn')?.addEventListener('click', () => {
-    const aboutInfo = document.getElementById('about-info');
-    if (aboutInfo) aboutInfo.remove();
-
-    // Возвращаем исходное состояние главной страницы:
-
-    // nft-section (форма создания) изначально скрыта.
+    // Show main content
     const contentToShow = [
       document.getElementById('project-info'),
       document.getElementById('ideas-feed'),
     ];
-
-    // nft-section должен быть скрыт, чтобы не показывать create_idea_title
     const nftSection = document.getElementById('nft-section');
     if (nftSection) nftSection.style.display = 'none';
-
 
     contentToShow.forEach((el) => {
       if (el) el.style.display = '';
     });
+  };
 
-    const moreBtn = document.getElementById('more-btn');
-    const moreBackBtn = document.getElementById('more-back-btn');
+  // Register handlers for all pages
+  pagesConfig.forEach((cfg) => {
+    document.getElementById(cfg.btnId)?.addEventListener('click', () => showPage(cfg));
+    document.getElementById(cfg.backBtnId)?.addEventListener('click', () => hidePage(cfg));
+  });
 
-    if (moreBtn) moreBtn.style.display = '';
-    if (moreBackBtn) moreBackBtn.style.display = 'none';
-
-    // Не делаем скролл при возврате, чтобы не было "скачков".
-    // Страница должна просто отрисовать верхний блок по новой вёрстке.
+  // Also intent-more-btn triggers the about page
+  document.getElementById('intent-more-btn')?.addEventListener('click', () => {
+    const aboutCfg = pagesConfig.find((p) => p.id === 'about-info');
+    if (aboutCfg) showPage(aboutCfg);
   });
 
 

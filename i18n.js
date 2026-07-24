@@ -17,8 +17,17 @@
             feed_2_title: "Feed 2",
             feed_3_title: "Feed 3",
             connect_wallet_btn: "Подключить",
+            wallet_disconnected: "Блокчейн не активен, смартконтракт в разработке",
+            wallet_balance: "Баланс: __",
             more_btn: "Подробнее",
             intent_more_btn: "ещё",
+            road_map_btn: "Дорожная карта",
+            meme_part_btn: "Меме часть",
+
+            road_map_title: "Дорожная карта",
+            road_map_desc: "Дорожная карта проекта — контент появится позже.",
+            meme_part_title: "Meme Part",
+            meme_part_desc: "Контент появится позже.",
 
             about_back_btn: "Назад",
             about_title: "Манифест проекта",
@@ -45,9 +54,18 @@
             feed_2_title: "Feed 2",
             feed_3_title: "Feed 3",
             connect_wallet_btn: "Connect",
+            wallet_disconnected: "Blockchain is not active, smart contract under development",
+            wallet_balance: "Balance: __",
 
             more_btn: "More details",
             intent_more_btn: "more",
+            road_map_btn: "Road Map",
+            meme_part_btn: "Meme Part",
+
+            road_map_title: "Road Map",
+            road_map_desc: "Project road map content — coming soon.",
+            meme_part_title: "Meme Part",
+            meme_part_desc: "Сontent — coming soon.",
 
             about_back_btn: "Back",
             about_title: "Project Manifest",
@@ -87,10 +105,10 @@
             el.textContent = t("author_id_label");
         });
 
-        const ruBtn = document.getElementById("lang-ru");
-        const enBtn = document.getElementById("lang-en");
-        if (ruBtn) ruBtn.classList.toggle("active", currentLang === "ru");
-        if (enBtn) enBtn.classList.toggle("active", currentLang === "en");
+        const toggleBtn = document.getElementById("lang-toggle");
+        if (toggleBtn) {
+            toggleBtn.textContent = currentLang === "ru" ? "🇬🇧" : "🇷🇺";
+        }
     };
 
     const setLang = (lang) => {
@@ -99,21 +117,15 @@
 
     const getLang = () => currentLang;
 
-    // Hook lang buttons once DOM is ready.
+    const toggleLang = () => {
+        setLang(currentLang === "ru" ? "en" : "ru");
+        updateTexts();
+    };
+
+    // Hook lang toggle once DOM is ready.
     document.addEventListener("DOMContentLoaded", () => {
-        const btnRu = document.getElementById("lang-ru");
-        const btnEn = document.getElementById("lang-en");
-
-        btnRu?.addEventListener("click", () => {
-            setLang("ru");
-            updateTexts();
-        });
-
-        btnEn?.addEventListener("click", () => {
-            setLang("en");
-            updateTexts();
-        });
-
+        const toggleBtn = document.getElementById("lang-toggle");
+        toggleBtn?.addEventListener("click", toggleLang);
         updateTexts();
     });
 
@@ -122,4 +134,3 @@
     window.t = t;
     window.updateTexts = updateTexts;
 })();
-

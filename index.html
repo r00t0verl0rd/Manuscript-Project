@@ -19,20 +19,30 @@
     <div id="content" class="content">
         <!-- Блок частиц дублировался — убран, оставлен только основной -->
         <header class="header-container">
-            <div id="about-mini-section">
-                <button id="more-btn" class="simple-btn" data-i18n="more_btn">About</button>
-                <button id="more-back-btn" class="simple-btn" style="display:none"
-                    data-i18n="about_back_btn">Back</button>
+            <div class="header-row">
+                <div id="about-mini-section">
+                    <button id="more-btn" class="simple-btn nav-btn" data-i18n="more_btn">About</button>
+                    <button id="road-map-btn" class="simple-btn nav-btn" data-i18n="road_map_btn">Road Map</button>
+                    <button id="meme-part-btn" class="simple-btn nav-btn" data-i18n="meme_part_btn">Meme Part</button>
+
+                    <button id="more-back-btn" class="simple-btn nav-back-btn" style="display:none"
+                        data-i18n="about_back_btn">Back</button>
+                    <button id="road-map-back-btn" class="simple-btn nav-back-btn" style="display:none"
+                        data-i18n="about_back_btn">Back</button>
+                    <button id="meme-part-back-btn" class="simple-btn nav-back-btn" style="display:none"
+                        data-i18n="about_back_btn">Back</button>
+                </div>
+                <div class="header-end">
+                    <div class="lang-switcher">
+                        <button id="lang-toggle" class="lang-flag-btn">🇷🇺</button>
+                    </div>
+                </div>
             </div>
-            <div class="header-end">
+            <div class="wallet-row">
+                <div id="wallet-info-placeholder" class="wallet-info" data-i18n="wallet_balance">Баланс: ?.?</div>
                 <div id="wallet-mini-section">
                     <button id="connect-wallet-btn" class="simple-btn"
                         data-i18n="connect_wallet_btn">Connect</button>
-                </div>
-                <div class="lang-switcher">
-                    <button id="lang-ru" class="lang-text-btn active">RU</button>
-                    <span>/</span>
-                    <button id="lang-en" class="lang-text-btn">EN</button>
                 </div>
             </div>
         </header>
