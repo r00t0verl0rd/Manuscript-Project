@@ -6,6 +6,19 @@
     --neon-purple: #bd00ff;
     --neon-cyan: #00e5ff;
     --neon-orange: #ff5e00;
+
+    /* Menu sizing — единые переменные для всего меню */
+    --menu-font-size: clamp(0.55rem, 0.7vw + 0.35rem, 0.9rem);
+    --menu-padding-y: clamp(3px, 0.4vw + 3px, 8px);
+    --menu-padding-x: clamp(5px, 0.9vw + 3px, 18px);
+    --menu-gap: 6px;
+    --menu-border-radius: 6px;
+
+    /* Mobile overrides (will be applied in the mobile breakpoint) */
+    --menu-font-size-mobile: clamp(0.65rem, 2.8vw, 0.78rem);
+    --menu-padding-y-mobile: clamp(4px, 0.8vw + 2px, 7px);
+    --menu-padding-x-mobile: clamp(6px, 2vw + 2px, 12px);
+    --menu-gap-mobile: 4px;
 }
 
 * {
@@ -31,14 +44,14 @@ button,
 /* Основной фон и общие ограничения прокрутки */
 html {
     background-color: #743909;
-    overflow-x: hidden;
+    overflow: hidden;
     height: 100%;
     -webkit-text-size-adjust: 100%;
     touch-action: manipulation;
 }
 
 body {
-    overflow-x: hidden;
+    overflow: hidden;
     width: 100%;
     height: 100%;
     position: relative;
@@ -50,7 +63,6 @@ body {
     background-attachment: fixed;
     color: #253b41;
     line-height: 1.6;
-    min-height: 100vh;
     padding-top: env(safe-area-inset-top, 0px);
     padding-right: env(safe-area-inset-right, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -68,7 +80,7 @@ body {
     pointer-events: none;
 }
 
-/* Обёртка контента (центрирование и отступы) */
+/* Обёртка контента (флекс-контейнер на всю высоту) */
 #content {
     position: relative;
     z-index: 1;
@@ -78,88 +90,70 @@ body {
     padding-left: max(20px, env(safe-area-inset-left));
     padding-right: max(20px, env(safe-area-inset-right));
     width: 95vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main.main-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    min-height: 0;
 }
 
 @media (orientation: landscape) and (max-width: 900px) {
     #content {
         width: 100%;
     }
-
-    .header-container {
-        width: 100%;
-    }
 }
 
-@media (max-width: 768px) {
+/* --- ПЛАНШЕТ (481–899px): отступы контента --- */
+@media (max-width: 899px) and (min-width: 481px) {
     #content {
-        /* фиксируем гармонию отступов: меньше скачков между режимами */
-        padding-top: 8px;
-        padding-bottom: 8px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         padding-left: max(14px, env(safe-area-inset-left));
         padding-right: max(14px, env(safe-area-inset-right));
         width: 100%;
     }
 
-    .header-container {
-        width: 100%;
-    }
-
-    #about-mini-section {
-        gap: 6px;
-    }
-
-
-    .feed-columns {
-        gap: 6px;
-    }
-
-    .feed-column h3 {
-        font-size: 0.9rem;
-        margin-bottom: 8px;
+    #ideas-feed .simple-card {
+        padding: 10px;
+        margin-bottom: 12px;
+        min-height: 90px;
     }
 
     #ideas-feed .idea-text {
-        font-size: 0.7rem;
-        margin-bottom: 6px;
+        font-size: clamp(0.65rem, 2vw, 0.85rem);
+    }
+}
+
+/* --- МОБИЛЬНЫЙ (<=480px): отступы и размеры фидов --- */
+@media (max-width: 480px) {
+    #content {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+        width: 100%;
+    }
+
+    #ideas-feed .idea-text {
+        font-size: clamp(0.64rem, 2.8vw, 0.78rem);
+        margin-bottom: 4px;
         line-height: 1.3;
     }
 
     #ideas-feed .simple-card {
         padding: 8px;
         margin-bottom: 8px;
-        min-height: 80px;
-    }
-}
-
-
-@media (max-width: 415px) {
-    #content {
-        padding-top: 6px;
-        padding-bottom: 6px;
-        padding-left: max(10px, env(safe-area-inset-left));
-        padding-right: max(10px, env(safe-area-inset-right));
-    }
-
-
-    .feed-columns {
-        gap: 4px;
-    }
-
-    #ideas-feed .idea-text {
-        font-size: clamp(0.58rem, 2.6vw, 0.75rem);
-        margin-bottom: 4px;
-        line-height: 1.25;
-    }
-
-    #feed-humans .simple-card,
-    #feed-robots .simple-card {
-        padding: 6px;
-        margin-bottom: 6px;
-        min-height: 60px;
+        min-height: 70px;
     }
 
     .like-badge {
-        font-size: clamp(0.65rem, 2.2vw, 0.85rem);
+        font-size: clamp(0.65rem, 2.8vw, 0.85rem);
         padding: 4px 10px;
         gap: 6px;
     }
@@ -176,10 +170,6 @@ body {
         height: clamp(18px, 5.3vw, 24px);
     }
 }
-
-
-
-
 
 @keyframes fadeInUp {
     from {
@@ -216,59 +206,29 @@ body {
     }
 }
 
+/* ============================================================
+   HEADER & MENU
+   ============================================================ */
 .header-container {
     position: sticky;
-    top: 6px;
+    top: 0;
+    flex-shrink: 0;
     z-index: 100;
-
     display: flex;
     flex-direction: column;
-    gap: 8px;
-
-    padding-top: env(safe-area-inset-top, 8px);
-    padding-bottom: 10px;
-    padding-left: 14px;
-    padding-right: 14px;
+    gap: var(--menu-gap);
     margin: 0 auto 20px auto;
-    width: 95vw;
+    width: 100%;
     max-width: 1400px;
 
-    /* Чистое стекло — эффект линзы как в iOS */
-    backdrop-filter: blur(5px);
-    border-radius: 10px;
 }
 
 /* iOS safe-area */
 @supports (padding: max(0px)) {
     .header-container {
-        top: max(env(safe-area-inset-top, 0px), 4px);
-        padding-top: max(env(safe-area-inset-top, 0px), 8px);
         padding-left: max(14px, env(safe-area-inset-left));
         padding-right: max(14px, env(safe-area-inset-right));
-        width: 100%;
-        max-width: 1400px;
     }
-}
-
-/* About-mini-section: кнопки строго в одну строку, пропорционально сжимаются */
-#about-mini-section {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 8px;
-    flex: 2 1 0;
-    min-width: 0;
-    overflow: hidden;
-}
-
-#about-mini-section .simple-btn {
-    flex: 1 1 0;
-    min-width: 0;
-    font-size: clamp(0.45rem, 1.6vw, 1rem);
-    padding: clamp(5px, 0.8vw, 12px) clamp(4px, 1.6vw, 30px);
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .header-row-top {
@@ -281,87 +241,243 @@ body {
 
 .header-row-bottom {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    flex-wrap: nowrap;
     width: 100%;
+    gap: var(--menu-gap);
 }
 
-.header-wallet-block {
-    flex: 0 0 40%;
+/* Meme Part — слева */
+.header-row-bottom #meme-part-btn {
+    font-size: var(--menu-font-size);
+    padding: var(--menu-padding-y) var(--menu-padding-x);
+    border-color: var(--neon-orange);
+    color: var(--neon-orange);
+    flex-shrink: 0;
+}
+
+.header-row-bottom #meme-part-btn:hover {
+    background: var(--neon-orange);
+    color: #fff;
+    box-shadow: 0 0 40px var(--neon-orange);
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .header-row-bottom #meme-part-btn:active {
+        background: var(--neon-orange);
+        color: #fff;
+        box-shadow: 0 0 40px var(--neon-orange);
+    }
+}
+
+/* About-mini-section: кнопки flex, подстраиваются под ширину */
+#about-mini-section {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--menu-gap);
+    flex: 2 1 0;
     min-width: 0;
-    max-width: 40%;
+}
+
+#about-mini-section .simple-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: var(--menu-font-size);
+    padding: var(--menu-padding-y) var(--menu-padding-x);
+    text-align: center;
+    width: auto;
+}
+
+/* Wallet block */
+.header-wallet-block {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 60%;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: flex-end;
+    gap: var(--menu-gap);
 }
 
 .wallet-info {
     font-family: 'Comfortaa', cursive;
-    font-size: clamp(0.4rem, 1.4vw, 0.9rem);
+    font-size: var(--menu-font-size);
     color: rgba(255, 255, 255, 0.7);
     background: rgba(0, 229, 255, 0.08);
     border: 1px solid rgba(0, 229, 255, 0.2);
-    padding: clamp(5px, 0.8vw, 12px) clamp(4px, 1.6vw, 30px);
+    padding: var(--menu-padding-y) var(--menu-padding-x);
     clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    min-width: 0;
+    flex: 0 1 auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 0;
-    flex: 1 1 0;
 }
 
 #wallet-mini-section {
-    flex: 1 1 0;
+    flex: 0 1 auto;
     min-width: 0;
 }
 
 #wallet-mini-section .simple-btn {
-    flex: 1 1 0;
-    min-width: 0;
     width: 100%;
-    font-size: clamp(0.45rem, 1.6vw, 1rem);
-    padding: clamp(5px, 0.8vw, 12px) clamp(4px, 1.6vw, 30px);
+    font-size: var(--menu-font-size);
+    padding: var(--menu-padding-y) var(--menu-padding-x);
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Раннее расширение блока "баланс + подключить": текст должен вмещаться */
-@media (max-width: 620px) {
-    .header-wallet-block {
-        flex: 0 0 55%;
-        max-width: 55%;
+/* Connect Wallet — жёлтый стиль с пульсацией */
+#connect-wallet-btn {
+    background: rgba(255, 200, 0, 0.15);
+    border-color: rgba(255, 200, 0, 0.5);
+    color: #ffd700;
+    text-shadow: 0 0 6px rgba(255, 200, 0, 0.3);
+    animation: connectYellowPulse 2s ease-in-out infinite;
+}
+
+#connect-wallet-btn:hover {
+    background: rgba(255, 200, 0, 0.3);
+    color: #fff;
+    box-shadow: 0 0 30px rgba(255, 200, 0, 0.4);
+    border-color: rgba(255, 200, 0, 0.8);
+}
+
+@media (hover: none) and (pointer: coarse) {
+    #connect-wallet-btn:active {
+        background: rgba(255, 200, 0, 0.3);
+        color: #fff;
+        box-shadow: 0 0 30px rgba(255, 200, 0, 0.4);
+        border-color: rgba(255, 200, 0, 0.8);
+    }
+}
+
+@keyframes connectYellowPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(255, 200, 0, 0.15);
+        transform: scale(1);
+    }
+
+    50% {
+        box-shadow: 0 0 18px rgba(255, 200, 0, 0.35);
+        transform: scale(1.04);
+    }
+}
+
+/* Meme Part — оранжевый стиль как у Connect */
+.header-row-bottom #meme-part-btn {
+    background: rgba(255, 94, 0, 0.15);
+    border-color: rgba(255, 94, 0, 0.5);
+    color: var(--neon-orange);
+    text-shadow: 0 0 6px rgba(255, 94, 0, 0.3);
+    animation: memeOrangePulse 2s ease-in-out infinite;
+}
+
+.header-row-bottom #meme-part-btn:hover {
+    background: rgba(255, 94, 0, 0.3);
+    color: #fff;
+    box-shadow: 0 0 30px rgba(255, 94, 0, 0.4);
+    border-color: rgba(255, 94, 0, 0.8);
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .header-row-bottom #meme-part-btn:active {
+        background: rgba(255, 94, 0, 0.3);
+        color: #fff;
+        box-shadow: 0 0 30px rgba(255, 94, 0, 0.4);
+        border-color: rgba(255, 94, 0, 0.8);
+    }
+}
+
+@keyframes memeOrangePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(255, 94, 0, 0.15);
+        transform: scale(1);
+    }
+
+    50% {
+        box-shadow: 0 0 18px rgba(255, 94, 0, 0.35);
+        transform: scale(1.04);
+    }
+}
+
+.lang-flag-btn {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: clamp(30px, 4.5vw, 44px);
+    height: clamp(30px, 4.5vw, 44px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: circle(50%);
+    object-fit: cover;
+}
+
+/* ============================================================
+   БРЕЙКПОИНТЫ — 3 уровня
+   ============================================================ */
+
+/* --- ЛАНДШАФТ на узких экранах --- */
+@media (orientation: landscape) and (max-width: 900px) {
+    .header-container {
         gap: 4px;
+        padding-top: max(env(safe-area-inset-top, 0px), 4px);
+        padding-bottom: 4px;
     }
 
-    .wallet-info {
-        font-size: clamp(0.33rem, 1.5vw, 0.75rem);
-        padding: clamp(3px, 0.7vw, 8px) clamp(2px, 1.4vw, 16px);
-    }
-
-    #wallet-mini-section .simple-btn {
-        font-size: clamp(0.38rem, 1.7vw, 0.8rem);
-        padding: clamp(3px, 0.7vw, 8px) clamp(2px, 1.4vw, 16px);
-    }
-
-    #about-mini-section .simple-btn {
-        font-size: clamp(0.35rem, 1.5vw, 0.85rem);
-        padding: clamp(3px, 0.7vw, 9px) clamp(2px, 1.4vw, 20px);
+    .header-row-top {
+        gap: 6px;
     }
 
     #about-mini-section {
         gap: 4px;
     }
+
+    .header-wallet-block {
+        max-width: 55%;
+        gap: 4px;
+    }
+
+    .lang-flag-btn {
+        font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+        width: clamp(22px, 3.5vw, 28px);
+        height: clamp(22px, 3.5vw, 28px);
+    }
 }
 
-/* 415px: единая ширина хедера, плавный переход от 620px (55%)
-   font-size и padding наследуются от @media (max-width: 620px) — не переопределяем */
-@media (max-width: 415px) {
+/* --- ПЛАНШЕТ: 481–899px --- */
+@media (max-width: 899px) and (min-width: 481px) {
+    .header-wallet-block {
+        max-width: 55%;
+    }
+}
+
+/* --- МОБИЛЬНЫЙ: ≤480px --- */
+@media (max-width: 480px) {
+    :root {
+        --menu-font-size: var(--menu-font-size-mobile);
+        --menu-padding-y: var(--menu-padding-y-mobile);
+        --menu-padding-x: var(--menu-padding-x-mobile);
+        --menu-gap: var(--menu-gap-mobile);
+    }
+
     .header-container {
-        gap: 6px;
+        gap: var(--menu-gap);
         padding-top: max(env(safe-area-inset-top, 0px), 4px);
         padding-bottom: 6px;
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
         width: 100%;
     }
 
@@ -370,47 +486,28 @@ body {
     }
 
     .header-wallet-block {
-        flex: 1 1 55%;
-        max-width: 55%;
-        gap: 6px;
-    }
-
-    #about-mini-section {
-        gap: 5px;
+        max-width: 60%;
     }
 
     .lang-flag-btn {
-        font-size: clamp(1rem, 4vw, 1.4rem);
-        width: clamp(24px, 5vw, 32px);
-        height: clamp(24px, 5vw, 32px);
-    }
-}
-
-/* 350px: компактно, но без скачков — те же 55% ширины */
-@media (max-width: 350px) {
-    .header-container {
-        gap: 4px;
-        width: 100%;
+        font-size: clamp(1rem, 4.5vw, 1.4rem);
+        width: clamp(26px, 6vw, 34px);
+        height: clamp(26px, 6vw, 34px);
     }
 
-    .header-row-top {
-        gap: 6px;
+    #intent-more-btn {
+        font-size: clamp(0.68rem, 3vw, 0.85rem);
+        padding: clamp(5px, 1.2vw, 8px) clamp(10px, 3vw, 18px);
     }
 
-    .header-wallet-block {
-        flex: 1 1 55%;
-        max-width: 55%;
-        gap: 4px;
+    .simple-input {
+        font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+        padding: clamp(10px, 2.5vw, 14px);
     }
 
-    #about-mini-section {
-        gap: 3px;
-    }
-
-    .lang-flag-btn {
-        font-size: clamp(0.85rem, 3.5vw, 1.2rem);
-        width: clamp(20px, 4.5vw, 28px);
-        height: clamp(20px, 4.5vw, 28px);
+    .radio-custom {
+        font-size: clamp(0.7rem, 3.2vw, 0.85rem);
+        padding: clamp(5px, 1.5vw, 8px) clamp(8px, 2.5vw, 16px);
     }
 }
 
@@ -425,20 +522,21 @@ h1 {
     word-break: break-word;
     hyphens: auto;
 
+    text-transform: uppercase;
+    letter-spacing: clamp(0.5px, 0.5vw, 2px);
+
     background: repeating-linear-gradient(180deg,
-            #ffffff 0px,
-            #ffffff 2px,
-            var(--neon-green) 3px,
-            var(--neon-purple) 4px);
+            #ffffff 7px,
+            #ffffff 8px,
+            var(--neon-green) 1px,
+            var(--neon-purple) 10px);
     background-size: 100% 200%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: stripeScroll 6s linear infinite;
     will-change: background-position;
-    text-transform: uppercase;
-    letter-spacing: clamp(0.5px, 0.5vw, 2px);
-    filter: drop-shadow(0 0 15px rgba(57, 255, 20, 0.4));
+
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -446,21 +544,14 @@ h1 {
     line-height: 1.2;
 }
 
-@media (max-width: 415px) {
+@media (max-width: 480px) {
     h1 {
-        /* мобильный: чуть компактнее для гармонии */
         font-size: clamp(0.98rem, 5.6vw, 1.45rem);
         margin: 0 0 14px 0;
         letter-spacing: 0.45px;
         padding: 0 2px;
     }
 }
-
-
-
-
-
-
 
 h2 {
     font-family: 'Russo One', sans-serif;
@@ -543,7 +634,6 @@ h2 {
 }
 
 #project-info.simple-card::before,
-
 #nft-section.simple-card::before {
     opacity: 1;
     animation: rotateBorder 5s linear infinite;
@@ -616,10 +706,12 @@ h2 {
     line-height: 1.2;
 }
 
-.about-desc {
+.content-text {
     font-size: clamp(0.85rem, 1.6vw, 1.05rem);
     line-height: 1.4;
     width: 100%;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 #about-info.simple-card::before {
@@ -655,14 +747,16 @@ h2 {
     background: transparent;
     border: 1px solid var(--neon-purple);
     color: var(--neon-purple);
-    padding: clamp(8px, 1.4vw, 12px) clamp(14px, 3vw, 30px);
+    padding: var(--menu-padding-y) var(--menu-padding-x);
     font-family: 'Russo One';
     text-transform: uppercase;
     cursor: pointer;
     transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
     white-space: nowrap;
-    font-size: clamp(0.75rem, 1.4vw, 1rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--menu-font-size);
 }
 
 
@@ -695,25 +789,7 @@ h2 {
     box-shadow: 0 0 40px #fff;
 }
 
-/* Meme Part — сочный оранжевый стиль */
-#meme-part-btn {
-    border-color: var(--neon-orange);
-    color: var(--neon-orange);
-}
-
-#meme-part-btn:hover {
-    background: var(--neon-orange);
-    color: #fff;
-    box-shadow: 0 0 40px var(--neon-orange);
-}
-
-@media (hover: none) and (pointer: coarse) {
-    #meme-part-btn:active {
-        background: var(--neon-orange);
-        color: #fff;
-        box-shadow: 0 0 40px var(--neon-orange);
-    }
-}
+/* Meme Part — стили в .header-row-bottom #meme-part-btn */
 
 #ideas-feed {
     text-align: center;
@@ -726,17 +802,10 @@ h2 {
     font-size: clamp(1rem, 2.2vw, 1.55rem);
 }
 
-@media (max-width: 415px) {
+@media (max-width: 480px) {
     #ideas-feed h2 {
-        margin-top: 32px;
-        margin-bottom: 16px;
-    }
-}
-
-@media (max-width: 350px) {
-    #ideas-feed h2 {
-        margin-top: 26px;
-        margin-bottom: 12px;
+        margin-top: 28px;
+        margin-bottom: 14px;
     }
 }
 
@@ -748,40 +817,29 @@ h2 {
     align-items: start;
 }
 
+/* Десктоп: 3 колонки */
 @media (min-width: 900px) {
     .feed-columns {
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
 
-@media (min-width: 768px) and (max-width: 899px) {
+/* Планшет: 3 колонки, но 3-ю прячем на узких планшетах */
+@media (max-width: 899px) and (min-width: 481px) {
     .feed-columns {
         grid-template-columns: 1fr 1fr 1fr;
     }
-}
 
-@media (max-width: 768px) {
-    .feed-columns {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .feed-column[data-feed-col="3"] {
-        display: none;
-    }
-}
-
-/* На стыке мобильный/планшет без дерганий: фиксируем отображение 3-й колонки
-   в промежутке, где JS может успевать/не успевать перерисовать DOM. */
-@media (min-width: 769px) and (max-width: 899px) {
     .feed-column[data-feed-col="3"] {
         display: block;
     }
 }
 
-@media (max-width: 415px) {
+/* Мобильный: 2 колонки, 3-ю скрываем */
+@media (max-width: 480px) {
     .feed-columns {
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 8px;
     }
 
     .feed-column[data-feed-col="3"] {
@@ -794,12 +852,6 @@ h2 {
 
     .feed-column h3 {
         display: none;
-    }
-}
-
-@media (max-width: 350px) {
-    .feed-columns {
-        gap: 8px;
     }
 }
 
@@ -819,9 +871,9 @@ h2 {
     animation: stripeScroll 12s linear infinite;
 }
 
-@media (max-width: 350px) {
+@media (max-width: 480px) {
     .feed-column h3 {
-        font-size: clamp(0.5rem, 4vw, 0.65rem);
+        font-size: clamp(0.55rem, 4vw, 0.7rem);
         margin-bottom: 4px;
         letter-spacing: 0.3px;
     }
@@ -870,6 +922,7 @@ h2 {
     font-weight: 500;
     word-break: break-word;
     hyphens: auto;
+    text-align: center;
 }
 
 /* Линия голосования (like + кнопка) */
@@ -990,22 +1043,6 @@ h2 {
     transform: scale(0.9) translateY(0);
 }
 
-.lang-flag-btn {
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    line-height: 1;
-    padding: 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: clamp(30px, 4.5vw, 44px);
-    height: clamp(30px, 4.5vw, 44px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    clip-path: circle(50%);
-    object-fit: cover;
-}
-
 .close-icon {
     position: absolute;
     top: 10px;
@@ -1102,7 +1139,7 @@ footer {
 }
 
 
-@media (max-width: 415px) {
+@media (max-width: 480px) {
     .sort-label {
         width: 22px;
         height: 22px;
@@ -1142,7 +1179,7 @@ footer {
     cursor: pointer;
 }
 
-@media (max-width: 415px) {
+@media (max-width: 480px) {
     .sort-row {
         gap: 8px;
         margin-bottom: 12px;

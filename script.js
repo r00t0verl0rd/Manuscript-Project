@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <h2 class="about-title">
         <span data-i18n="${cfg.titleI18nKey}">${cfg.defaultTitle}</span>
       </h2>
-      <p class="about-desc">
+      <p class="content-text">
         <span data-i18n="${cfg.descI18nKey}">${cfg.defaultDesc}</span>
       </p>
     `;
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const getActiveFeeds = () => {
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isMobile = window.matchMedia('(max-width: 480px)').matches;
     return isMobile ? feeds.filter((_, i) => i < 2) : feeds;
   };
 
@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // На некоторых браузерах media-query могут «пробиваться» без событий resize.
   // Быстро подстрахуемся, чтобы колонки не отставали от ширины.
   if (window.matchMedia) {
-    const mql = window.matchMedia('(max-width: 768px)');
+    const mql = window.matchMedia('(max-width: 480px)');
     mql.addEventListener?.('change', scheduleLoadIdeas);
   }
 

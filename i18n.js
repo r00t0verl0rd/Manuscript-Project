@@ -22,7 +22,7 @@
             more_btn: "Подробнее",
             intent_more_btn: "ещё",
             road_map_btn: "Дорожная карта",
-            meme_part_btn: "Меме часть",
+            meme_part_btn: " Меме часть ",
             contacts_btn: "Контакты",
 
             road_map_title: "Дорожная карта",
@@ -63,7 +63,7 @@
             more_btn: "More details",
             intent_more_btn: "more",
             road_map_btn: "Road Map",
-            meme_part_btn: "Meme Part",
+            meme_part_btn: " Meme Part ",
             contacts_btn: "Contacts",
 
             road_map_title: "Road Map",
