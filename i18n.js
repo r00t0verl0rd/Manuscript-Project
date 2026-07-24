@@ -21,13 +21,16 @@
             wallet_balance: "Баланс: __",
             more_btn: "Подробнее",
             intent_more_btn: "ещё",
-            road_map_btn: "Роадмап",
+            road_map_btn: "Дорожная карта",
             meme_part_btn: "Меме часть",
+            contacts_btn: "Контакты",
 
             road_map_title: "Дорожная карта",
             road_map_desc: "Дорожная карта проекта — контент появится позже.",
             meme_part_title: "Meme Part",
             meme_part_desc: "Контент появится позже.",
+            contacts_title: "Контакты",
+            contacts_desc: "Связь с нами: manuscript.project@example.com | Twitter: @ManuscriptProject | TG: t.me/manuscript_project",
 
             about_back_btn: "Назад",
             about_title: "Манифест проекта",
@@ -61,11 +64,14 @@
             intent_more_btn: "more",
             road_map_btn: "Road Map",
             meme_part_btn: "Meme Part",
+            contacts_btn: "Contacts",
 
             road_map_title: "Road Map",
             road_map_desc: "Project road map content — coming soon.",
             meme_part_title: "Meme Part",
             meme_part_desc: "Сontent — coming soon.",
+            contacts_title: "Contacts",
+            contacts_desc: "Contact us: manuscript.project@example.com | Twitter: @ManuscriptProject | TG: t.me/manuscript_project",
 
             about_back_btn: "Back",
             about_title: "Project Manifest",

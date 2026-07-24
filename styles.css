@@ -84,6 +84,10 @@ body {
     #content {
         width: 100%;
     }
+
+    .header-container {
+        width: 100%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -94,6 +98,14 @@ body {
         padding-left: max(14px, env(safe-area-inset-left));
         padding-right: max(14px, env(safe-area-inset-right));
         width: 100%;
+    }
+
+    .header-container {
+        width: 100%;
+    }
+
+    #about-mini-section {
+        gap: 6px;
     }
 
 
@@ -133,14 +145,8 @@ body {
         gap: 4px;
     }
 
-    .feed-column h3 {
-        font-size: 0.75rem;
-        margin-bottom: 6px;
-        letter-spacing: 0.5px;
-    }
-
     #ideas-feed .idea-text {
-        font-size: 0.6rem;
+        font-size: clamp(0.58rem, 2.6vw, 0.75rem);
         margin-bottom: 4px;
         line-height: 1.25;
     }
@@ -159,15 +165,15 @@ body {
     }
 
     .vote-btn {
-        width: 38px;
-        height: 38px;
+        width: clamp(32px, 9vw, 42px);
+        height: clamp(32px, 9vw, 42px);
         border-radius: 8px;
         margin-left: 0;
     }
 
     .vote-btn svg {
-        width: 22px;
-        height: 22px;
+        width: clamp(18px, 5.3vw, 24px);
+        height: clamp(18px, 5.3vw, 24px);
     }
 }
 
@@ -223,7 +229,9 @@ body {
     padding-bottom: 10px;
     padding-left: 14px;
     padding-right: 14px;
-    margin: 0 8px 20px 8px;
+    margin: 0 auto 20px auto;
+    width: 95vw;
+    max-width: 1400px;
 
     /* Чистое стекло — эффект линзы как в iOS */
     backdrop-filter: blur(5px);
@@ -237,10 +245,33 @@ body {
         padding-top: max(env(safe-area-inset-top, 0px), 8px);
         padding-left: max(14px, env(safe-area-inset-left));
         padding-right: max(14px, env(safe-area-inset-right));
+        width: 100%;
+        max-width: 1400px;
     }
 }
 
-.header-row {
+/* About-mini-section: кнопки строго в одну строку, пропорционально сжимаются */
+#about-mini-section {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    flex: 2 1 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+#about-mini-section .simple-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: clamp(0.45rem, 1.6vw, 1rem);
+    padding: clamp(5px, 0.8vw, 12px) clamp(4px, 1.6vw, 30px);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header-row-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -248,81 +279,138 @@ body {
     width: 100%;
 }
 
-.wallet-row {
+.header-row-bottom {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 12px;
     width: 100%;
+}
+
+.header-wallet-block {
+    flex: 0 0 40%;
+    min-width: 0;
+    max-width: 40%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .wallet-info {
     font-family: 'Comfortaa', cursive;
-    font-size: clamp(0.7rem, 1.4vw, 0.95rem);
+    font-size: clamp(0.4rem, 1.4vw, 0.9rem);
     color: rgba(255, 255, 255, 0.7);
     background: rgba(0, 229, 255, 0.08);
     border: 1px solid rgba(0, 229, 255, 0.2);
-    padding: clamp(4px, 0.8vw, 8px) clamp(10px, 2vw, 18px);
+    padding: clamp(5px, 0.8vw, 12px) clamp(4px, 1.6vw, 30px);
     clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex: 1 1 0;
 }
 
 #wallet-mini-section {
-    flex-shrink: 0;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
-.header-end {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
+#wallet-mini-section .simple-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+    font-size: clamp(0.45rem, 1.6vw, 1rem);
+    padding: clamp(5px, 0.8vw, 12px) clamp(4px, 1.6vw, 30px);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+/* Раннее расширение блока "баланс + подключить": текст должен вмещаться */
+@media (max-width: 620px) {
+    .header-wallet-block {
+        flex: 0 0 55%;
+        max-width: 55%;
+        gap: 4px;
+    }
+
+    .wallet-info {
+        font-size: clamp(0.33rem, 1.5vw, 0.75rem);
+        padding: clamp(3px, 0.7vw, 8px) clamp(2px, 1.4vw, 16px);
+    }
+
+    #wallet-mini-section .simple-btn {
+        font-size: clamp(0.38rem, 1.7vw, 0.8rem);
+        padding: clamp(3px, 0.7vw, 8px) clamp(2px, 1.4vw, 16px);
+    }
+
+    #about-mini-section .simple-btn {
+        font-size: clamp(0.35rem, 1.5vw, 0.85rem);
+        padding: clamp(3px, 0.7vw, 9px) clamp(2px, 1.4vw, 20px);
+    }
+
+    #about-mini-section {
+        gap: 4px;
+    }
+}
+
+/* 415px: единая ширина хедера, плавный переход от 620px (55%)
+   font-size и padding наследуются от @media (max-width: 620px) — не переопределяем */
 @media (max-width: 415px) {
     .header-container {
         gap: 6px;
         padding-top: max(env(safe-area-inset-top, 0px), 4px);
         padding-bottom: 6px;
+        width: 100%;
     }
 
-    .header-row {
+    .header-row-top {
         gap: 8px;
     }
 
-    .wallet-row {
-        gap: 8px;
+    .header-wallet-block {
+        flex: 1 1 55%;
+        max-width: 55%;
+        gap: 6px;
     }
 
-    .header-end {
-        gap: 8px;
+    #about-mini-section {
+        gap: 5px;
     }
 
-    .simple-btn {
-        padding: 6px 12px;
-        font-size: 0.7rem;
+    .lang-flag-btn {
+        font-size: clamp(1rem, 4vw, 1.4rem);
+        width: clamp(24px, 5vw, 32px);
+        height: clamp(24px, 5vw, 32px);
     }
 }
 
+/* 350px: компактно, но без скачков — те же 55% ширины */
 @media (max-width: 350px) {
     .header-container {
         gap: 4px;
+        width: 100%;
     }
 
-    .header-row {
+    .header-row-top {
         gap: 6px;
     }
 
-    .wallet-row {
-        gap: 6px;
+    .header-wallet-block {
+        flex: 1 1 55%;
+        max-width: 55%;
+        gap: 4px;
     }
 
-    .header-end {
-        gap: 6px;
+    #about-mini-section {
+        gap: 3px;
     }
 
-    .simple-btn {
-        padding: 4px 10px;
-        font-size: 0.6rem;
+    .lang-flag-btn {
+        font-size: clamp(0.85rem, 3.5vw, 1.2rem);
+        width: clamp(20px, 4.5vw, 28px);
+        height: clamp(20px, 4.5vw, 28px);
     }
 }
 
@@ -380,7 +468,8 @@ h2 {
     color: var(--neon-green);
     margin-bottom: 20px;
     border-bottom: 2px solid var(--neon-green);
-    display: inline-block;
+    display: block;
+    width: 100%;
     padding-bottom: 5px;
     background: repeating-linear-gradient(180deg, #fff 0px, #fff 2px, #39ff14 3px, #39ff14 4px);
     background-size: 100% 200%;
@@ -388,6 +477,11 @@ h2 {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: stripeScroll 10s linear infinite;
+}
+
+#ideas-feed h2 {
+    display: inline-block;
+    width: auto;
 }
 
 .simple-card {
@@ -503,11 +597,6 @@ h2 {
     font-size: clamp(1.0rem, 2.2vw, 1.45rem);
 }
 
-#project-info p {
-    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
-    line-height: 1.4;
-}
-
 .intent-more-wrapper {
     display: flex;
     justify-content: flex-end;
@@ -528,8 +617,9 @@ h2 {
 }
 
 .about-desc {
-    font-size: clamp(0.78rem, 1.5vw, 1.02rem);
-    line-height: 1.45;
+    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+    line-height: 1.4;
+    width: 100%;
 }
 
 #about-info.simple-card::before {
@@ -729,17 +819,9 @@ h2 {
     animation: stripeScroll 12s linear infinite;
 }
 
-@media (max-width: 415px) {
-    .feed-column h3 {
-        font-size: 0.75rem;
-        margin-bottom: 6px;
-        letter-spacing: 0.5px;
-    }
-}
-
 @media (max-width: 350px) {
     .feed-column h3 {
-        font-size: 0.7rem;
+        font-size: clamp(0.5rem, 4vw, 0.65rem);
         margin-bottom: 4px;
         letter-spacing: 0.3px;
     }
@@ -752,11 +834,6 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.author-id-label {
-    color: #e1c432;
-
 }
 
 .author-id-label-text {

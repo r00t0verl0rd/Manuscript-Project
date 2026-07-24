@@ -53,6 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
       defaultTitle: 'Meme Part',
       defaultDesc: 'Meme part content placeholder — coming soon.',
     },
+    {
+      id: 'contacts-info',
+      btnId: 'contacts-btn',
+      titleI18nKey: 'contacts_title',
+      descI18nKey: 'contacts_desc',
+      defaultTitle: 'Contacts',
+      defaultDesc: 'Contact us: manuscript.project@example.com',
+    },
   ];
 
   // Track currently open page id (null = main content)
