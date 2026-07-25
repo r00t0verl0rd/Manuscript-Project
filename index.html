@@ -15,32 +15,31 @@
     <!-- Фоновые частицы (canvas) -->
     <div id="particles-js"></div>
 
-    <!-- Основной контент страницы -->
-    <div id="content">
-        <header class="header-container">
-            <div class="header-row-top">
-                <div id="about-mini-section">
-                    <button id="contacts-btn" class="simple-btn" type="button" data-i18n="contacts_btn">Contacts</button>
-                    <button id="more-btn" class="simple-btn" type="button" data-i18n="more_btn">About</button>
-                    <button id="road-map-btn" class="simple-btn" type="button" data-i18n="road_map_btn">Road Map</button>
-                </div>
-                <div>
-                    <button id="lang-toggle" class="lang-flag-btn" type="button" aria-label="Switch language">🇬🇧</button>
-                </div>
-            </div>
-            <div class="header-row-bottom">
-                <button id="meme-part-btn" class="simple-btn" type="button" data-i18n="meme_part_btn">Meme Part</button>
-                <div class="header-wallet-block">
-                    <div class="wallet-info" data-i18n="wallet_balance">Баланс: ?.?</div>
-                    <div id="wallet-mini-section">
-                        <button id="connect-wallet-btn" class="simple-btn" type="button"
-                            data-i18n="connect_wallet_btn">Connect</button>
-                    </div>
-                </div>
-            </div>
-        </header>
+    <!-- Шапка overlay (fix) -->
+<header class="header-container">
+  <div class="header-row-top">
+    <div id="about-mini-section">
+      <button id="contacts-btn" class="simple-btn" type="button" data-i18n="contacts_btn">Contacts</button>
+      <button id="more-btn" class="simple-btn" type="button" data-i18n="more_btn">About</button>
+      <button id="road-map-btn" class="simple-btn" type="button" data-i18n="road_map_btn">Road Map</button>
+    </div>
+    <div>
+      <button id="lang-toggle" class="lang-flag-btn" type="button" aria-label="Switch language">🇬🇧</button>
+    </div>
+  </div>
+  <div class="header-row-bottom">
+    <button id="meme-part-btn" class="simple-btn" type="button" data-i18n="meme_part_btn">Meme Part</button>
+    <div class="header-wallet-block">
+      <div class="wallet-info" data-i18n="wallet_balance">Баланс: ?.?</div>
+      <div id="wallet-mini-section">
+        <button id="connect-wallet-btn" class="simple-btn" type="button" data-i18n="connect_wallet_btn">Connect</button>
+      </div>
+    </div>
+  </div>
+</header>
 
-        <!-- Контент: шапка + лента идей -->
+    <!-- Контент: шапка вынесена за пределы #content -->
+    <div id="content">
         <main class="main-wrapper">
             <h1 data-i18n="header_title">MANUSCRIPT PROJECT</h1>
 
