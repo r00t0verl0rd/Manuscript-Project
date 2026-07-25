@@ -194,17 +194,7 @@ main.main-wrapper {
     }
 }
 
-@keyframes arrowBounceUp {
 
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-4px);
-    }
-}
 
 /* ============================================================
    HEADER & MENU
@@ -248,28 +238,7 @@ main.main-wrapper {
     gap: var(--menu-gap);
 }
 
-/* Meme Part — слева */
-.header-row-bottom #meme-part-btn {
-    font-size: var(--menu-font-size);
-    padding: var(--menu-padding-y) var(--menu-padding-x);
-    border-color: var(--neon-orange);
-    color: var(--neon-orange);
-    flex-shrink: 0;
-}
 
-.header-row-bottom #meme-part-btn:hover {
-    background: var(--neon-orange);
-    color: #fff;
-    box-shadow: 0 0 40px var(--neon-orange);
-}
-
-@media (hover: none) and (pointer: coarse) {
-    .header-row-bottom #meme-part-btn:active {
-        background: var(--neon-orange);
-        color: #fff;
-        box-shadow: 0 0 40px var(--neon-orange);
-    }
-}
 
 /* About-mini-section: кнопки flex, подстраиваются под ширину */
 #about-mini-section {
@@ -376,6 +345,9 @@ main.main-wrapper {
     color: var(--neon-orange);
     text-shadow: 0 0 6px rgba(255, 94, 0, 0.3);
     animation: memeOrangePulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+    font-size: var(--menu-font-size);
+    padding: var(--menu-padding-y) var(--menu-padding-x);
 }
 
 .header-row-bottom #meme-part-btn:hover {
@@ -500,10 +472,6 @@ main.main-wrapper {
         padding: clamp(5px, 1.2vw, 8px) clamp(10px, 3vw, 18px);
     }
 
-    .simple-input {
-        font-size: clamp(0.8rem, 3.5vw, 0.95rem);
-        padding: clamp(10px, 2.5vw, 14px);
-    }
 
     .radio-custom {
         font-size: clamp(0.7rem, 3.2vw, 0.85rem);
@@ -570,10 +538,7 @@ h2 {
     animation: stripeScroll 10s linear infinite;
 }
 
-#ideas-feed h2 {
-    display: inline-block;
-    width: auto;
-}
+
 
 .simple-card {
     background: rgba(10, 15, 20, 0.15);
@@ -590,7 +555,7 @@ h2 {
         border-color 0.4s ease;
     animation: fadeInUp 0.7s ease-out forwards;
     transform: translateZ(0);
-    will-change: transform, box-shadow;
+
     contain: content;
     word-wrap: break-word;
     overflow-x: hidden;
@@ -612,6 +577,7 @@ h2 {
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     mask-composite: exclude;
     opacity: 0;
+    animation: none;
     transition: opacity 0.4s ease;
     pointer-events: none;
 }
@@ -628,53 +594,15 @@ h2 {
     }
 }
 
-.simple-card::before {
-    opacity: 0;
-    animation: none;
-}
 
-#project-info.simple-card::before,
-#nft-section.simple-card::before {
+
+#project-info.simple-card::before {
     opacity: 1;
     animation: rotateBorder 5s linear infinite;
 }
 
-#feed-humans .simple-card::before,
-#feed-robots .simple-card::before {
-    opacity: 0;
-    animation: none;
-}
 
-@keyframes ideaPulseGlow {
 
-    0%,
-    100% {
-        box-shadow: 0 0 0 rgba(0, 229, 255, 0);
-        background: rgba(0, 229, 255, 0.18);
-    }
-
-    50% {
-        box-shadow: 0 0 35px rgba(0, 229, 255, 0.35);
-        background: rgba(0, 229, 255, 0.28);
-    }
-}
-
-@keyframes ideaPulseGlowHuman {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 rgba(255, 94, 0, 0);
-        background: rgba(255, 94, 0, 0.12);
-    }
-
-    50% {
-        box-shadow: 0 0 35px rgba(255, 94, 0, 0.35);
-        background: rgba(255, 94, 0, 0.22);
-    }
-}
-
-#project-info:hover,
-#nft-section:hover,
 .simple-card:hover {
     background: rgba(10, 15, 20, 0.4);
     transform: translateY(-8px) scale(1.02);
@@ -724,24 +652,7 @@ h2 {
     animation: fadeInUp 0.7s ease-out forwards;
 }
 
-.simple-input {
-    width: 100%;
-    padding: 15px;
-    background: rgba(0, 15, 10, 0.6);
-    border: 1px solid var(--neon-green);
-    color: #fff;
-    font-family: 'Comfortaa', cursive;
-    font-size: 1rem;
-    margin-bottom: 20px;
-    outline: none;
-    transition: box-shadow 0.3s ease, background 0.3s ease;
-    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-}
 
-.simple-input:focus {
-    box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
-    background: rgba(10, 30, 20, 0.8);
-}
 
 .simple-btn {
     background: transparent;
@@ -777,17 +688,7 @@ h2 {
 }
 
 
-.simple-btn.primary {
-    background: #bd00ff;
-    color: #fff;
-    border: none;
-}
 
-.simple-btn.primary:hover {
-    background: #fff;
-    color: #bd00ff;
-    box-shadow: 0 0 40px #fff;
-}
 
 /* Meme Part — стили в .header-row-bottom #meme-part-btn */
 
@@ -846,10 +747,6 @@ h2 {
         display: none;
     }
 
-    .feed-column {
-        min-width: 0;
-    }
-
     .feed-column h3 {
         display: none;
     }
@@ -871,13 +768,7 @@ h2 {
     animation: stripeScroll 12s linear infinite;
 }
 
-@media (max-width: 480px) {
-    .feed-column h3 {
-        font-size: clamp(0.55rem, 4vw, 0.7rem);
-        margin-bottom: 4px;
-        letter-spacing: 0.3px;
-    }
-}
+
 
 #ideas-feed .simple-card {
     padding: 20px;
@@ -888,31 +779,11 @@ h2 {
     justify-content: space-between;
 }
 
-.author-id-label-text {
-    color: #e1c432;
-}
 
-.author-id-value {
-    color: #30c715;
 
-}
 
-#feed-humans .human-idea:hover {
-    transform: translateY(-8px) scale(1.05);
-    z-index: 20;
-    animation: ideaPulseGlowHuman 1.6s ease-in-out infinite;
-    box-shadow: 0 0 35px rgba(255, 94, 0, 0.35);
-}
-
-#feed-robots .robot-idea:hover {
-    transform: translateY(-8px) scale(1.05);
-    z-index: 20;
-    animation: ideaPulseGlow 1.6s ease-in-out infinite;
-    box-shadow: 0 0 35px rgba(0, 229, 255, 0.35);
-}
 
 /* Текст идеи */
-#ideas-feed .simple-card .idea-text,
 #ideas-feed .idea-text {
     font-size: clamp(0.65rem, 2.1vw, 1.02rem);
     color: #ffffff;
@@ -969,12 +840,7 @@ h2 {
 }
 
 
-.vote-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
+
 
 .like-badge {
     font-family: 'Comfortaa', cursive;
@@ -1003,7 +869,10 @@ h2 {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
     position: relative;
     padding: 0;
 }
@@ -1079,17 +948,31 @@ h2 {
 }
 
 
-.radio-label input:checked+.radio-custom.human {
-    background: rgba(255, 94, 0, 0.2);
-    color: var(--neon-orange);
-    border-color: var(--neon-orange);
-}
-
-.radio-label input:checked+.radio-custom.robot {
+.radio-label input:checked + .radio-custom {
     background: rgba(0, 229, 255, 0.2);
     color: var(--neon-cyan);
     border-color: var(--neon-cyan);
 }
+
+.radio-label input:focus-visible + .radio-custom,
+button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.navigation-panel {
+    margin-bottom: 30px;
+}
+
+.roadmap-title {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
 
 footer {
     text-align: center;
@@ -1348,7 +1231,9 @@ footer {
     justify-content: center;
     position: relative;
     z-index: 2;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
     box-shadow:
         0 0 15px rgba(0, 229, 255, 0.15),
         inset 0 0 15px rgba(0, 229, 255, 0.05);
@@ -1388,7 +1273,10 @@ footer {
     padding: 18px 22px;
     margin: 0 16px;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        background 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }

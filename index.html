@@ -16,25 +16,24 @@
     <div id="particles-js"></div>
 
     <!-- Основной контент страницы -->
-    <div id="content" class="content">
-        <!-- Блок частиц дублировался — убран, оставлен только основной -->
+    <div id="content">
         <header class="header-container">
             <div class="header-row-top">
                 <div id="about-mini-section">
-                    <button id="contacts-btn" class="simple-btn" data-i18n="contacts_btn">Contacts</button>
-                    <button id="more-btn" class="simple-btn" data-i18n="more_btn">About</button>
-                    <button id="road-map-btn" class="simple-btn" data-i18n="road_map_btn">Road Map</button>
+                    <button id="contacts-btn" class="simple-btn" type="button" data-i18n="contacts_btn">Contacts</button>
+                    <button id="more-btn" class="simple-btn" type="button" data-i18n="more_btn">About</button>
+                    <button id="road-map-btn" class="simple-btn" type="button" data-i18n="road_map_btn">Road Map</button>
                 </div>
-                <div class="lang-switcher">
-                    <button id="lang-toggle" class="lang-flag-btn">🇷🇺</button>
+                <div>
+                    <button id="lang-toggle" class="lang-flag-btn" type="button" aria-label="Switch language">🇬🇧</button>
                 </div>
             </div>
             <div class="header-row-bottom">
-                <button id="meme-part-btn" class="simple-btn" data-i18n="meme_part_btn">Meme Part</button>
+                <button id="meme-part-btn" class="simple-btn" type="button" data-i18n="meme_part_btn">Meme Part</button>
                 <div class="header-wallet-block">
-                    <div id="wallet-info-placeholder" class="wallet-info" data-i18n="wallet_balance">Баланс: ?.?</div>
+                    <div class="wallet-info" data-i18n="wallet_balance">Баланс: ?.?</div>
                     <div id="wallet-mini-section">
-                        <button id="connect-wallet-btn" class="simple-btn"
+                        <button id="connect-wallet-btn" class="simple-btn" type="button"
                             data-i18n="connect_wallet_btn">Connect</button>
                     </div>
                 </div>
@@ -46,23 +45,14 @@
             <h1 data-i18n="header_title">MANUSCRIPT PROJECT</h1>
 
             <div id="project-info" class="simple-card">
-                <button id="close-info-btn" class="close-icon">&times;</button>
+                <button id="close-info-btn" class="close-icon" type="button" aria-label="Close">&times;</button>
                 <h2 data-i18n="info_title">ААААААА</h2>
                 <p class="content-text" data-i18n="info_desc">BBBBBBB</p>
                 <div class="intent-more-wrapper">
-                    <button id="intent-more-btn" class="simple-btn" data-i18n="intent_more_btn">ещё</button>
+                    <button id="intent-more-btn" class="simple-btn" type="button" data-i18n="intent_more_btn">ещё</button>
                 </div>
             </div>
 
-            <div id="nft-section" class="simple-card" style="display: none">
-                <h2 data-i18n="create_idea_title"></h2>
-                <form id="create-nft-form">
-                    <input type="text" id="idea-text" placeholder="..." class="simple-input" required
-                        data-i18n-placeholder="idea_placeholder" />
-                    <button type="submit" class="simple-btn primary" data-i18n="mint_btn">Mint Proposal</button>
-                </form>
-                <div id="transaction-status"></div>
-            </div>
 
             <div id="ideas-feed">
                 <h2 data-i18n="community_ideas_title"></h2>
@@ -88,21 +78,15 @@
                 <div class="feed-columns">
                     <div class="feed-column" data-feed-col="1">
                         <h3 data-i18n="feed_1_title">Feed 1</h3>
-                        <div id="feed-1">
-                            <p class="loading-msg">Loading...</p>
-                        </div>
+                        <div id="feed-1"></div>
                     </div>
                     <div class="feed-column" data-feed-col="2">
                         <h3 data-i18n="feed_2_title">Feed 2</h3>
-                        <div id="feed-2">
-                            <p class="loading-msg">Loading...</p>
-                        </div>
+                        <div id="feed-2"></div>
                     </div>
                     <div class="feed-column" data-feed-col="3">
                         <h3 data-i18n="feed_3_title">Feed 3</h3>
-                        <div id="feed-3">
-                            <p class="loading-msg">Loading...</p>
-                        </div>
+                        <div id="feed-3"></div>
                     </div>
                 </div>
             </div>
@@ -111,7 +95,7 @@
             <section class="partners-section" aria-label="Partners">
                 <h2 data-i18n="partners_title">Партнёры</h2>
 
-                <div class="partners-logos" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+                <div class="partners-logos">
                     <div class="partner-logo" aria-label="Partner 1">
                         <svg width="220" height="30" viewBox="0 0 220 30" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
@@ -174,6 +158,7 @@
                                 <!-- little orbit ring -->
                                 <path d="M33 15c2-6 18-6 20 0" fill="none" stroke="rgba(255,255,255,0.25)"
                                     stroke-width="1" />
+                            </g>
                         </svg>
                     </div>
 
@@ -201,6 +186,7 @@
                                 <path d="M38 13l-4 2 4 2" fill="none" stroke="rgba(57,255,20,0.35)" stroke-width="1.4"
                                     stroke-linecap="round" stroke-linejoin="round" />
                                 <circle cx="64" cy="15" r="2.3" fill="rgba(57,255,20,0.45)" />
+                            </g>
                         </svg>
                     </div>
                     <div class="partner-logo" aria-label="Partner 4">
@@ -227,6 +213,7 @@
                                     stroke-width="1.4" stroke-linecap="round" />
                                 <circle cx="62" cy="14" r="2.2" fill="rgba(255,94,0,0.28)"
                                     stroke="rgba(255,255,255,0.25)" stroke-width="0.8" />
+                            </g>
                         </svg>
                     </div>
                     <div class="partner-logo" aria-label="Partner 5">
@@ -252,6 +239,7 @@
                                 <path d="M35 20.5c4 2.6 12 2.6 16 0" fill="none" stroke="rgba(57,255,20,0.30)"
                                     stroke-width="1.5" stroke-linecap="round" />
                                 <circle cx="43" cy="15" r="2.1" fill="rgba(255,94,0,0.25)" />
+                            </g>
                         </svg>
                     </div>
                     <div class="partner-logo" aria-label="Partner 6">
@@ -280,9 +268,10 @@
                                     stroke-linecap="round" />
                                 <path d="M52 12.2c3.2.8 6.2 2.2 9 4.8" fill="none" stroke="rgba(255,94,0,0.22)"
                                     stroke-width="1.2" stroke-linecap="round" />
+                            </g>
                         </svg>
                     </div>
-
+                </div>
             </section>
         </main>
     </div>

@@ -1,532 +1,367 @@
-// Инициализация приложения после полной загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
-  // Доступ к переводам (fallback на ключ, если i18n не подключён)
-  const t = (key) => (window.t ? window.t(key) : key);
+  const i18n = window.AppI18n;
+  const translate = (key) => i18n?.translate(key) ?? key;
+  const applyTranslations = () => i18n?.applyTranslations();
+  const mobileFeedQuery = window.matchMedia('(max-width: 480px)');
 
-  const infoBox = document.getElementById('project-info');
-
-  document.getElementById('close-info-btn')?.addEventListener('click', () => {
-    if (infoBox) infoBox.style.display = 'none';
-
-    // Возвращаем обратно намерение/сортировку/идеи
-    const contentToShow = [
-      document.getElementById('nft-section'),
-      document.getElementById('ideas-feed'),
-    ];
-
-    contentToShow.forEach((el) => {
-      if (el) el.style.display = '';
-    });
-  });
-
-
-
-  // ===== WALLET CONNECT CLICK =====
-  document.getElementById('connect-wallet-btn')?.addEventListener('click', () => {
-    alert(t('wallet_disconnected'));
-  });
-
-  // ===== NAVIGATION SYSTEM (static menu, always visible) =====
-  // Each page has: id, btnId, titleI18nKey, descI18nKey, defaultTitle, defaultDesc
-  const pagesConfig = [
-    {
-      id: 'about-info',
-      btnId: 'more-btn',
-      titleI18nKey: 'about_title',
-      descI18nKey: 'about_desc',
-      defaultTitle: 'АААААААА',
-      defaultDesc: 'BBBBBBB',
-    },
-    {
-      id: 'road-map-info',
-      btnId: 'road-map-btn',
-      titleI18nKey: 'road_map_title',
-      descI18nKey: 'road_map_desc',
-      defaultTitle: 'Road Map',
-      defaultDesc: 'Road map content placeholder — coming soon.',
-    },
-    {
-      id: 'meme-part-info',
-      btnId: 'meme-part-btn',
-      titleI18nKey: 'meme_part_title',
-      descI18nKey: 'meme_part_desc',
-      defaultTitle: 'Meme Part',
-      defaultDesc: 'Meme part content placeholder — coming soon.',
-    },
-    {
-      id: 'contacts-info',
-      btnId: 'contacts-btn',
-      titleI18nKey: 'contacts_title',
-      descI18nKey: 'contacts_desc',
-      defaultTitle: 'Contacts',
-      defaultDesc: 'Contact us: manuscript.project@example.com',
-    },
-  ];
-
-  // Track currently open page id (null = main content)
-  let activePageId = null;
-
-  const showMainContent = () => {
-    const els = [
-      document.getElementById('project-info'),
-      document.getElementById('ideas-feed'),
-    ];
-    els.forEach((el) => { if (el) el.style.display = ''; });
-  };
-
-  const hideMainContent = () => {
-    const els = [
-      document.getElementById('project-info'),
-      document.getElementById('ideas-feed'),
-      document.getElementById('nft-section'),
-    ];
-    els.forEach((el) => { if (el) el.style.display = 'none'; });
-  };
-
-  const removePageBlock = (cfg) => {
-    const el = document.getElementById(cfg.id);
-    if (el) el.remove();
-  };
-
-  // ===== ROAD MAP SNAKE TIMELINE =====
-  const getRoadmapStages = () => [
-    { num: 1, titleKey: 'stage_1_title', descKey: 'stage_1_desc', statusKey: 'stage_1_status', icon: '🔬' },
-    { num: 2, titleKey: 'stage_2_title', descKey: 'stage_2_desc', statusKey: 'stage_2_status', icon: '🎨' },
-    { num: 3, titleKey: 'stage_3_title', descKey: 'stage_3_desc', statusKey: 'stage_3_status', icon: '📱' },
-    { num: 4, titleKey: 'stage_4_title', descKey: 'stage_4_desc', statusKey: 'stage_4_status', icon: '📝' },
-    { num: 5, titleKey: 'stage_5_title', descKey: 'stage_5_desc', statusKey: 'stage_5_status', icon: '🪙' },
-    { num: 6, titleKey: 'stage_6_title', descKey: 'stage_6_desc', statusKey: 'stage_6_status', icon: '🤝' },
-    { num: 7, titleKey: 'stage_7_title', descKey: 'stage_7_desc', statusKey: 'stage_7_status', icon: '🌉' },
-    { num: 8, titleKey: 'stage_8_title', descKey: 'stage_8_desc', statusKey: 'stage_8_status', icon: '👤' },
-    { num: 9, titleKey: 'stage_9_title', descKey: 'stage_9_desc', statusKey: 'stage_9_status', icon: '🗳️' },
-  ];
-
-  const getRoadmapHTML = (tFn) => {
-    const stages = getRoadmapStages();
-    let itemsHTML = '';
-
-    stages.forEach((s, i) => {
-      const statusVal = tFn(s.statusKey);
-      const isLeft = i % 2 === 0;
-      const sideClass = isLeft ? 'step-left' : 'step-right';
-
-      // Step block
-      itemsHTML += `
-        <div class="roadmap-step ${sideClass}" data-step="${s.num}">
-          <div class="step-marker">
-            <span class="step-num">${String(s.num).padStart(2, '0')}</span>
-            <span class="step-icon">${s.icon}</span>
-          </div>
-          <div class="step-card">
-            <div class="step-status status-${statusVal}">${tFn('status_' + statusVal)}</div>
-            <h3 class="step-title">${tFn(s.titleKey)}</h3>
-            <p class="step-desc">${tFn(s.descKey)}</p>
-          </div>
-        </div>
-      `;
-
-      // Connector arrow between steps
-      if (i < stages.length - 1) {
-        const arrowDir = isLeft ? 'arrow-right' : 'arrow-left';
-        itemsHTML += `
-          <div class="step-connector ${arrowDir}" data-connector="${s.num}">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-              <path d="M8 20h24M22 10l10 10-10 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-        `;
-      }
-    });
-
-    return `
-      <div class="roadmap-section">
-        <div class="roadmap-snake-track">
-          ${itemsHTML}
-        </div>
-        <div class="roadmap-bg-glow"></div>
-      </div>
-    `;
-  };
-
-  const createPageBlock = (cfg) => {
-    const wrapper = document.createElement('div');
-    wrapper.id = cfg.id;
-
-    // Special rendering for road map
-    if (cfg.id === 'road-map-info') {
-      wrapper.className = 'roadmap-wrapper';
-      wrapper.style.marginBottom = '30px';
-      wrapper.innerHTML = `
-        <h2 class="about-title" style="text-align:center;margin-bottom:40px;">
-          <span data-i18n="${cfg.titleI18nKey}">${cfg.defaultTitle}</span>
-        </h2>
-        ${getRoadmapHTML(t)}
-      `;
-    } else {
-      wrapper.className = 'simple-card';
-      wrapper.style.marginBottom = '30px';
-      wrapper.innerHTML = `
-        <h2 class="about-title">
-          <span data-i18n="${cfg.titleI18nKey}">${cfg.defaultTitle}</span>
-        </h2>
-        <p class="content-text">
-          <span data-i18n="${cfg.descI18nKey}">${cfg.defaultDesc}</span>
-        </p>
-      `;
-    }
-
-    const headerEl = document.querySelector('main.main-wrapper > h1');
-    if (headerEl && headerEl.parentNode) {
-      headerEl.insertAdjacentElement('afterend', wrapper);
-    } else {
-      const main = document.querySelector('main.main-wrapper');
-      if (main) main.prepend(wrapper);
-    }
-
-    window.updateTexts?.();
-  };
-
-  // Restore a nav button to its original label (from data-i18n)
-  const restoreBtnLabel = (cfg) => {
-    const btn = document.getElementById(cfg.btnId);
-    if (!btn) return;
-    const key = btn.dataset.i18nOriginal || btn.getAttribute('data-i18n');
-    if (key) {
-      btn.textContent = t(key);
-      btn.dataset.i18n = key;
-    }
-  };
-
-  // Set a nav button to show "Back" label
-  const setBtnBackLabel = (cfg) => {
-    const btn = document.getElementById(cfg.btnId);
-    if (!btn) return;
-    // Store the original i18n key if not already saved
-    if (!btn.dataset.i18nOriginal) {
-      btn.dataset.i18nOriginal = btn.getAttribute('data-i18n') || '';
-    }
-    btn.textContent = t('about_back_btn');
-    btn.dataset.i18n = 'about_back_btn';
-  };
-
-  const navigateTo = (cfg) => {
-    // Restore all other buttons to their original labels
-    pagesConfig.forEach((c) => {
-      if (c.id !== cfg.id) restoreBtnLabel(c);
-    });
-
-    // Remove any other page blocks
-    pagesConfig.forEach((c) => {
-      if (c.id !== cfg.id) removePageBlock(c);
-    });
-
-    // If clicking the same button, toggle back to main
-    if (activePageId === cfg.id) {
-      removePageBlock(cfg);
-      activePageId = null;
-      restoreBtnLabel(cfg);
-      showMainContent();
-      return;
-    }
-
-    // Hide main content, show new page
-    hideMainContent();
-    removePageBlock(cfg); // remove if stale
-    createPageBlock(cfg);
-    activePageId = cfg.id;
-    setBtnBackLabel(cfg);
-  };
-
-  // Register handlers
-  pagesConfig.forEach((cfg) => {
-    document.getElementById(cfg.btnId)?.addEventListener('click', () => navigateTo(cfg));
-  });
-
-  // intent-more-btn also triggers the about page
-  document.getElementById('intent-more-btn')?.addEventListener('click', () => {
-    const aboutCfg = pagesConfig.find((p) => p.id === 'about-info');
-    if (aboutCfg) navigateTo(aboutCfg);
-  });
-
-
-
-  // Ссылки на ленты (колонки) с идеями
-  const feeds = [
-    document.getElementById('feed-1'),
-    document.getElementById('feed-2'),
-    document.getElementById('feed-3'),
+  const mainSections = [
+    document.getElementById('project-info'),
+    document.getElementById('ideas-feed'),
   ].filter(Boolean);
+  const ideaFeeds = ['feed-1', 'feed-2', 'feed-3']
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
 
-  const createForm = document.getElementById('create-nft-form');
+  const navigationItems = [
+    {
+      panelId: 'about-info',
+      buttonId: 'more-btn',
+      titleKey: 'about_title',
+      descriptionKey: 'about_desc',
+    },
+    {
+      panelId: 'road-map-info',
+      buttonId: 'road-map-btn',
+      titleKey: 'road_map_title',
+    },
+    {
+      panelId: 'meme-part-info',
+      buttonId: 'meme-part-btn',
+      titleKey: 'meme_part_title',
+      descriptionKey: 'meme_part_desc',
+    },
+    {
+      panelId: 'contacts-info',
+      buttonId: 'contacts-btn',
+      titleKey: 'contacts_title',
+      descriptionKey: 'contacts_desc',
+    },
+  ];
 
-  // Обработчик отправки формы идеи
-  const createIdea = (e) => {
-    e.preventDefault();
+  const roadmapStages = [
+    { number: 1, icon: '🔬' },
+    { number: 2, icon: '🎨' },
+    { number: 3, icon: '📱' },
+    { number: 4, icon: '📝' },
+    { number: 5, icon: '🪙' },
+    { number: 6, icon: '🤝' },
+    { number: 7, icon: '🌉' },
+    { number: 8, icon: '👤' },
+    { number: 9, icon: '🗳️' },
+  ];
 
-    const ideaInput = document.getElementById('idea-text');
-    const ideaText =
-      ideaInput && typeof ideaInput.value === 'string' ? ideaInput.value.trim() : '';
-    if (!ideaText) return;
-    alert('Создание идеи в этой версии недоступно: on-chain запись не подключена.');
-  };
-
-  const now = Date.now();
-
-  const mockIdeas = [
+  const currentTime = Date.now();
+  const demoIdeas = [
     {
       text: 'Умное распределение бюджета. В центре каждого города монитор, на котором происходит голосование жителей через приложение, на что в даннный момент важнее пустить ресурсы',
       likes: 12950,
-      createdAt: now - 1000 * 60 * 60 * 23 * 10,
+      createdAt: currentTime - 1000 * 60 * 60 * 23 * 10,
       id: 'f55dmN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K',
     },
     {
       text: 'В городах вместо обычных деревьев и кустарников нужно садить плодовые сортовые съедобные культуры, Земля - это дивный сад! К тому же переход на электричество и отказ от бензина в будущем улучшит экологию и можно будет всё съедать когда гуляешь)',
       likes: 13501,
-      createdAt: now - 1000 * 60 * 60 * 23 * 1,
+      createdAt: currentTime - 1000 * 60 * 60 * 23,
       id: '2jj5mN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K',
     },
     {
       text: 'Нужно собрать весь пластик которым захломлена планета, аккуратно расплавить его и сделать огромную скульптуру как память о грязной эпохе, сжигать нельзя, слишком много выбросов в атмосферу.',
       likes: 13081,
-      createdAt: now - 1000 * 60 * 60 * 24 * 2,
+      createdAt: currentTime - 1000 * 60 * 60 * 24 * 2,
       id: '1jK3mN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K',
     },
     {
       text: 'Ввести стандарт 100 вольт для всех жилых зон. Это на порядок безопаснее при авариях и снижает потери на преобразовании.',
       likes: 9240,
-      createdAt: now - 1000 * 60 * 60 * 24 * 5,
+      createdAt: currentTime - 1000 * 60 * 60 * 24 * 5,
       id: '5sG0hI2jK4mN6pR8s9tW1vX4yZ2aB0cE3fG6hI9jK2mN',
     },
     {
       text: 'Автомобили со 100% коэффициентом рециркуляции. Хватит плодить свалки, каждая деталь должна идти в новый цикл.',
       likes: 8850,
-      createdAt: now - 1000 * 60 * 60 * 24 * 1,
+      createdAt: currentTime - 1000 * 60 * 60 * 24,
       id: '2hX3yZ7aB1cE5fG0hI2jK4mN6pR8s9tW1vX4yZ2aB0cE7',
     },
     {
       text: 'Нам нужны ночные боты-ямоискатели. Маленькие роверы, которые сами находят трещины в асфальте и латают их, пока город спит.',
       likes: 7420,
-      createdAt: now - 1000 * 60 * 60 * 24 * 7,
+      createdAt: currentTime - 1000 * 60 * 60 * 24 * 7,
       id: '6mR8s7tW5vX2yZ8aB4cE0fG6hI1jK3mN5pR7s9tW2vX',
     },
     {
       text: 'Умная разметка: дороги должны светиться и менять полосы в зависимости от трафика.',
       likes: 6100,
-      createdAt: now - 1000 * 60 * 60 * 24 * 3,
+      createdAt: currentTime - 1000 * 60 * 60 * 24 * 3,
       id: '8vS7nKpR1aZwE9xMyt2hG6fBvD8uLq4pWjX5csM1TYrk',
     },
     {
       text: "Проект 'Гелиос': Орбитальная сеть зеркал для управления климатом планеты. Мы сделаем погоду предсказуемой.",
       likes: 12770,
-      createdAt: now - 1000 * 60 * 60 * 12,
+      createdAt: currentTime - 1000 * 60 * 60 * 12,
       id: '8mK2pL4nQ9rS5tW6vX3yZ7aB1cE8fG0hI4jK9mN2pR6s',
     },
     {
       text: 'Ресурсная база планеты должна пренадлежать всем. Если человек нашел минерал значит это его минерал',
       likes: 9500,
-      createdAt: now - 1000 * 60 * 60 * 24 * 4,
+      createdAt: currentTime - 1000 * 60 * 60 * 24 * 4,
       id: '4sL0aB8cE6fG1hI3jK5mN7pR9s1tW3vX5yZ7aB9cE1fG',
     },
     {
       text: 'Нужно из каджой страны взять лучшие законы, которые реально работают на пользу, объеденить их и тем самым создать одну страну на всех, убрав искуственные границы. Планета Земля - на ней живут Земляне. Всё просто)',
       likes: 10113,
-      createdAt: now - 1000 * 60 * 60 * 24 * 8,
+      createdAt: currentTime - 1000 * 60 * 60 * 24 * 8,
       id: '5kSdaB8cE6fG1hI3jK5mN7pR9s1tW3vX5yZ7aB9cE1fG',
     },
   ];
 
-  const formatDateYYYYMMDD = (ms) => {
-    const d = new Date(ms);
-    const pad = (n) => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-  };
+  let activePanelId = null;
+  let activeSortMode = 'diamonds_desc';
+  const ideaCardCache = new Map();
 
-  const getActiveFeeds = () => {
-    const isMobile = window.matchMedia('(max-width: 480px)').matches;
-    return isMobile ? feeds.filter((_, i) => i < 2) : feeds;
-  };
-
-  const sortIdeas = (items, mode) => {
-    const copy = [...items];
-    if (mode === 'diamonds_asc') copy.sort((a, b) => a.likes - b.likes);
-    else if (mode === 'created_desc')
-      copy.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    else copy.sort((a, b) => b.likes - a.likes);
-    return copy;
-  };
-
-  const formatShortId = (id) => {
-    if (!id) return 'N/A';
-    return id.length > 10 ? `${id.slice(0, 4)}...${id.slice(-4)}` : id;
-  };
-
-  // Перерисовка с keyed-переиспользованием DOM.
-  // Идея: не очищаем feed полностью (innerHTML=''), а перемещаем/обновляем существующие карточки.
-  const renderFeed = (items, sortMode) => {
-    const activeFeeds = getActiveFeeds();
-
-    const sorted = sortIdeas(items, sortMode);
-
-    // Получаем текущие карточки из DOM, чтобы переиспользовать
-    const cardById = new Map();
-    const allCurrentCards = document.querySelectorAll('.simple-card[data-idea-id]');
-    allCurrentCards.forEach((el) => {
-      const ideaId = el.getAttribute('data-idea-id');
-      if (ideaId) cardById.set(ideaId, el);
-    });
-
-    // Быстрое обновление метаданных карточек (текст/дата/likes/shortId)
-    const ensureCardContent = (cardEl, item) => {
-      let ideaTextEl = cardEl.querySelector('.idea-text');
-      let likeBadgeEl = cardEl.querySelector('.like-badge');
-      let shortIdEl = cardEl.querySelector('.author-id-value');
-      let createdAtEl = cardEl.querySelector('.created-at');
-
-      if (!ideaTextEl) {
-        ideaTextEl = document.createElement('p');
-        ideaTextEl.className = 'idea-text';
-        cardEl.insertBefore(ideaTextEl, cardEl.firstChild);
-      }
-      if (!likeBadgeEl) {
-        likeBadgeEl = cardEl.querySelector('.like-badge');
-      }
-      if (!shortIdEl) {
-        shortIdEl = cardEl.querySelector('.author-id-value');
-      }
-      if (!createdAtEl) {
-        createdAtEl = cardEl.querySelector('.created-at');
-      }
-
-      // Всегда обновляем то, что может отличаться
-      ideaTextEl.textContent = `"${item.text}"`;
-      if (likeBadgeEl) {
-        likeBadgeEl.textContent = `💎 ${item.likes}`;
-        likeBadgeEl.setAttribute('data-likes', String(item.likes));
-      }
-      if (shortIdEl) shortIdEl.textContent = formatShortId(item.id);
-      if (createdAtEl) createdAtEl.textContent = formatDateYYYYMMDD(item.createdAt);
-
-      // На всякий случай синхронизируем data-* у кнопки, если потребуется
-      const btn = cardEl.querySelector('.vote-btn');
-      if (btn) {
-        btn.dataset.voteId = item.id;
-      }
-    };
-
-    // 1) Убираем карточки из активных колонок (не пересоздаём)
-    activeFeeds.forEach((f) => {
-      while (f.firstChild) f.removeChild(f.firstChild);
-    });
-
-    // 2) Добавляем в нужный порядок, переиспользуя существующие элементы
-    sorted.forEach((item, index) => {
-      const targetFeed = activeFeeds[index % activeFeeds.length];
-      if (!targetFeed) return;
-
-      let cardEl = cardById.get(item.id);
-      if (!cardEl) {
-        cardEl = document.createElement('div');
-        cardById.set(item.id, cardEl);
-        cardEl.className = 'simple-card';
-        cardEl.setAttribute('data-idea-id', item.id);
-
-        const shortId = formatShortId(item.id);
-
-        cardEl.innerHTML = `
-          <p class="idea-text">"${item.text}"</p>
-
-          <div class="idea-vote-row">
-            <span id="likes-${item.id}" class="like-badge" data-likes="${item.likes}">💎 ${item.likes}</span>
-            <button class="vote-btn up" type="button" data-vote-id="${item.id}" data-vote-change="1" aria-label="Vote">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 3L4 11H9V21H15V11H20L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-
-          <div class="idea-meta">
-            <small class="author-meta">
-              <span class="author-id-label-text">${t('author_id_label')}</span>:
-              <span class="author-id-value">${shortId}</span>
-            </small>
-
-            <small class="created-at">${formatDateYYYYMMDD(item.createdAt)}</small>
-          </div>
-        `;
-      } else {
-        ensureCardContent(cardEl, item);
-      }
-
-      targetFeed.appendChild(cardEl);
+  const setMainSectionsVisible = (isVisible) => {
+    mainSections.forEach((section) => {
+      section.hidden = !isVisible;
     });
   };
 
-  let sortMode = 'diamonds_desc';
-
-  const readSortModeFromUI = () => {
-    const checked = document.querySelector('input[name="sort"]:checked');
-    sortMode = checked?.value || 'diamonds_desc';
+  const removeNavigationPanels = (exceptPanelId = null) => {
+    navigationItems.forEach(({ panelId }) => {
+      if (panelId !== exceptPanelId) document.getElementById(panelId)?.remove();
+    });
   };
 
+  const setNavigationButtonState = (item, isBackButton) => {
+    const button = document.getElementById(item.buttonId);
+    if (!button) return;
 
-  // Загрузка/отрисовка идей на странице
-  const loadIdeas = () => {
-    // Не делаем тяжёлый innerHTML-пересоз при каждом вызове,
-    // renderFeed сам переиспользует карточки и перемещает их по колонкам.
-    renderFeed(mockIdeas, sortMode);
+    button.dataset.i18n = isBackButton
+      ? 'about_back_btn'
+      : button.dataset.originalI18n;
+    button.textContent = translate(button.dataset.i18n);
   };
 
-  // Обработка кликов по кнопкам голосования
-  document.getElementById('ideas-feed')?.addEventListener('click', (e) => {
-    const btn = e.target instanceof Element ? e.target.closest('.vote-btn') : null;
+  const createElement = (tagName, className, text) => {
+    const element = document.createElement(tagName);
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+  };
 
-    if (!btn) return;
-    const id = btn.dataset.voteId;
-    if (!id) return;
+  const createRoadmapConnector = (number, pointsRight) => {
+    const connector = createElement(
+      'div',
+      `step-connector ${pointsRight ? 'arrow-right' : 'arrow-left'}`,
+    );
+    connector.dataset.connector = String(number);
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 40 40');
+    svg.setAttribute('aria-hidden', 'true');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M8 20h24M22 10l10 10-10 10');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', 'currentColor');
+    path.setAttribute('stroke-width', '2.5');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    svg.append(path);
+    connector.append(svg);
+    return connector;
+  };
+
+  const createRoadmap = () => {
+    const section = createElement('div', 'roadmap-section');
+    const track = createElement('div', 'roadmap-snake-track');
+
+    roadmapStages.forEach((stage, index) => {
+      const stageKey = `stage_${stage.number}`;
+      const status = translate(`${stageKey}_status`);
+      const step = createElement(
+        'div',
+        `roadmap-step ${index % 2 === 0 ? 'step-left' : 'step-right'}`,
+      );
+      step.dataset.step = String(stage.number);
+
+      const marker = createElement('div', 'step-marker');
+      marker.append(
+        createElement('span', 'step-num', String(stage.number).padStart(2, '0')),
+        createElement('span', 'step-icon', stage.icon),
+      );
+
+      const card = createElement('div', 'step-card');
+      const statusLabel = createElement(
+        'div',
+        `step-status status-${status}`,
+        translate(`status_${status}`),
+      );
+      statusLabel.dataset.i18n = `status_${status}`;
+
+      const title = createElement('h3', 'step-title', translate(`${stageKey}_title`));
+      title.dataset.i18n = `${stageKey}_title`;
+      const description = createElement('p', 'step-desc', translate(`${stageKey}_desc`));
+      description.dataset.i18n = `${stageKey}_desc`;
+      card.append(statusLabel, title, description);
+      step.append(marker, card);
+      track.append(step);
+
+      if (index < roadmapStages.length - 1) {
+        track.append(createRoadmapConnector(stage.number, index % 2 === 0));
+      }
+    });
+
+    section.append(track, createElement('div', 'roadmap-bg-glow'));
+    return section;
+  };
+
+  const createNavigationPanel = (item) => {
+    const panel = createElement(
+      'section',
+      item.panelId === 'road-map-info' ? 'roadmap-wrapper' : 'simple-card navigation-panel',
+    );
+    panel.id = item.panelId;
+
+    const heading = createElement('h2', 'about-title', translate(item.titleKey));
+    heading.dataset.i18n = item.titleKey;
+    panel.append(heading);
+
+    if (item.panelId === 'road-map-info') {
+      heading.classList.add('roadmap-title');
+      panel.append(createRoadmap());
+    } else {
+      const description = createElement(
+        'p',
+        'content-text',
+        translate(item.descriptionKey),
+      );
+      description.dataset.i18n = item.descriptionKey;
+      panel.append(description);
+    }
+
+    document.querySelector('.main-wrapper > h1')?.insertAdjacentElement('afterend', panel);
+    applyTranslations();
+  };
+
+  const navigateTo = (item) => {
+    const isClosingActivePanel = activePanelId === item.panelId;
+    removeNavigationPanels(isClosingActivePanel ? null : item.panelId);
+
+    navigationItems.forEach((navigationItem) => {
+      setNavigationButtonState(navigationItem, false);
+    });
+
+    if (isClosingActivePanel) {
+      activePanelId = null;
+      setMainSectionsVisible(true);
+      return;
+    }
+
+    document.getElementById(item.panelId)?.remove();
+    setMainSectionsVisible(false);
+    createNavigationPanel(item);
+    setNavigationButtonState(item, true);
+    activePanelId = item.panelId;
+  };
+
+  navigationItems.forEach((item) => {
+    const button = document.getElementById(item.buttonId);
+    if (!button) return;
+    button.dataset.originalI18n = button.dataset.i18n;
+    button.addEventListener('click', () => navigateTo(item));
   });
 
-  createForm?.addEventListener('submit', createIdea);
-
-  document.addEventListener('change', (e) => {
-    const target = e.target;
-    if (!(target instanceof HTMLInputElement)) return;
-    if (target.name !== 'sort') return;
-
-    readSortModeFromUI();
-    loadIdeas();
+  document.getElementById('intent-more-btn')?.addEventListener('click', () => {
+    navigateTo(navigationItems[0]);
   });
 
-  // Дребаунс/коалесинг на resize: чтобы снизить шанс микрофризов.
-  // Рендер переносим на следующий кадр и выполняем только после того, как resize "успокоился".
-  let resizeTimer = 0;
-  let resizeRaf = 0;
-  const scheduleLoadIdeas = () => {
-    if (resizeRaf) cancelAnimationFrame(resizeRaf);
-    resizeRaf = requestAnimationFrame(() => {
-      clearTimeout(resizeTimer);
-      // Убрали лишнюю задержку: при резком изменении ширины колонки
-      // должны успевать перестроиться без «подвисания».
-      resizeTimer = window.setTimeout(() => {
-        loadIdeas();
-      }, 0);
-    });
+  document.getElementById('close-info-btn')?.addEventListener('click', () => {
+    document.getElementById('project-info')?.setAttribute('hidden', '');
+  });
+
+  document.getElementById('connect-wallet-btn')?.addEventListener('click', () => {
+    alert(translate('wallet_disconnected'));
+  });
+
+
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const pad = (value) => String(value).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   };
 
-  window.addEventListener('resize', scheduleLoadIdeas, { passive: true });
+  const shortenId = (id) => `${id.slice(0, 4)}...${id.slice(-4)}`;
 
-  // На некоторых браузерах media-query могут «пробиваться» без событий resize.
-  // Быстро подстрахуемся, чтобы колонки не отставали от ширины.
-  if (window.matchMedia) {
-    const mql = window.matchMedia('(max-width: 480px)');
-    mql.addEventListener?.('change', scheduleLoadIdeas);
+  const sortIdeas = (ideas, sortMode) => [...ideas].sort((first, second) => {
+    if (sortMode === 'diamonds_asc') return first.likes - second.likes;
+    if (sortMode === 'created_desc') return second.createdAt - first.createdAt;
+    return second.likes - first.likes;
+  });
+
+  const createIdeaCard = (idea) => {
+    const card = createElement('article', 'simple-card idea-card');
+
+    const ideaText = createElement('p', 'idea-text', `“${idea.text}”`);
+    const voteRow = createElement('div', 'idea-vote-row');
+    const likeBadge = createElement('span', 'like-badge', `💎 ${idea.likes}`);
+    const voteButton = createElement('button', 'vote-btn up');
+    voteButton.type = 'button';
+    voteButton.dataset.i18nAriaLabel = 'vote_btn_label';
+    voteButton.setAttribute('aria-label', translate('vote_btn_label'));
+
+    const voteIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    voteIcon.setAttribute('viewBox', '0 0 24 24');
+    voteIcon.setAttribute('aria-hidden', 'true');
+    const votePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    votePath.setAttribute('d', 'M12 3L4 11H9V21H15V11H20L12 3Z');
+    voteIcon.append(votePath);
+    voteButton.append(voteIcon);
+    voteRow.append(likeBadge, voteButton);
+
+    const metadata = createElement('div', 'idea-meta');
+    const author = createElement('small', 'author-meta');
+    const authorLabel = createElement('span', 'author-id-label-text', translate('author_id_label'));
+    authorLabel.dataset.i18n = 'author_id_label';
+    author.append(authorLabel, ': ', createElement('span', 'author-id-value', shortenId(idea.id)));
+    metadata.append(author, createElement('small', 'created-at', formatDate(idea.createdAt)));
+    card.append(ideaText, voteRow, metadata);
+    return card;
+  };
+
+  const renderIdeas = () => {
+    const visibleFeeds = mobileFeedQuery.matches ? ideaFeeds.slice(0, 2) : ideaFeeds;
+    const fragments = visibleFeeds.map(() => document.createDocumentFragment());
+
+    sortIdeas(demoIdeas, activeSortMode).forEach((idea, index) => {
+      if (!ideaCardCache.has(idea.id)) {
+        ideaCardCache.set(idea.id, createIdeaCard(idea));
+      }
+      fragments[index % visibleFeeds.length]?.append(ideaCardCache.get(idea.id));
+    });
+
+    ideaFeeds.forEach((feed) => feed.replaceChildren());
+    visibleFeeds.forEach((feed, index) => feed.append(fragments[index]));
+  };
+
+  document.getElementById('ideas-feed')?.addEventListener('click', (event) => {
+    if (event.target instanceof Element && event.target.closest('.vote-btn')) {
+      alert(translate('voting_unavailable'));
+    }
+  });
+
+  document.querySelector('.type-selector')?.addEventListener('change', (event) => {
+    if (!(event.target instanceof HTMLInputElement) || event.target.name !== 'sort') return;
+    activeSortMode = event.target.value;
+    renderIdeas();
+  });
+
+  if (typeof mobileFeedQuery.addEventListener === 'function') {
+    mobileFeedQuery.addEventListener('change', renderIdeas);
+  } else {
+    mobileFeedQuery.addListener?.(renderIdeas);
   }
 
+  applyTranslations();
+  renderIdeas();
 
-  window.updateTexts?.();
-
-  readSortModeFromUI();
-  loadIdeas();
-
-  document.getElementById('current-year').textContent = new Date().getFullYear();
+  const currentYear = document.getElementById('current-year');
+  if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 });
-
