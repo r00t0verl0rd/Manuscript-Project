@@ -1,7 +1,8 @@
 // Loads translations from YAML catalogs and exposes a small localization API.
 (() => {
     const supportedLanguages = ["ru", "en"];
-    let currentLanguage = "ru";
+    const browserLang = (navigator.language || navigator.languages?.[0] || "").toLowerCase();
+    let currentLanguage = browserLang.startsWith("ru") ? "ru" : "en";
     const catalogs = Object.create(null);
 
     const loadCatalog = async (language) => {
