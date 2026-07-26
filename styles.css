@@ -363,45 +363,44 @@ main.main-wrapper {
     }
 }
 
-/* Meme Part — зелёный стиль */
+/* Meme Part — оранжевый стиль как у Connect */
 .header-row-bottom #meme-part-btn {
-    background: rgba(57, 255, 20, 0.12);
-    border-color: rgba(101, 207, 24, 0.5);
-    color: var(--neon-green);
-    text-shadow: 0 0 6px rgba(57, 255, 20, 0.3);
-    animation: memeGreenPulse 2s ease-in-out infinite;
+    background: rgba(255, 94, 0, 0.15);
+    border-color: rgba(255, 94, 0, 0.5);
+    color: var(--neon-orange);
+    text-shadow: 0 0 6px rgba(255, 94, 0, 0.3);
+    animation: memeOrangePulse 2s ease-in-out infinite;
     flex-shrink: 0;
     font-size: var(--menu-font-size);
     padding: var(--menu-padding-y) var(--menu-padding-x);
 }
 
 .header-row-bottom #meme-part-btn:hover {
-    background: rgba(57, 255, 20, 0.25);
+    background: rgba(255, 94, 0, 0.3);
     color: #fff;
-    box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
-    border-color: rgba(101, 207, 24, 0.5);
-    ;
+    box-shadow: 0 0 30px rgba(255, 94, 0, 0.4);
+    border-color: rgba(255, 94, 0, 0.8);
 }
 
 @media (hover: none) and (pointer: coarse) {
     .header-row-bottom #meme-part-btn:active {
-        background: rgba(57, 255, 20, 0.25);
+        background: rgba(255, 94, 0, 0.3);
         color: #fff;
-        box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
-        border-color: rgba(101, 207, 24, 0.5);
+        box-shadow: 0 0 30px rgba(255, 94, 0, 0.4);
+        border-color: rgba(255, 94, 0, 0.8);
     }
 }
 
-@keyframes memeGreenPulse {
+@keyframes memeOrangePulse {
 
     0%,
     100% {
-        box-shadow: 0 0 5px rgba(57, 255, 20, 0.15);
+        box-shadow: 0 0 5px rgba(255, 94, 0, 0.15);
         transform: scale(1);
     }
 
     50% {
-        box-shadow: 0 0 18px rgba(57, 255, 20, 0.35);
+        box-shadow: 0 0 18px rgba(255, 94, 0, 0.35);
         transform: scale(1.04);
     }
 }
@@ -505,23 +504,6 @@ main.main-wrapper {
     .radio-custom {
         font-size: clamp(0.7rem, 3.2vw, 0.85rem);
         padding: clamp(5px, 1.5vw, 8px) clamp(8px, 2.5vw, 16px);
-    }
-}
-
-/* МОБИЛЬНЫЙ + ЛАНДШАФТ: переопределяем radio-кнопки, чтобы они не растягивались */
-@media (orientation: landscape) and (max-width: 480px) {
-    .sort-row {
-        gap: 4px;
-        margin-bottom: 6px;
-    }
-
-    .type-selector {
-        gap: 3px;
-    }
-
-    .type-selector .radio-custom {
-        font-size: clamp(0.55rem, 1.6vw, 0.65rem);
-        padding: clamp(2px, 0.5vw, 4px) clamp(5px, 1.2vw, 10px);
     }
 }
 
@@ -686,6 +668,7 @@ h2 {
     width: 100%;
     text-align: justify;
     text-justify: inter-word;
+    white-space: pre-line;
 }
 
 #about-info.simple-card::before {
@@ -960,104 +943,25 @@ h2 {
 
 .close-icon {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 24px;
-    height: 24px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 0;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #bd00ff;
+    color: #bd00ff;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 5;
+    cursor: pointer;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
-/* Внешнее кольцо — циан */
-.close-icon::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 1.5px solid rgba(0, 229, 255, 0.2);
-    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
-}
-
-/* Внутреннее кольцо — пурпур */
-.close-icon::after {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    border-radius: 50%;
-    border: 1px solid rgba(189, 0, 255, 0.15);
-    transition: border-color 0.4s ease, transform 0.4s ease;
-}
-
-/* Крестик через SVG */
-.close-icon svg {
-    width: 14px;
-    height: 14px;
-    position: relative;
-    z-index: 1;
-    opacity: 0.4;
-    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
-}
-
-.close-icon svg line {
-    stroke: rgba(255, 255, 255, 0.5);
-    stroke-width: 2;
-    stroke-linecap: round;
-    transition: stroke 0.3s ease;
-}
-
-/* Hover: анимация раскрутки и свечение */
 .close-icon:hover {
-    transform: rotate(135deg) scale(1.15);
-}
-
-.close-icon:hover::before {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 12px rgba(0, 229, 255, 0.3),
-        0 0 30px rgba(0, 229, 255, 0.1);
-    transform: scale(1.05);
-}
-
-.close-icon:hover::after {
-    border-color: var(--neon-purple);
-    transform: rotate(180deg) scale(0.95);
-    box-shadow: 0 0 8px rgba(189, 0, 255, 0.2);
-}
-
-.close-icon:hover svg {
-    opacity: 1;
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 4px var(--neon-cyan)) drop-shadow(0 0 10px rgba(0, 229, 255, 0.3));
-}
-
-.close-icon:hover svg line {
-    stroke: #fff;
-}
-
-/* Mobile: крупнее */
-@media (max-width: 480px) {
-    .close-icon {
-        width: 18px;
-        height: 18px;
-        top: 10px;
-        right: 10px;
-    }
-
-    .close-icon svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .close-icon::after {
-        inset: 5px;
-    }
+    transform: rotate(90deg);
+    background: #bd00ff;
+    color: #fff;
+    box-shadow: 0 0 15px #bd00ff;
 }
 
 .type-selector .radio-custom {
