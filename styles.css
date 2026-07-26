@@ -62,7 +62,7 @@ body {
     -webkit-overflow-scrolling: touch;
     margin: 0;
     padding: 0;
-    font-family: 'Comfortaa', cursive;
+    font-family: 'Comfortaa';
     background: linear-gradient(160deg, #743909 30%, #2f0a35 70%) no-repeat;
     background-attachment: fixed;
     color: #253b41;
