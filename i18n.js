@@ -53,7 +53,7 @@
         .catch(revealPage);
 
     // Avoid leaving the page blank if fonts/i18n hang
-    setTimeout(revealPage, 1000);
+    // setTimeout(revealPage, 1000);
 
     const translate = (key) => catalogs[currentLanguage]?.[key] ?? key;
 
