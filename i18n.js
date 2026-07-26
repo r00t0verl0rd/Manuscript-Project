@@ -1,10 +1,23 @@
-// Lightweight localization API for the static application.
-// Тексты вынесены в отдельный файл translations.js для удобства редактирования.
-
+// Loads translations from YAML catalogs and exposes a small localization API.
 (() => {
+    const supportedLanguages = ["ru", "en"];
     let currentLanguage = "ru";
-    const translationCatalog = TRANSLATIONS;
-    const translate = (key) => translationCatalog[currentLanguage]?.[key] ?? key;
+    const catalogs = Object.create(null);
+
+    const loadCatalog = async (language) => {
+        const response = await fetch(`locales/${language}.yml`);
+        if (!response.ok) throw new Error(`Unable to load locale: ${language}`);
+        catalogs[language] = window.jsyaml.load(await response.text()) || {};
+    };
+
+    const ready = Promise.all(supportedLanguages.map(loadCatalog)).then(() => {
+        document.documentElement.lang = currentLanguage;
+        applyTranslations();
+        document.dispatchEvent(new CustomEvent("i18n:ready"));
+    });
+
+    const translate = (key) => catalogs[currentLanguage]?.[key] ?? key;
+
     const applyTranslations = (root = document) => {
         root.querySelectorAll("[data-i18n]").forEach((element) => {
             const key = element.dataset.i18n;
@@ -16,6 +29,11 @@
             if (key) element.setAttribute("aria-label", translate(key));
         });
 
+        root.querySelectorAll("[data-i18n-title]").forEach((element) => {
+            const key = element.dataset.i18nTitle;
+            if (key) element.setAttribute("title", translate(key));
+        });
+
         const languageButton = document.getElementById("lang-toggle");
         if (languageButton) {
             languageButton.textContent = currentLanguage === "ru" ? "🇬🇧" : "🇷🇺";
@@ -23,24 +41,25 @@
     };
 
     const setLanguage = (language) => {
-        currentLanguage = language === "en" ? "en" : "ru";
+        currentLanguage = supportedLanguages.includes(language) ? language : "ru";
         document.documentElement.lang = currentLanguage;
         applyTranslations();
+        document.dispatchEvent(new CustomEvent("i18n:changed"));
     };
 
     const toggleLanguage = () => {
         setLanguage(currentLanguage === "ru" ? "en" : "ru");
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("lang-toggle")?.addEventListener("click", toggleLanguage);
-        setLanguage(currentLanguage);
-    });
-
     window.AppI18n = Object.freeze({
         applyTranslations,
         getLanguage: () => currentLanguage,
+        ready,
         setLanguage,
         translate,
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("lang-toggle")?.addEventListener("click", toggleLanguage);
     });
 })();

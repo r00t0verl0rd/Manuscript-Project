@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const i18n = window.AppI18n;
-  const translate = (key) => i18n?.translate(key) ?? key;
-  const applyTranslations = () => i18n?.applyTranslations();
+  i18n.ready.then(() => {
+    const translate = (key) => i18n.translate(key);
+    const applyTranslations = () => i18n.applyTranslations();
   const mobileFeedQuery = window.matchMedia('(max-width: 480px)');
 
   const mainSections = [
@@ -51,68 +52,24 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   const currentTime = Date.now();
-  const demoIdeas = [
-    {
-      text: 'Умное распределение бюджета. В центре каждого города монитор, на котором происходит голосование жителей через приложение, на что в даннный момент важнее пустить ресурсы',
-      likes: 12950,
-      createdAt: currentTime - 1000 * 60 * 60 * 23 * 10,
-      id: 'f55dmN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K',
-    },
-    {
-      text: 'В городах вместо обычных деревьев и кустарников нужно садить плодовые сортовые съедобные культуры, Земля - это дивный сад! К тому же переход на электричество и отказ от бензина в будущем улучшит экологию и можно будет всё съедать когда гуляешь)',
-      likes: 13501,
-      createdAt: currentTime - 1000 * 60 * 60 * 23,
-      id: '2jj5mN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K',
-    },
-    {
-      text: 'Нужно собрать весь пластик которым захломлена планета, аккуратно расплавить его и сделать огромную скульптуру как память о грязной эпохе, сжигать нельзя, слишком много выбросов в атмосферу.',
-      likes: 13081,
-      createdAt: currentTime - 1000 * 60 * 60 * 24 * 2,
-      id: '1jK3mN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K',
-    },
-    {
-      text: 'Ввести стандарт 100 вольт для всех жилых зон. Это на порядок безопаснее при авариях и снижает потери на преобразовании.',
-      likes: 9240,
-      createdAt: currentTime - 1000 * 60 * 60 * 24 * 5,
-      id: '5sG0hI2jK4mN6pR8s9tW1vX4yZ2aB0cE3fG6hI9jK2mN',
-    },
-    {
-      text: 'Автомобили со 100% коэффициентом рециркуляции. Хватит плодить свалки, каждая деталь должна идти в новый цикл.',
-      likes: 8850,
-      createdAt: currentTime - 1000 * 60 * 60 * 24,
-      id: '2hX3yZ7aB1cE5fG0hI2jK4mN6pR8s9tW1vX4yZ2aB0cE7',
-    },
-    {
-      text: 'Нам нужны ночные боты-ямоискатели. Маленькие роверы, которые сами находят трещины в асфальте и латают их, пока город спит.',
-      likes: 7420,
-      createdAt: currentTime - 1000 * 60 * 60 * 24 * 7,
-      id: '6mR8s7tW5vX2yZ8aB4cE0fG6hI1jK3mN5pR7s9tW2vX',
-    },
-    {
-      text: 'Умная разметка: дороги должны светиться и менять полосы в зависимости от трафика.',
-      likes: 6100,
-      createdAt: currentTime - 1000 * 60 * 60 * 24 * 3,
-      id: '8vS7nKpR1aZwE9xMyt2hG6fBvD8uLq4pWjX5csM1TYrk',
-    },
-    {
-      text: "Проект 'Гелиос': Орбитальная сеть зеркал для управления климатом планеты. Мы сделаем погоду предсказуемой.",
-      likes: 12770,
-      createdAt: currentTime - 1000 * 60 * 60 * 12,
-      id: '8mK2pL4nQ9rS5tW6vX3yZ7aB1cE8fG0hI4jK9mN2pR6s',
-    },
-    {
-      text: 'Ресурсная база планеты должна пренадлежать всем. Если человек нашел минерал значит это его минерал',
-      likes: 9500,
-      createdAt: currentTime - 1000 * 60 * 60 * 24 * 4,
-      id: '4sL0aB8cE6fG1hI3jK5mN7pR9s1tW3vX5yZ7aB9cE1fG',
-    },
-    {
-      text: 'Нужно из каджой страны взять лучшие законы, которые реально работают на пользу, объеденить их и тем самым создать одну страну на всех, убрав искуственные границы. Планета Земля - на ней живут Земляне. Всё просто)',
-      likes: 10113,
-      createdAt: currentTime - 1000 * 60 * 60 * 24 * 8,
-      id: '5kSdaB8cE6fG1hI3jK5mN7pR9s1tW3vX5yZ7aB9cE1fG',
-    },
+  const demoIdeaMetadata = [
+    [12950, 23 * 10, 'f55dmN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K'],
+    [13501, 23, '2jj5mN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K'],
+    [13081, 24 * 2, '1jK3mN5pR7s9tW2vX4yZ0aB8cE6fG1hI3jK5mN7pR9K'],
+    [9240, 24 * 5, '5sG0hI2jK4mN6pR8s9tW1vX4yZ2aB0cE3fG6hI9jK2mN'],
+    [8850, 24, '2hX3yZ7aB1cE5fG0hI2jK4mN6pR8s9tW1vX4yZ2aB0cE7'],
+    [7420, 24 * 7, '6mR8s7tW5vX2yZ8aB4cE0fG6hI1jK3mN5pR7s9tW2vX'],
+    [6100, 24 * 3, '8vS7nKpR1aZwE9xMyt2hG6fBvD8uLq4pWjX5csM1TYrk'],
+    [12770, 12, '8mK2pL4nQ9rS5tW6vX3yZ7aB1cE8fG0hI4jK9mN2pR6s'],
+    [9500, 24 * 4, '4sL0aB8cE6fG1hI3jK5mN7pR9s1tW3vX5yZ7aB9cE1fG'],
+    [10113, 24 * 8, '5kSdaB8cE6fG1hI3jK5mN7pR9s1tW3vX5yZ7aB9cE1fG'],
   ];
+  const demoIdeas = () => demoIdeaMetadata.map(([likes, hoursAgo, id], index) => ({
+    text: translate(`idea_${index + 1}_text`),
+    likes,
+    createdAt: currentTime - 1000 * 60 * 60 * hoursAgo,
+    id,
+  }));
 
   let activePanelId = null;
   let activeSortMode = 'diamonds_desc';
@@ -330,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const visibleFeeds = mobileFeedQuery.matches ? ideaFeeds.slice(0, 2) : ideaFeeds;
     const fragments = visibleFeeds.map(() => document.createDocumentFragment());
 
-    sortIdeas(demoIdeas, activeSortMode).forEach((idea, index) => {
+    sortIdeas(demoIdeas(), activeSortMode).forEach((idea, index) => {
       if (!ideaCardCache.has(idea.id)) {
         ideaCardCache.set(idea.id, createIdeaCard(idea));
       }
@@ -359,9 +316,16 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileFeedQuery.addListener?.(renderIdeas);
   }
 
+  document.addEventListener('i18n:changed', () => {
+    ideaCardCache.clear();
+    applyTranslations();
+    renderIdeas();
+  });
+
   applyTranslations();
   renderIdeas();
 
   const currentYear = document.getElementById('current-year');
   if (currentYear) currentYear.textContent = String(new Date().getFullYear());
+  });
 });

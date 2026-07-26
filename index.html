@@ -19,21 +19,21 @@
     <header class="header-container">
         <div class="header-row-top">
             <div id="about-mini-section">
-                <button id="contacts-btn" class="simple-btn" type="button" data-i18n="contacts_btn">Contacts</button>
-                <button id="more-btn" class="simple-btn" type="button" data-i18n="more_btn">About</button>
-                <button id="road-map-btn" class="simple-btn" type="button" data-i18n="road_map_btn">Road Map</button>
+                <button id="contacts-btn" class="simple-btn" type="button" data-i18n="contacts_btn"></button>
+                <button id="more-btn" class="simple-btn" type="button" data-i18n="more_btn"></button>
+                <button id="road-map-btn" class="simple-btn" type="button" data-i18n="road_map_btn"></button>
             </div>
             <div>
-                <button id="lang-toggle" class="lang-flag-btn" type="button" aria-label="Switch language">🇬🇧</button>
+                <button id="lang-toggle" class="lang-flag-btn" type="button" data-i18n-aria-label="switch_language">🇬🇧</button>
             </div>
         </div>
         <div class="header-row-bottom">
-            <button id="meme-part-btn" class="simple-btn" type="button" data-i18n="meme_part_btn">Meme Part</button>
+            <button id="meme-part-btn" class="simple-btn" type="button" data-i18n="meme_part_btn"></button>
             <div class="header-wallet-block">
-                <div class="wallet-info" data-i18n="wallet_balance">Баланс: ?.?</div>
+                <div class="wallet-info" data-i18n="wallet_balance"></div>
                 <div id="wallet-mini-section">
                     <button id="connect-wallet-btn" class="simple-btn" type="button"
-                        data-i18n="connect_wallet_btn">Connect</button>
+                        data-i18n="connect_wallet_btn"></button>
                 </div>
             </div>
         </div>
@@ -42,15 +42,15 @@
     <!-- Контент: шапка вынесена за пределы #content -->
     <div id="content">
         <main class="main-wrapper">
-            <h1 data-i18n="header_title">MANUSCRIPT PROJECT</h1>
+            <h1 data-i18n="header_title"></h1>
 
             <div id="project-info" class="simple-card">
-                <button id="close-info-btn" class="close-icon" type="button" aria-label="Close">&times;</button>
-                <h2 data-i18n="info_title">ААААААА</h2>
-                <p class="content-text" data-i18n="info_desc">BBBBBBB</p>
+                <button id="close-info-btn" class="close-icon" type="button" data-i18n-aria-label="close_btn">&times;</button>
+                <h2 data-i18n="info_title"></h2>
+                <p class="content-text" data-i18n="info_desc"></p>
                 <div class="intent-more-wrapper">
                     <button id="intent-more-btn" class="simple-btn" type="button"
-                        data-i18n="intent_more_btn">ещё</button>
+                        data-i18n="intent_more_btn"></button>
                 </div>
             </div>
 
@@ -59,52 +59,52 @@
                 <h2 data-i18n="community_ideas_title"></h2>
 
                 <div class="sort-row">
-                    <div class="sort-label" aria-hidden="true" title="Sort"></div>
-                    <div class="type-selector" role="group" aria-label="Idea sorting">
+                    <div class="sort-label" aria-hidden="true" data-i18n-title="sort_title"></div>
+                    <div class="type-selector" role="group" data-i18n-aria-label="sort_aria_label">
                         <label class="radio-label">
                             <input type="radio" name="sort" value="diamonds_desc" checked />
-                            <span class="radio-custom">💎 Max</span>
+                            <span class="radio-custom" data-i18n="sort_max"></span>
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="sort" value="diamonds_asc" />
-                            <span class="radio-custom">💎 Min</span>
+                            <span class="radio-custom" data-i18n="sort_min"></span>
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="sort" value="created_desc" />
-                            <span class="radio-custom">⏱ New</span>
+                            <span class="radio-custom" data-i18n="sort_new"></span>
                         </label>
                     </div>
                 </div>
 
                 <div class="feed-columns">
                     <div class="feed-column" data-feed-col="1">
-                        <h3 data-i18n="feed_1_title">Feed 1</h3>
+                        <h3 data-i18n="feed_1_title"></h3>
                         <div id="feed-1"></div>
                     </div>
                     <div class="feed-column" data-feed-col="2">
-                        <h3 data-i18n="feed_2_title">Feed 2</h3>
+                        <h3 data-i18n="feed_2_title"></h3>
                         <div id="feed-2"></div>
                     </div>
                     <div class="feed-column" data-feed-col="3">
-                        <h3 data-i18n="feed_3_title">Feed 3</h3>
+                        <h3 data-i18n="feed_3_title"></h3>
                         <div id="feed-3"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Партнёры (всегда на всех страницах) -->
-            <section class="partners-section" aria-label="Partners">
-                <h2 data-i18n="partners_title">Партнёры</h2>
+            <section class="partners-section" data-i18n-aria-label="partners_aria_label">
+                <h2 data-i18n="partners_title"></h2>
 
                 <div class="partners-logos">
-                    <div class="partner-logo" aria-label="Partner 1">
+                    <div class="partner-logo" data-i18n-aria-label="partner_1_aria_label">
                         <svg width="220" height="30" viewBox="0 0 220 30" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
                             <!-- Partner 1: BTC-like coin (demo wide) -->
                             <rect x="0" y="4" width="220" height="22" rx="8" fill="rgba(255,180,0,0.06)"
                                 stroke="rgba(255,180,0,0.18)" />
                             <text x="112" y="20" text-anchor="middle" font-family="Russo One, sans-serif" font-size="12"
-                                fill="rgba(255,230,200,0.85)">BTC-ORBIT</text>
+                                fill="rgba(255,230,200,0.85)" data-i18n="partner_1_name"></text>
                             <g transform="translate(40,0)">
                                 <defs>
                                     <linearGradient id="btcG" x1="0" y1="0" x2="1" y2="1">
@@ -125,13 +125,13 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="partner-logo" aria-label="Partner 2">
+                    <div class="partner-logo" data-i18n-aria-label="partner_2_aria_label">
                         <svg width="220" height="30" viewBox="0 0 220 30" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
                             <rect x="0" y="4" width="220" height="22" rx="8" fill="rgba(255,94,0,0.06)"
                                 stroke="rgba(255,94,0,0.18)" />
                             <text x="112" y="20" text-anchor="middle" font-family="Russo One, sans-serif" font-size="12"
-                                fill="rgba(255,230,200,0.85)">VENUS-SECTOR</text>
+                                fill="rgba(255,230,200,0.85)" data-i18n="partner_2_name"></text>
                             <g transform="translate(40,0)">
                                 <!-- Partner 2: Venus / starburst -->
                                 <defs>
@@ -163,13 +163,13 @@
                         </svg>
                     </div>
 
-                    <div class="partner-logo" aria-label="Partner 3">
+                    <div class="partner-logo" data-i18n-aria-label="partner_3_aria_label">
                         <svg width="220" height="30" viewBox="0 0 220 30" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
                             <rect x="0" y="4" width="220" height="22" rx="8" fill="rgba(57,255,20,0.06)"
                                 stroke="rgba(57,255,20,0.18)" />
                             <text x="112" y="20" text-anchor="middle" font-family="Russo One, sans-serif" font-size="12"
-                                fill="rgba(230,255,210,0.85)">TON-MAGNET</text>
+                                fill="rgba(230,255,210,0.85)" data-i18n="partner_3_name"></text>
                             <g transform="translate(40,0)">
                                 <!-- Partner 3: TON-ish capsule + pulse -->
                                 <defs>
@@ -190,13 +190,13 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="partner-logo" aria-label="Partner 4">
+                    <div class="partner-logo" data-i18n-aria-label="partner_4_aria_label">
                         <svg width="220" height="30" viewBox="0 0 220 30" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
                             <rect x="0" y="4" width="220" height="22" rx="8" fill="rgba(0,229,255,0.06)"
                                 stroke="rgba(0,229,255,0.18)" />
                             <text x="112" y="20" text-anchor="middle" font-family="Russo One, sans-serif" font-size="12"
-                                fill="rgba(220,250,255,0.85)">SOLANA-SPEED</text>
+                                fill="rgba(220,250,255,0.85)" data-i18n="partner_4_name"></text>
                             <g transform="translate(40,0)">
                                 <!-- Partner 4: Solana-ish neon triangles -->
                                 <defs>
@@ -217,13 +217,13 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="partner-logo" aria-label="Partner 5">
+                    <div class="partner-logo" data-i18n-aria-label="partner_5_aria_label">
                         <svg width="220" height="30" viewBox="0 0 220 30" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
                             <rect x="0" y="4" width="220" height="22" rx="8" fill="rgba(189,0,255,0.06)"
                                 stroke="rgba(189,0,255,0.18)" />
                             <text x="112" y="20" text-anchor="middle" font-family="Russo One, sans-serif" font-size="12"
-                                fill="rgba(245,220,255,0.85)">WSA-TRUST</text>
+                                fill="rgba(245,220,255,0.85)" data-i18n="partner_5_name"></text>
                             <g transform="translate(40,0)">
                                 <!-- Partner 5: World Service Authority shield -->
                                 <defs>
@@ -243,13 +243,13 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="partner-logo" aria-label="Partner 6">
+                    <div class="partner-logo" data-i18n-aria-label="partner_6_aria_label">
                         <svg width="220" height="30" viewBox="0 0 220 30" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
                             <rect x="0" y="4" width="220" height="22" rx="8" fill="rgba(255,94,0,0.06)"
                                 stroke="rgba(255,94,0,0.18)" />
                             <text x="112" y="20" text-anchor="middle" font-family="Russo One, sans-serif" font-size="12"
-                                fill="rgba(255,235,220,0.85)">CHAIN-NODE</text>
+                                fill="rgba(255,235,220,0.85)" data-i18n="partner_6_name"></text>
                             <g transform="translate(40,0)">
                                 <!-- Partner 6: TON-ish pulse + node -->
                                 <defs>
@@ -279,11 +279,11 @@
 
     <footer>
 
-        <p>&copy; <span id="current-year"></span> Manuscript Project.</p>
+        <p>&copy; <span id="current-year"></span> <span data-i18n="footer_project_name"></span>.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="translations.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="i18n.js"></script>
     <script src="script.js"></script>
     <script src="particles-config.js"></script>
