@@ -21,13 +21,39 @@
         document.documentElement.classList.add("is-ready");
     };
 
-    Promise.all([
-        ready,
-        document.fonts?.ready ?? Promise.resolve(),
-    ]).then(revealPage);
+    const waitForStylesheet = (link) => {
+        if (!link || link.sheet) return Promise.resolve();
+        return new Promise((resolve) => {
+            link.addEventListener("load", resolve, { once: true });
+            link.addEventListener("error", resolve, { once: true });
+        });
+    };
+
+    const waitForCustomFonts = async () => {
+        const fontLink = document.querySelector('link[href*="fonts.googleapis.com"]');
+        await waitForStylesheet(fontLink);
+
+        if (!document.fonts?.load) return;
+
+        // Force-load after i18n text exists — Safari often resolves fonts.ready
+        // too early while [data-i18n] nodes are still empty.
+        await Promise.all([
+            document.fonts.load('400 16px Comfortaa'),
+            document.fonts.load('500 16px Comfortaa'),
+            document.fonts.load('700 16px Comfortaa'),
+            document.fonts.load('400 16px "Russo One"'),
+        ]);
+        await document.fonts.ready;
+    };
+
+    // Translations first, then fonts — never reveal with system fallback
+    ready
+        .then(waitForCustomFonts)
+        .then(revealPage)
+        .catch(revealPage);
 
     // Avoid leaving the page blank if fonts/i18n hang
-    setTimeout(revealPage, 2000);
+    setTimeout(revealPage, 1000);
 
     const translate = (key) => catalogs[currentLanguage]?.[key] ?? key;
 
