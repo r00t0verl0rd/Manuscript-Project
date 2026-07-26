@@ -17,6 +17,18 @@
         document.dispatchEvent(new CustomEvent("i18n:ready"));
     });
 
+    const revealPage = () => {
+        document.documentElement.classList.add("is-ready");
+    };
+
+    Promise.all([
+        ready,
+        document.fonts?.ready ?? Promise.resolve(),
+    ]).then(revealPage);
+
+    // Avoid leaving the page blank if fonts/i18n hang
+    setTimeout(revealPage, 2000);
+
     const translate = (key) => catalogs[currentLanguage]?.[key] ?? key;
 
     const applyTranslations = (root = document) => {
