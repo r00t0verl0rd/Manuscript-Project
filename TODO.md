@@ -1,15 +1,24 @@
-# TODO: Fixes
+# Smooth Loading Implementation
 
-## Task 1: Auto-detect browser language for i18n
-- [x] Read relevant files and understand the code
-- [x] Get plan approved by user
-- [x] Edit `i18n.js`: replace hardcoded `"ru"` default with `navigator.language` detection
-- [x] Edit `i18n.js`: change `setLanguage` fallback from `"ru"` to `"en"`
+## Changes Made
 
-## Task 2: Fix FOUT (Flash of Unstyled Text) — smooth loading
-- [x] Edit `styles.css`: remove `@import url(...)` for Google Fonts
-- [x] Edit `index.html`: add `<link rel="preconnect">` for fonts.googleapis.com and fonts.gstatic.com
-- [x] Edit `index.html`: add `<link>` for Google Fonts (replaces CSS `@import`)
-- [x] Edit `index.html`: add inline `<style>` with `body { opacity: 0 }` and `body.fonts-loaded { opacity: 1 }`
-- [x] Edit `index.html`: add inline `<script>` to show body after fonts are loaded via `document.fonts.ready`
+### 1. `i18n.js`
+- ✅ Added `window.__i18nResolve()` callback after translations are applied — signals readiness to the page loader
+
+### 2. `index.html`
+- ✅ Added `<link rel="preload">` for YAML locale files so they start downloading earlier
+- ✅ Replaced the old `fonts-loaded` logic with a `Promise.all` that waits for BOTH fonts AND translations before revealing content
+- ✅ Added a subtle neon loader bar (`#loader-bar`) that animates while the page loads and fades out when content is ready
+- ✅ Changed body class from `fonts-loaded` to `content-ready` with a smooth 0.45s opacity transition
+
+### 3. No changes needed for `styles.css` or `script.js`
+- The existing CSS animations and layout are unaffected
+- The `DOMContentLoaded` logic in `script.js` already waits for `i18n.ready` before rendering ideas
+
+## How it works
+
+1. User visits the page → body starts with `opacity: 0` (hidden)
+2. Loader bar animates at the top while both fonts and YAML translations load in parallel
+3. Once **both** are done → body gets `content-ready` class → fades in smoothly with all text already populated
+4. No more layout shifts or font style jumps
 

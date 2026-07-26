@@ -15,6 +15,10 @@
         document.documentElement.lang = currentLanguage;
         applyTranslations();
         document.dispatchEvent(new CustomEvent("i18n:ready"));
+        // Signal that translations are applied — resolves the global promise
+        if (typeof window.__i18nResolve === "function") {
+            window.__i18nResolve();
+        }
     });
 
     const translate = (key) => catalogs[currentLanguage]?.[key] ?? key;

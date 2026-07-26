@@ -12,31 +12,76 @@
         href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500;700&family=Russo+One&display=swap" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="partners.css" />
+    <link rel="preload" href="locales/en.yml" as="fetch" crossorigin />
+    <link rel="preload" href="locales/ru.yml" as="fetch" crossorigin />
     <style>
         body {
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.45s ease;
         }
 
-        body.fonts-loaded {
+        body.content-ready {
             opacity: 1;
+        }
+
+        /* Плавный прелоадер — тонкая линия в верхней части экрана */
+        #loader-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            z-index: 99999;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan), var(--neon-purple));
+            background-size: 200% 100%;
+            animation: loaderSlide 1.2s ease-in-out infinite;
+            transition: opacity 0.5s ease;
+        }
+
+        body.content-ready #loader-bar {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes loaderSlide {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
         }
     </style>
     <script>
-        document.fonts.ready.then(() => {
-            if (document.body) {
-                document.body.classList.add('fonts-loaded');
-            } else {
-                document.addEventListener('DOMContentLoaded', () => {
-                    document.body.classList.add('fonts-loaded');
-                });
-            }
-        });
+        (function () {
+            // Создаём промис, который резолвится, когда i18n.js вызовет callback
+            window.__i18nReady = new Promise(function (resolve) {
+                window.__i18nResolve = resolve;
+            });
+
+            // Ждём и шрифты, и переводы
+            Promise.all([
+                document.fonts.ready,
+                window.__i18nReady
+            ]).then(function () {
+                if (document.body) {
+                    document.body.classList.add('content-ready');
+                } else {
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.body.classList.add('content-ready');
+                    });
+                }
+            });
+        })();
     </script>
 </head>
 
 
 <body>
+    <!-- Индикатор загрузки (тонкая неоновая линия сверху) -->
+    <div id="loader-bar"></div>
+
     <!-- Фоновые частицы (canvas) -->
     <div id="particles-js"></div>
 
