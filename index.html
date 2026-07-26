@@ -5,50 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#053312" />
-    <!-- Hide body until custom fonts are ready (prevents Safari system-font flash) -->
-    <style>
-        html {
-            background-color: #743909;
-        }
-
-        html:not(.is-ready) body {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        html.is-ready body {
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 0.35s ease;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            html.is-ready body {
-                transition: none;
-            }
-        }
-    </style>
-    <noscript>
-        <style>
-            html body {
-                opacity: 1 !important;
-                visibility: visible !important;
-            }
-        </style>
-    </noscript>
     <title>MANUSCRIPT PROJECT</title>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-    <script src="i18n.js"></script>
-    <script src="script.js"></script>
-    <script src="particles-config.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&family=Russo+One&display=block"
-        rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="partners.css" />
-
 </head>
 
 
@@ -65,8 +24,7 @@
                 <button id="road-map-btn" class="simple-btn" type="button" data-i18n="road_map_btn"></button>
             </div>
             <div>
-                <button id="lang-toggle" class="lang-flag-btn" type="button"
-                    data-i18n-aria-label="switch_language">🇬🇧</button>
+                <button id="lang-toggle" class="lang-flag-btn" type="button" data-i18n-aria-label="switch_language">🇬🇧</button>
             </div>
         </div>
         <div class="header-row-bottom">
@@ -87,12 +45,12 @@
             <h1 data-i18n="header_title"></h1>
 
             <div id="project-info" class="simple-card">
-                <button id="close-info-btn" class="close-icon" type="button"
-                    data-i18n-aria-label="close_btn">&times;</button>
+                <button id="close-info-btn" class="close-icon" type="button" data-i18n-aria-label="close_btn">&times;</button>
                 <h2 data-i18n="info_title"></h2>
                 <p class="content-text" data-i18n="info_desc"></p>
                 <div class="intent-more-wrapper">
-                    <button id="intent-more-btn" class="simple-btn" type="button" data-i18n="intent_more_btn"></button>
+                    <button id="intent-more-btn" class="simple-btn" type="button"
+                        data-i18n="intent_more_btn"></button>
                 </div>
             </div>
 
@@ -324,6 +282,11 @@
         <p>&copy; <span id="current-year"></span> <span data-i18n="footer_project_name"></span>.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
+    <script src="particles-config.js"></script>
 </body>
 
 </html>

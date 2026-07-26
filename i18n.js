@@ -1,8 +1,7 @@
 // Loads translations from YAML catalogs and exposes a small localization API.
 (() => {
     const supportedLanguages = ["ru", "en"];
-    const browserLang = (navigator.language || navigator.userLanguage || "").slice(0, 2);
-    let currentLanguage = supportedLanguages.includes(browserLang) ? browserLang : "en";
+    let currentLanguage = "ru";
     const catalogs = Object.create(null);
 
     const loadCatalog = async (language) => {
@@ -16,44 +15,6 @@
         applyTranslations();
         document.dispatchEvent(new CustomEvent("i18n:ready"));
     });
-
-    const revealPage = () => {
-        document.documentElement.classList.add("is-ready");
-    };
-
-    const waitForStylesheet = (link) => {
-        if (!link || link.sheet) return Promise.resolve();
-        return new Promise((resolve) => {
-            link.addEventListener("load", resolve, { once: true });
-            link.addEventListener("error", resolve, { once: true });
-        });
-    };
-
-    const waitForCustomFonts = async () => {
-        const fontLink = document.querySelector('link[href*="fonts.googleapis.com"]');
-        await waitForStylesheet(fontLink);
-
-        if (!document.fonts?.load) return;
-
-        // Force-load after i18n text exists — Safari often resolves fonts.ready
-        // too early while [data-i18n] nodes are still empty.
-        await Promise.all([
-            document.fonts.load('400 16px Comfortaa'),
-            document.fonts.load('500 16px Comfortaa'),
-            document.fonts.load('700 16px Comfortaa'),
-            document.fonts.load('400 16px "Russo One"'),
-        ]);
-        await document.fonts.ready;
-    };
-
-    // Translations first, then fonts — never reveal with system fallback
-    ready
-        .then(waitForCustomFonts)
-        .then(revealPage)
-        .catch(revealPage);
-
-    // Avoid leaving the page blank if fonts/i18n hang
-    // setTimeout(revealPage, 1000);
 
     const translate = (key) => catalogs[currentLanguage]?.[key] ?? key;
 
@@ -80,7 +41,7 @@
     };
 
     const setLanguage = (language) => {
-        currentLanguage = supportedLanguages.includes(language) ? language : "en";
+        currentLanguage = supportedLanguages.includes(language) ? language : "ru";
         document.documentElement.lang = currentLanguage;
         applyTranslations();
         document.dispatchEvent(new CustomEvent("i18n:changed"));
