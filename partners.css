@@ -1,12 +1,14 @@
 .partners-section {
     margin-top: 70px;
     padding: 14px 14px;
-
     background: rgba(255, 94, 0, 0.10);
     border: 1px solid rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     border-radius: 12px;
     z-index: 1;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 220px;
 }
 
 @media (max-width: 415px) {
@@ -94,9 +96,3 @@
     }
 }
 
-
-/* никаких анимаций/реакций при наведении */
-.partner-logo:hover {
-    transform: none;
-    box-shadow: none;
-}
