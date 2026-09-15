@@ -584,47 +584,6 @@ h2 {
     color: #ffffff;
 }
 
-.simple-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 2px;
-    background: conic-gradient(from var(--angle), transparent 70%, var(--neon-green), var(--neon-purple), var(--neon-cyan));
-    clip-path: polygon(25px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    opacity: 0;
-    animation: none;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-
-@property --angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-}
-
-@keyframes rotateBorder {
-    to {
-        --angle: 360deg;
-    }
-}
-
-
-
-#project-info.simple-card::before {
-    opacity: 1;
-    animation: rotateBorder 5s linear infinite;
-}
-
-
-
 .simple-card:hover {
     background: rgba(10, 15, 20, 0.4);
     transform: translateY(-8px) scale(1.02);
@@ -665,10 +624,6 @@ h2 {
     white-space: pre-line;
 }
 
-#about-info.simple-card::before {
-    opacity: 1;
-    animation: rotateBorder 4s linear infinite;
-}
 
 #about-info {
     position: relative;
@@ -1301,29 +1256,6 @@ footer {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.step-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 1px;
-    border-radius: 16px;
-    background: conic-gradient(from var(--angle), transparent 60%, var(--neon-cyan), var(--neon-purple), transparent 80%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-}
-
-.roadmap-step:hover .step-card::before {
-    opacity: 1;
-    animation: rotateBorder 3s linear infinite;
-}
 
 .roadmap-step:hover .step-card {
     transform: translateY(-4px) scale(1.02);
