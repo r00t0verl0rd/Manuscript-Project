@@ -50,6 +50,7 @@
       { number: 7, icon: '🌉' },
       { number: 8, icon: '👤' },
       { number: 9, icon: '🗳️' },
+      { number: 10, icon: '🗳️' },
     ];
 
     const currentTime = Date.now();
