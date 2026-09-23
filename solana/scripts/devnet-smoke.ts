@@ -17,7 +17,7 @@ const program = new Program(idl, provider);
 
 const ideaId = new BN(Date.now().toString());
 const ideaType = 0;
-const text = "Manuscript Devnet smoke test: first on-chain idea record.";
+const text = "Manuscript Testnet smoke test: first on-chain idea record.";
 
 const [ideaPda] = PublicKey.findProgramAddressSync(
   [
@@ -39,7 +39,7 @@ const signature = await program.methods
 const record = await program.account.idea.fetch(ideaPda);
 
 const result = {
-  cluster: "devnet",
+  cluster: "testnet",
   programId: program.programId.toBase58(),
   transactionSignature: signature,
   ideaAccount: ideaPda.toBase58(),
@@ -58,11 +58,11 @@ const result = {
 };
 
 if (!result.verifiedReadBack) {
-  throw new Error("Devnet read-back verification failed");
+  throw new Error("Testnet read-back verification failed");
 }
 
 fs.writeFileSync(
-  "devnet-deployment.json",
+  "testnet-deployment.json",
   JSON.stringify(result, null, 2) + "\n",
 );
 
