@@ -1,11 +1,11 @@
 [features]
 resolution = true
 
-[programs.devnet]
+[programs.testnet]
 manuscript_ideas = "11111111111111111111111111111111"
 
 [provider]
-cluster = "devnet"
+cluster = "testnet"
 wallet = "~/.config/solana/id.json"
 
 [toolchain]
