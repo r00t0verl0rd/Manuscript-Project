@@ -94,6 +94,18 @@ jobs:
             sleep 4
           done
 
+          BALANCE_LAMPORTS="$(solana balance --lamports | awk '{print $1}')"
+          echo "Balance after standard faucet attempts: $BALANCE_LAMPORTS lamports"
+
+          if [ "$BALANCE_LAMPORTS" -lt 800000000 ]; then
+            echo "Public Devnet faucet is rate-limited on this runner."
+            echo "Falling back to the proof-of-work faucet recommended for automated agents."
+
+            cargo install devnet-pow --locked
+
+            devnet-pow               --keypair-path /tmp/manuscript-solana/deployer.json               --url devnet               mine               --target-lamports 800000000
+          fi
+
           solana balance
 
       - name: Deploy program to Solana Devnet
