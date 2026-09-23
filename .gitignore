@@ -31,3 +31,5 @@ solana/test-ledger/
 solana/**/*.json
 !solana/package.json
 !solana/tsconfig.json
+
+!solana/devnet-deployment.json
