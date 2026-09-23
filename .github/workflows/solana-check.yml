@@ -32,3 +32,15 @@ jobs:
 
       - name: Check Anchor program
         run: cargo check --manifest-path solana/Cargo.toml
+
+
+  testnet-balance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check owner wallet balance on Solana Testnet
+        shell: bash
+        run: |
+          set -euo pipefail
+          RESPONSE="$(curl -sS https://api.testnet.solana.com -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"getBalance","params":["JDbR1Kaqfxf9ihit4PArM1EvJqoaQ8WnnyD6sZ4sqZBM",{"commitment":"confirmed"}]}')"
+          echo "$RESPONSE"
+          python3 -c 'import json,sys; x=json.loads(sys.argv[1]); print("TESTNET_BALANCE_SOL=%.9f"%(x["result"]["value"]/1_000_000_000))' "$RESPONSE"
