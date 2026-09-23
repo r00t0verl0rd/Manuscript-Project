@@ -1,0 +1,29 @@
+name: Check Solana Testnet balance
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/solana-testnet-balance.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  balance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Install Solana CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
+          export PATH="$HOME/.local/share/solana/install/active_release/bin:$HOME/.cargo/bin:$PATH"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
+          solana --version
+
+      - name: Check owner wallet balance on Testnet
+        shell: bash
+        run: |
+          set -euo pipefail
+          solana balance --url testnet JDbR1Kaqfxf9ihit4PArM1EvJqoaQ8WnnyD6sZ4sqZBM
