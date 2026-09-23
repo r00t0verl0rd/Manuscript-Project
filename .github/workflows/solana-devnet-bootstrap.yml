@@ -1,14 +1,14 @@
-name: Bootstrap Solana Devnet
+name: Bootstrap Solana Testnet
 
 on:
   pull_request:
     paths:
-      - ".github/workflows/solana-devnet-bootstrap.yml"
+      - ".github/workflows/solana-testnet-bootstrap.yml"
   push:
     branches:
       - "feat/solana-idea-contract-v01"
     paths:
-      - ".github/workflows/solana-devnet-bootstrap.yml"
+      - ".github/workflows/solana-testnet-bootstrap.yml"
 
 permissions:
   contents: write
@@ -77,14 +77,14 @@ jobs:
           cd solana
           anchor build
 
-      - name: Fund temporary Devnet deploy wallet
+      - name: Fund temporary Testnet deploy wallet
         shell: bash
         run: |
           set -euo pipefail
 
           export PATH="$HOME/.local/share/solana/install/active_release/bin:$HOME/.cargo/bin:$HOME/.avm/bin:$PATH"
 
-          solana config set             --url devnet             --keypair /tmp/manuscript-solana/deployer.json
+          solana config set             --url testnet             --keypair /tmp/manuscript-solana/deployer.json
 
           echo "Temporary deployer: $(solana address)"
 
@@ -98,17 +98,17 @@ jobs:
           echo "Balance after standard faucet attempts: $BALANCE_LAMPORTS lamports"
 
           if [ "$BALANCE_LAMPORTS" -lt 800000000 ]; then
-            echo "Public Devnet faucet is rate-limited on this runner."
+            echo "Public Testnet faucet is rate-limited on this runner."
             echo "Falling back to the proof-of-work faucet recommended for automated agents."
 
-            cargo install devnet-pow --locked
+            cargo install testnet-pow --locked
 
-            devnet-pow               --keypair-path /tmp/manuscript-solana/deployer.json               --url devnet               mine               --target-lamports 800000000
+            testnet-pow               --keypair-path /tmp/manuscript-solana/deployer.json               --url testnet               mine               --target-lamports 800000000
           fi
 
           solana balance
 
-      - name: Deploy program to Solana Devnet
+      - name: Deploy program to Solana Testnet
         shell: bash
         run: |
           set -euo pipefail
@@ -117,9 +117,9 @@ jobs:
 
           cd solana
 
-          solana             --url devnet             --keypair /tmp/manuscript-solana/deployer.json             program deploy             target/deploy/manuscript_ideas.so             --program-id target/deploy/manuscript_ideas-keypair.json             --upgrade-authority /tmp/manuscript-solana/deployer.json
+          solana             --url testnet             --keypair /tmp/manuscript-solana/deployer.json             program deploy             target/deploy/manuscript_ideas.so             --program-id target/deploy/manuscript_ideas-keypair.json             --upgrade-authority /tmp/manuscript-solana/deployer.json
 
-          solana --url devnet program show "$PROGRAM_ID"
+          solana --url testnet program show "$PROGRAM_ID"
 
       - name: Transfer upgrade authority to Manuscript owner wallet
         shell: bash
@@ -130,9 +130,9 @@ jobs:
 
           export PATH="$HOME/.local/share/solana/install/active_release/bin:$HOME/.cargo/bin:$HOME/.avm/bin:$PATH"
 
-          solana             --url devnet             --keypair /tmp/manuscript-solana/deployer.json             program set-upgrade-authority             "$PROGRAM_ID"             --upgrade-authority /tmp/manuscript-solana/deployer.json             --new-upgrade-authority "$MANUSCRIPT_UPGRADE_AUTHORITY"             --skip-new-upgrade-authority-signer-check
+          solana             --url testnet             --keypair /tmp/manuscript-solana/deployer.json             program set-upgrade-authority             "$PROGRAM_ID"             --upgrade-authority /tmp/manuscript-solana/deployer.json             --new-upgrade-authority "$MANUSCRIPT_UPGRADE_AUTHORITY"             --skip-new-upgrade-authority-signer-check
 
-          solana --url devnet program show "$PROGRAM_ID"
+          solana --url testnet program show "$PROGRAM_ID"
 
       - name: Write and read back one test idea
         shell: bash
@@ -144,7 +144,7 @@ jobs:
           cd solana
           npm install --no-audit --no-fund
 
-          ANCHOR_PROVIDER_URL="https://api.devnet.solana.com"           ANCHOR_WALLET="/tmp/manuscript-solana/deployer.json"           npm run smoke:devnet
+          ANCHOR_PROVIDER_URL="https://api.testnet.solana.com"           ANCHOR_WALLET="/tmp/manuscript-solana/deployer.json"           npm run smoke:testnet
 
       - name: Save public deployment result in the branch
         shell: bash
@@ -154,25 +154,25 @@ jobs:
           git config user.name "manuscript-agent"
           git config user.email "manuscript-agent@users.noreply.github.com"
 
-          git add             solana/Anchor.toml             solana/programs/manuscript_ideas/src/lib.rs             solana/devnet-deployment.json
+          git add             solana/Anchor.toml             solana/programs/manuscript_ideas/src/lib.rs             solana/testnet-deployment.json
 
           if git diff --cached --quiet; then
             echo "No deployment metadata changes to commit."
             exit 0
           fi
 
-          git commit -m "Sync Solana Devnet deployment [skip deploy]"
+          git commit -m "Sync Solana Testnet deployment [skip deploy]"
           git push origin HEAD:"${GITHUB_REF_NAME}"
 
       - name: Summary
         shell: bash
         run: |
           {
-            echo "## Manuscript Solana Devnet bootstrap"
+            echo "## Manuscript Solana Testnet bootstrap"
             echo
             echo "- Program ID: `$PROGRAM_ID`"
             echo "- Upgrade authority: `JDbR1Kaqfxf9ihit4PArM1EvJqoaQ8WnnyD6sZ4sqZBM`"
             echo "- Smoke test: idea written and read back successfully"
             echo
-            echo "See `solana/devnet-deployment.json` for the public transaction details."
+            echo "See `solana/testnet-deployment.json` for the public transaction details."
           } >> "$GITHUB_STEP_SUMMARY"
