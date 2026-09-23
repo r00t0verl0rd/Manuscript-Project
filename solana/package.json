@@ -1,0 +1,13 @@
+{
+  "name": "manuscript-solana-devnet-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "smoke:devnet": "tsx scripts/devnet-smoke.ts"
+  },
+  "dependencies": {
+    "@anchor-lang/core": "1.2.0",
+    "@solana/web3.js": "^1.98.4",
+    "tsx": "^4.20.0"
+  }
+}
