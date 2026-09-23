@@ -1,0 +1,17 @@
+[package]
+name = "manuscript_ideas"
+version = "0.1.0"
+description = "Minimal Manuscript program for recording ideas on Solana"
+edition = "2021"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "manuscript_ideas"
+
+[features]
+default = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "1.2.0"
