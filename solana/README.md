@@ -54,9 +54,9 @@ Typical local flow:
 
 Do not commit the generated deployment keypair.
 
-## Devnet deployment
+## Testnet deployment
 
-    solana config set --url devnet
+    solana config set --url testnet
     solana airdrop 2
     cd solana
     anchor build
