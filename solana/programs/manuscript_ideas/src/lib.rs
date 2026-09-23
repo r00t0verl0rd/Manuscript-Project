@@ -57,7 +57,7 @@ pub struct RecordIdea<'info> {
         init,
         payer = author,
         space = Idea::SPACE,
-        seeds = [b"idea", &idea_id.to_le_bytes()],
+        seeds = [b"idea".as_ref(), idea_id.to_le_bytes().as_ref()],
         bump
     )]
     pub idea: Account<'info, Idea>,
