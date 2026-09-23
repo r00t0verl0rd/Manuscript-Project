@@ -1,6 +1,9 @@
 name: Bootstrap Solana Devnet
 
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/solana-devnet-bootstrap.yml"
   push:
     branches:
       - "feat/solana-idea-contract-v01"
