@@ -11,19 +11,17 @@ permissions:
 jobs:
   balance:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
-      - name: Install Solana CLI
-        shell: bash
-        run: |
-          set -euo pipefail
-          curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
-          export PATH="$HOME/.local/share/solana/install/active_release/bin:$HOME/.cargo/bin:$PATH"
-          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
-          solana --version
-
       - name: Check owner wallet balance on Testnet
         shell: bash
         run: |
           set -euo pipefail
-          solana balance --url testnet JDbR1Kaqfxf9ihit4PArM1EvJqoaQ8WnnyD6sZ4sqZBM
+          RESPONSE="$(curl -sS https://api.testnet.solana.com             -H 'Content-Type: application/json'             -d '{"jsonrpc":"2.0","id":1,"method":"getBalance","params":["JDbR1Kaqfxf9ihit4PArM1EvJqoaQ8WnnyD6sZ4sqZBM",{"commitment":"confirmed"}]}')"
+          echo "$RESPONSE"
+          LAMPORTS="$(printf '%s' "$RESPONSE" | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["value"])')"
+          python3 - "$LAMPORTS" <<'PY'
+import sys
+lamports=int(sys.argv[1])
+print(f"TESTNET_BALANCE_SOL={lamports/1_000_000_000:.9f}")
+PY
