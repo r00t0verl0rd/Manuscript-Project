@@ -22,3 +22,12 @@ Icon[]
 Network Trash Folder
 Temporary Items
 .apdisk
+
+
+# Solana / Anchor build artifacts and local keys
+solana/target/
+solana/.anchor/
+solana/test-ledger/
+solana/**/*.json
+!solana/package.json
+!solana/tsconfig.json
