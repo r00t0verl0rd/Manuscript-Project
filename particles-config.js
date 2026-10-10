@@ -1,28 +1,19 @@
+// Respect reduced-motion and avoid creating a moving canvas on constrained screens.
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.innerWidth > 480 && typeof particlesJS === 'function') {
 // Конфигурация частиц для particles.js
 particlesJS("particles-js", {
     particles: {
         number: {
-            value: 100, // Количество частиц, которые будут отображаться
+            value: 36, // Оптимизированное количество лёгких биочастиц
             density: {
                 enable: true, // Включить плотность частиц
-                value_area: 800 // Площадь, в которой распределяются частицы (больше значение - менее плотно)
+                value_area: 1100 // Площадь, в которой распределяются частицы (больше значение - менее плотно)
             }
         },
         color: {
             // более яркие, контрастные неон-оттенки + больше разнообразия
             // particles.js сам рандомизирует цвет для частиц из этого массива
-            value: [
-                "#00E5FF", // cyan
-                "#39FF14", // neon green
-                "#FF3D81", // hot pink
-                "#FF6B00", // neon orange
-                "#FFD400", // neon yellow
-                "#7C4DFF", // vivid purple
-                "#00FFA3", // mint/green-cyan
-                "#FF2E2E", // red
-                "#00A3FF", // electric blue
-                "#FF00F5" // magenta
-            ],
+            value: ["#A8EC96", "#E6C779", "#8EDCC3", "#5CBF92"],
         },
         shape: {
             type: "circle", // Форма частиц: можно использовать "circle", "edge", "triangle", "polygon", "star", "image"
@@ -40,7 +31,7 @@ particlesJS("particles-js", {
             }
         },
         opacity: {
-            value: 0.5, // Основная прозрачность частиц
+            value: 0.38, // Более мягкий свет биочастиц
             random: false, // Использовать ли случайную прозрачность для каждой частицы
             anim: {
                 enable: false, // Включить анимацию изменения прозрачности
@@ -50,7 +41,7 @@ particlesJS("particles-js", {
             }
         },
         size: {
-            value: 4, // Основной размер частиц
+            value: 2.4, // Маленькие искры
             random: true, // Использовать ли случайный размер для каждой частицы
             anim: {
                 enable: false, // Включить анимацию изменения размера частиц
@@ -62,17 +53,17 @@ particlesJS("particles-js", {
         line_linked: {
             enable: true, // Включить соединение частиц линиями
             distance: 150, // Максимальное расстояние для соединения линий между частицами
-            color: "#FF8C00", // Цвет соединительных линий
-            opacity: 1, // Прозрачность линий
+            color: "#83CDA2", // Цвет соединительных линий
+            opacity: 0.23, // Прозрачность линий
             width: 0.1 // Толщина линий
         },
         move: {
             enable: true, // Включить движение частиц
-            speed: 1, // Скорость движения частиц
-            direction: "top", // Направление движения частиц ("none", "top", "top-right", "right", "bottom-right", "bottom", "bottom-left", "left", "top-left")
+            speed: 0.55, // Спокойный дрейф
+            direction: "none", // Направление движения частиц ("none", "top", "top-right", "right", "bottom-right", "bottom", "bottom-left", "left", "top-left")
             random: false, // Использовать ли случайное направление движения
             straight: false, // Двигаться ли прямо (true - да, false - нет)
-            out_mode: "bounce", // Поведение частиц, когда они выходят за границы ("out" - исчезают, "bounce" - отскакивают)
+            out_mode: "out", // Поведение частиц, когда они выходят за границы ("out" - исчезают, "bounce" - отскакивают)
             bounce: false, // Включить ли отскок частиц от границ
             attract: {
                 enable: false, // Включить ли притяжение между частицами
@@ -85,11 +76,11 @@ particlesJS("particles-js", {
         detect_on: "canvas", // Область, в которой будет обнаруживаться взаимодействие ("canvas" или "window")
         events: {
             onhover: {
-                enable: true, // Включить взаимодействие при наведении курсора
+                enable: false, // Отключено: декоративный фон не перехватывает курсор
                 mode: "grab" // Режим взаимодействия при наведении ("grab", "bubble", "repulse", "push", "remove")
             },
             onclick: {
-                enable: true, // Включить взаимодействие при клике
+                enable: false, // Отключено: число частиц остаётся фиксированным
                 mode: "push" // Режим взаимодействия при клике ("push" - добавление частиц, "remove" - удаление частиц)
             },
             resize: true // Изменять ли размеры частиц при изменении размера окна браузера
@@ -120,5 +111,7 @@ particlesJS("particles-js", {
             }
         }
     },
-    retina_detect: true, // Включить поддержку Retina дисплеев для лучшего отображения
+    retina_detect: false, // Не удваиваем плотность canvas на Retina
 });
+
+}
