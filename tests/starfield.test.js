@@ -88,3 +88,21 @@ test('starfield reshuffles after one pixel of width change, including mobile', (
   // Height-only toolbar changes preserve width, so they cannot trigger reseeding.
   assert.equal(shouldReseedSky(390, 390), false);
 });
+
+
+test('particle budget remains smooth across former 480px, 640px and 899px boundaries', () => {
+  for (const boundary of [480, 640, 899]) {
+    const before = starBudget(boundary - 1, 800);
+    const after = starBudget(boundary + 1, 800);
+    assert.ok(Math.abs(after - before) <= 3,
+      'unexpected particle-count jump at ' + boundary + 'px: ' + before + ' -> ' + after);
+  }
+});
+
+test('single pixel width changes still reshuffle stars in any responsive layout', () => {
+  for (const boundary of [330, 480, 600, 640, 768, 899, 1200]) {
+    assert.equal(shouldReseedSky(boundary, boundary + 1), true);
+    assert.equal(shouldReseedSky(boundary, boundary - 1), true);
+    assert.equal(shouldReseedSky(boundary, boundary), false);
+  }
+});

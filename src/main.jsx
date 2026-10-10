@@ -87,24 +87,12 @@ function IdeaCard({ idea, t }) {
   </article>;
 }
 
-function useMobileFeed() {
-  const [mobile, setMobile] = useState(()=>window.matchMedia('(max-width: 480px)').matches);
-  useEffect(()=>{
-    const mq=window.matchMedia('(max-width: 480px)');
-    const update=()=>setMobile(mq.matches);
-    mq.addEventListener?.('change',update);
-    return ()=>mq.removeEventListener?.('change',update);
-  },[]);
-  return mobile;
-}
 
 function Feed({ t }) {
   const [sort, setSort] = useState('diamonds_desc');
-  const mobile = useMobileFeed();
-  const columns = mobile?2:3;
+  // Keep the same IdeaCard component instances while the CSS grid reflows
+  // across desktop, tablet and mobile widths. No JS media-query remounts.
   const sorted = useMemo(()=>sortedIdeas(sort),[sort]);
-  const groups = Array.from({length:columns},()=>[]);
-  sorted.forEach((idea,index)=>groups[index%columns].push(idea));
   return <div id="ideas-feed">
     <h2>{t('community_ideas_title')}</h2>
     <div className="sort-row">
@@ -117,9 +105,7 @@ function Feed({ t }) {
       </div>
     </div>
     <div className="feed-columns">
-      {groups.map((group,i)=><div key={i} className="feed-column" data-feed-col={i+1} id={'feed-'+(i+1)}>
-        {group.map(idea=><IdeaCard key={idea.id} idea={idea} t={t}/>)}
-      </div>)}
+      {sorted.map(idea=><IdeaCard key={idea.id} idea={idea} t={t}/>)}
     </div>
   </div>;
 }

@@ -12,13 +12,15 @@ export const STAR_PALETTE = Object.freeze([
 ]);
 
 export function starBudget(width, height, lowPower = false) {
-  const mobile = width <= 640;
-  const maximum = mobile ? 52 : lowPower ? 82 : 142;
-  const minimum = mobile ? 22 : 36;
+  // Smoothly blend density and limits instead of jumping at a 640px breakpoint.
+  // This also avoids sudden particle-count changes when rotating a device.
+  const blend = Math.max(0, Math.min(1, (width - 480) / 320));
+  const maximum = 52 + blend * (lowPower ? 30 : 90);
+  const minimum = 22 + blend * 14;
+  const density = 8500 + blend * 4300;
   const area = Math.max(0, width) * Math.max(0, height);
-  const density = mobile ? 8500 : 12800;
   const estimate = Math.round((area / density) * (lowPower ? 0.72 : 1));
-  return Math.max(minimum, Math.min(maximum, estimate));
+  return Math.round(Math.max(minimum, Math.min(maximum, estimate)));
 }
 
 export function createStars(count, random = Math.random) {

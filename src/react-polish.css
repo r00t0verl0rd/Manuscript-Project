@@ -236,3 +236,79 @@ main.main-wrapper { overflow:visible; -webkit-overflow-scrolling:auto; }
 @media (prefers-reduced-motion: reduce) {
   .pea-vine,.pea-sprig,.pea-grass { animation: none !important; }
 }
+
+
+/* CONTINUOUS RESPONSIVE LAYOUT: background geometry must not step at
+   480px/899px breakpoints. Stable viewport units also resist the browser
+   toolbar's show/hide cycle on iOS and Android. */
+:root {
+  --header-height: clamp(78px, calc(62px + 4vw), 120px);
+  --menu-font-size: clamp(.65rem, calc(.56rem + .38vw), .91rem);
+  --menu-gap: clamp(4px, .5vw, 7px);
+  --menu-padding-y: clamp(4px, .45vw, 8px);
+  --menu-padding-x: clamp(5px, 1vw, 18px);
+}
+.header-container {
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+#content {
+  padding-top: calc(var(--header-height) + clamp(10px, 1.4vw, 20px));
+}
+.biosphere__sun {
+  /* ~300px at 390px, ~440px at 640px and above: no step at 480/899px. */
+  width: clamp(260px, calc(76px + 58vw), 440px);
+  top: clamp(82px, calc(76px + 4vw), 148px);
+  transition: width 140ms linear, top 140ms linear;
+}
+.biosphere__botanical,
+.biosphere__botanical--left,
+.biosphere__botanical--right {
+  width: clamp(145px, calc(104px + 15vw), 320px);
+  height: min(86svh, 765px);
+  bottom: 0;
+  transition: width 140ms linear, opacity 240ms ease;
+}
+.biosphere__botanical {
+  opacity: .50;
+}
+.biosphere__botanical--right {
+  opacity: .38;
+}
+.cosmic-nebula {
+  opacity: .88;
+  transition: opacity 180ms ease;
+}
+
+/* One continuous card list: React never remounts cards when resizing.
+   The browser places the same elements into three or two responsive tracks. */
+.feed-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vw, 20px);
+  align-items: stretch;
+}
+.feed-columns > .idea-card {
+  min-width: 0;
+  width: 100%;
+  height: auto;
+  margin-bottom: 0;
+}
+@media (max-width: 600px) {
+  .feed-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 330px) {
+  .feed-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .biosphere__sun,
+  .biosphere__botanical,
+  .biosphere__botanical--left,
+  .biosphere__botanical--right,
+  .cosmic-nebula,
+  .header-container {
+    transition: none !important;
+  }
+}

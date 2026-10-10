@@ -23,6 +23,8 @@ const CosmicStarfield = memo(function CosmicStarfield() {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const lowPower = Boolean(navigator.connection?.saveData) ||
       (Number(navigator.hardwareConcurrency) > 0 && navigator.hardwareConcurrency <= 4);
+    // Choose frame rate by device capabilities, not by arbitrary CSS width.
+    const touchDevice = window.matchMedia('(pointer: coarse)').matches;
 
     let width = 1;
     let height = 1;
@@ -141,10 +143,11 @@ const CosmicStarfield = memo(function CosmicStarfield() {
       width = nextWidth;
       height = nextHeight;
       lastDpr = dpr;
+      // Pixel-store changes are infrequent (throttled); positions stay normalized.
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      frameInterval = 1000 / (mobile || lowPower ? 20 : 24);
+      frameInterval = 1000 / (lowPower || touchDevice ? 20 : 24);
       const budget = starBudget(width, height, lowPower);
       stars = reshuffle ? createStars(budget) : reconcileStarPool(stars, budget);
       paint(elapsedMs, 0);
