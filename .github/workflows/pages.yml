@@ -39,6 +39,32 @@ jobs:
           npm run build
           mv dist/react.index.html dist/index.html
 
+      - name: Check that the React page actually renders in Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          (npm run preview -- --host 127.0.0.1 --port 4173 --strictPort > /tmp/manuscript-preview.log 2>&1 & echo $! > /tmp/manuscript-preview.pid)
+          trap 'kill "$(cat /tmp/manuscript-preview.pid)" 2>/dev/null || true' EXIT
+          for n in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          CHROME="$(command -v google-chrome || command -v chromium || true)"
+          test -n "$CHROME" || { echo "No Chrome browser for smoke test"; exit 1; }
+          timeout 35 "$CHROME" --headless=new --no-sandbox --disable-dev-shm-usage \\
+            --disable-gpu --virtual-time-budget=5000 \\
+            --dump-dom http://127.0.0.1:4173/ > /tmp/manuscript-rendered.html 2> /tmp/manuscript-chrome.log || {
+              tail -50 /tmp/manuscript-chrome.log; exit 1;
+            }
+          if ! grep -q '<h1>MANUSCRIPT PROJECT</h1>' /tmp/manuscript-rendered.html || \\
+             ! grep -q 'idea-card' /tmp/manuscript-rendered.html; then
+            echo 'React failed to render heading and idea cards in a real browser.'
+            tail -80 /tmp/manuscript-chrome.log
+            head -c 1800 /tmp/manuscript-rendered.html
+            exit 1
+          fi
+          echo 'Real browser smoke test: React heading and cards visible.'
+
       - name: Verify production entry and domain
         run: |
           test -s dist/index.html
