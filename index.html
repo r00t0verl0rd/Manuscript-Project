@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#053312" />
+    <meta name="theme-color" content="#071b17" />
     <title>MANUSCRIPT PROJECT</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,6 +13,7 @@
         href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Russo+One&display=swap" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="partners.css" />
+    <link rel="stylesheet" href="solar-biopunk.css" />
     <script>
         (function () {
             var lang = (navigator.language || navigator.languages && navigator.languages[0] || "")
@@ -94,6 +95,46 @@
 
     <!-- Фоновые частицы (canvas) -->
     <div id="particles-js"></div>
+    <!-- Solar Biopunk scenery: inline vectors and CSS, no new network requests. -->
+    <div class="biosphere" aria-hidden="true">
+        <div class="biosphere__sun"></div>
+        <svg class="biosphere__botanical biosphere__botanical--left" viewBox="0 0 220 720" fill="none"
+            xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
+            <path class="bio-stem" d="M16 720 C25 585 38 463 72 330 C94 235 96 146 117 30" />
+            <path class="bio-branch" d="M47 515 C75 485 92 480 134 485 M60 425 C29 380 28 350 12 331
+                M82 320 C130 304 145 278 174 252 M98 205 C67 180 58 145 48 120
+                M72 360 H18 V328 M90 275 H147 V234 M37 563 H96 V586" />
+            <path class="bio-leaf" d="M134 485 C151 446 190 437 204 446 C190 482 158 499 134 485 Z
+                M12 331 C31 300 28 276 10 257 C-4 287 -3 307 12 331 Z
+                M174 252 C155 213 163 188 197 174 C212 208 203 236 174 252 Z
+                M48 120 C39 91 15 80 0 93 C7 120 25 138 48 120 Z
+                M117 68 C116 41 133 17 151 12 C151 44 141 64 117 68 Z" />
+            <path class="bio-vein" d="M134 485 L192 451 M12 331 L11 270 M174 252 L195 186
+                M48 120 L8 96 M117 68 L145 22" />
+            <circle class="bio-node" cx="18" cy="328" r="4" />
+            <circle class="bio-node" cx="147" cy="234" r="4" />
+            <circle class="bio-node" cx="96" cy="586" r="4" />
+            <circle class="bio-node" cx="117" cy="30" r="4" />
+        </svg>
+        <svg class="biosphere__botanical biosphere__botanical--right" viewBox="0 0 220 720" fill="none"
+            xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
+            <path class="bio-stem" d="M16 720 C25 585 38 463 72 330 C94 235 96 146 117 30" />
+            <path class="bio-branch" d="M47 515 C75 485 92 480 134 485 M60 425 C29 380 28 350 12 331
+                M82 320 C130 304 145 278 174 252 M98 205 C67 180 58 145 48 120
+                M72 360 H18 V328 M90 275 H147 V234 M37 563 H96 V586" />
+            <path class="bio-leaf" d="M134 485 C151 446 190 437 204 446 C190 482 158 499 134 485 Z
+                M12 331 C31 300 28 276 10 257 C-4 287 -3 307 12 331 Z
+                M174 252 C155 213 163 188 197 174 C212 208 203 236 174 252 Z
+                M48 120 C39 91 15 80 0 93 C7 120 25 138 48 120 Z
+                M117 68 C116 41 133 17 151 12 C151 44 141 64 117 68 Z" />
+            <path class="bio-vein" d="M134 485 L192 451 M12 331 L11 270 M174 252 L195 186
+                M48 120 L8 96 M117 68 L145 22" />
+            <circle class="bio-node" cx="18" cy="328" r="4" />
+            <circle class="bio-node" cx="147" cy="234" r="4" />
+            <circle class="bio-node" cx="96" cy="586" r="4" />
+            <circle class="bio-node" cx="117" cy="30" r="4" />
+        </svg>
+    </div>
 
     <!-- Шапка overlay (fix) -->
     <header class="header-container">
