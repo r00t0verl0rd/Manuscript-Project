@@ -77,16 +77,14 @@ test('resize keeps original star objects and positions', () => {
 });
 
 
-test('starfield reshuffles after three pixels of width change, even on mobile', () => {
-  assert.equal(shouldReseedSky(1440, 1439), false);
-  assert.equal(shouldReseedSky(1440, 1438), false);
-  assert.equal(shouldReseedSky(1440, 1437), true);
-  assert.equal(shouldReseedSky(1440, 1443), true);
-  assert.equal(shouldReseedSky(390, 391), false);
-  assert.equal(shouldReseedSky(390, 392), false);
+test('starfield reshuffles after one pixel of width change, including mobile', () => {
+  assert.equal(shouldReseedSky(1440, 1439), true);
+  assert.equal(shouldReseedSky(1440, 1441), true);
+  assert.equal(shouldReseedSky(390, 389), true);
+  assert.equal(shouldReseedSky(390, 391), true);
   assert.equal(shouldReseedSky(390, 393), true);
-  assert.equal(shouldReseedSky(390, 430), true);
   assert.equal(shouldReseedSky(390, 390), false);
-  // Height-only changes preserve width, so they cannot trigger reseeding.
+  assert.equal(shouldReseedSky(1440, 1440), false);
+  // Height-only toolbar changes preserve width, so they cannot trigger reseeding.
   assert.equal(shouldReseedSky(390, 390), false);
 });

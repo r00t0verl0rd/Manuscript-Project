@@ -133,8 +133,8 @@ const CosmicStarfield = memo(function CosmicStarfield() {
       const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1 : 1.5);
 
       // Do not re-render on height-only mobile browser chrome changes.
-      // Compare against the most recent reshuffle, so several 1px drags
-      // still accumulate to the deliberate 3px flicker threshold.
+      // Reseed when the measured canvas width changes by even 1 CSS pixel.
+      // Height-only changes do not reshuffle the stars.
       if (nextWidth === width && nextHeight === height && dpr === lastDpr) return;
       const reshuffle = shouldReseedSky(seededWidth, nextWidth);
       if (reshuffle) seededWidth = nextWidth;
@@ -153,7 +153,7 @@ const CosmicStarfield = memo(function CosmicStarfield() {
     const scheduleResize = () => {
       // Coalesce rapid resize events rather than debounce until mouse release:
       // visible star reshuffles happen WHILE dragging, at most ~16/sec.
-      // Mobile height-only toolbar changes never satisfy the 3px width rule.
+      // Mobile height-only toolbar changes never satisfy the 1px width rule.
       if (resizeTimer) return;
       resizeTimer = setTimeout(() => {
         resizeTimer = 0;

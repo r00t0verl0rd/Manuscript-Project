@@ -116,9 +116,9 @@ export function reconcileStarPool(stars, desired, random = Math.random) {
 }
 
 
-// Every 3 CSS pixels of horizontal change create a fresh star layout,
+// Every 1 CSS pixel of horizontal change create a fresh star layout,
 // including mobile orientation/layout resizing. Height-only changes (e.g.
 // the mobile address bar collapsing on scroll) do not reshuffle the sky.
 export function shouldReseedSky(previousWidth, nextWidth) {
-  return Math.abs(nextWidth - previousWidth) >= 3;
+  return Math.abs(nextWidth - previousWidth) >= 1;
 }
