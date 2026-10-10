@@ -1,0 +1,21 @@
+/* Layered polish for React migration: preserve the solar spring palette. */
+#root { min-height: 100vh; position: relative; isolation: isolate; }
+.react-atmosphere { position:absolute; inset:0; pointer-events:none; background:
+  radial-gradient(ellipse 28% 22% at 50% 23%, rgba(255,218,127,.09), transparent),
+  linear-gradient(110deg, transparent 46%, rgba(194,250,174,.014) 50%, transparent 54%); }
+.main-wrapper { scrollbar-color: rgba(190,226,157,.35) transparent; }
+.main-wrapper > h1 { margin-top:clamp(12px,4vh,48px); margin-bottom:clamp(24px,4vw,45px); }
+#project-info { border-radius:6px; background:linear-gradient(140deg,rgba(15,55,41,.92),rgba(9,40,32,.91)); }
+#project-info .content-text { max-width:100ch; margin:0 auto; }
+#ideas-feed .simple-card { border-radius:4px; min-height: 165px; }
+#ideas-feed .simple-card:hover { transform:translateY(-3px); }
+.partner-logo { transition: background .25s, transform .25s, border-color .25s; }
+.partner-logo:hover { transform:translateY(-2px); }
+.simple-btn:focus-visible, .vote-btn:focus-visible { outline: 2px solid #ffe6a7; outline-offset:3px; }
+@media (max-width: 480px) {
+ .main-wrapper > h1 { margin-top:12px; margin-bottom:20px; }
+ #ideas-feed .simple-card { min-height:110px; }
+}
+@media(prefers-reduced-motion: reduce) {
+ .react-atmosphere, #ideas-feed .simple-card, .partner-logo { animation:none!important; transition:none!important; }
+}
