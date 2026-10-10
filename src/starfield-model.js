@@ -116,9 +116,9 @@ export function reconcileStarPool(stars, desired, random = Math.random) {
 }
 
 
-// A deliberate desktop-width change may reshuffle the sky; mobile URL bar
-// collapse and slight width fluctuations must never randomize it.
+// Every 3 CSS pixels of horizontal change create a fresh star layout,
+// including mobile orientation/layout resizing. Height-only changes (e.g.
+// the mobile address bar collapsing on scroll) do not reshuffle the sky.
 export function shouldReseedSky(previousWidth, nextWidth) {
-  return previousWidth > 640 && nextWidth > 640 &&
-    Math.abs(nextWidth - previousWidth) >= 24;
+  return Math.abs(nextWidth - previousWidth) >= 3;
 }

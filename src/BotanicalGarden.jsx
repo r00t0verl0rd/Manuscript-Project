@@ -1,31 +1,50 @@
 import React from 'react';
 
-// Airy climbing-pea vines: thin stems, small paired leaflets, curls and buds.
-// The SVG is deliberately translucent and contains no shadows or filters.
+// Airy pea vines with mini-monstera leaves: fine tendrils, tiny lobes and
+// cut-outs drawn entirely as lightweight SVG paths. No shadows or filters.
 const shoots = [
-  { x: 47, y: 591, flip: false, delay: 0 },
-  { x: 67, y: 510, flip: true, delay: 1 },
-  { x: 82, y: 423, flip: false, delay: 2 },
-  { x: 93, y: 350, flip: true, delay: 3 },
-  { x: 118, y: 251, flip: false, delay: 1 },
-  { x: 134, y: 171, flip: true, delay: 4 },
-  { x: 148, y: 97, flip: false, delay: 2 },
+  { x: 47, y: 591, flip: false, delay: 0, leaf: 'hybrid' },
+  { x: 67, y: 510, flip: true, delay: 1, leaf: 'pea' },
+  { x: 82, y: 423, flip: false, delay: 2, leaf: 'fenestrated' },
+  { x: 93, y: 350, flip: true, delay: 3, leaf: 'hybrid' },
+  { x: 118, y: 251, flip: false, delay: 1, leaf: 'pea' },
+  { x: 134, y: 171, flip: true, delay: 4, leaf: 'fenestrated' },
+  { x: 148, y: 97, flip: false, delay: 2, leaf: 'hybrid' },
 ];
 
-function LeafPair({ x, y, flip, delay }) {
+// Monstera is suggested through a few soft edge notches and a small inner
+// window. Most of the silhouette remains the small, light pea leaflet.
+function Leaflet({ side, shape }) {
+  const isLeft = side === 'left';
+  const plain = isLeft
+    ? 'M-20 -17 C-30 -33 -47 -35 -47 -23 C-46 -11 -33 -11 -20 -17 Z'
+    : 'M24 -17 C32 -30 49 -35 50 -24 C51 -13 37 -11 24 -17 Z';
+  const notched = isLeft
+    ? 'M-20 -17 C-27 -36 -46 -39 -53 -30 Q-47 -28 -43 -25 Q-52 -23 -53 -17 C-48 -9 -33 -10 -20 -17 Z'
+    : 'M24 -17 C32 -36 50 -39 56 -30 Q50 -28 45 -25 Q55 -23 55 -18 C50 -9 37 -10 24 -17 Z';
+  const fenestrated = isLeft
+    ? notched + ' M-37 -24 C-40 -29 -43 -27 -43 -23 C-41 -20 -38 -20 -37 -24 Z'
+    : notched + ' M40 -24 C43 -29 46 -27 46 -23 C44 -20 41 -20 40 -24 Z';
+  return <path
+    className={'pea-leaflet pea-leaflet--' + shape}
+    fillRule="evenodd"
+    d={shape === 'pea' ? plain : shape === 'fenestrated' ? fenestrated : notched}
+  />;
+}
+
+function LeafPair({ x, y, flip, delay, leaf = 'pea' }) {
   return (
     <g transform={'translate(' + x + ' ' + y + ')' + (flip ? ' scale(-1 1)' : '')}>
       <g className={'pea-sprig pea-sprig--' + delay}>
         <path className="pea-petiole" d="M0 0 Q-8 -12 -21 -18 M0 0 Q11 -13 25 -17"/>
-        <path className="pea-leaflet" d="M-20 -17 C-30 -33 -47 -35 -47 -23 C-46 -11 -33 -11 -20 -17 Z"/>
-        <path className="pea-leaflet" d="M24 -17 C32 -30 49 -35 50 -24 C51 -13 37 -11 24 -17 Z"/>
+        <Leaflet side="left" shape={leaf}/>
+        <Leaflet side="right" shape={leaf === 'fenestrated' ? 'hybrid' : leaf}/>
         <path className="pea-midrib" d="M-21 -17 L-43 -23 M25 -17 L47 -24"/>
         <path className="pea-tendril" d="M0 -1 Q2 -16 -2 -26 C-8 -38 2 -46 10 -41 C18 -36 12 -28 7 -32 C3 -34 6 -37 9 -36"/>
       </g>
     </g>
   );
 }
-
 function PeaPlant({ right = false }) {
   return (
     <svg
@@ -45,16 +64,16 @@ function PeaPlant({ right = false }) {
         <g transform="translate(41 539) scale(.78)">
           <g className="pea-sprig pea-sprig--3">
             <path className="pea-petiole" d="M0 0 Q-11 -13 -25 -17 M0 0 Q9 -14 23 -19"/>
-            <path className="pea-leaflet" d="M-24 -16 C-34 -29 -49 -28 -47 -19 C-44 -7 -32 -8 -24 -16 Z"/>
-            <path className="pea-leaflet" d="M22 -18 C33 -30 48 -30 47 -20 C47 -11 35 -9 22 -18 Z"/>
+            <path className="pea-leaflet pea-leaflet--hybrid" d="M-24 -16 C-32 -30 -46 -31 -50 -23 Q-43 -21 -41 -19 Q-49 -18 -47 -13 C-42 -7 -32 -8 -24 -16 Z"/>
+            <path className="pea-leaflet pea-leaflet--pea" d="M22 -18 C33 -30 48 -30 47 -20 C47 -11 35 -9 22 -18 Z"/>
             <path className="pea-tendril" d="M0 0 Q1 -17 -6 -28 C-13 -38 -1 -43 4 -37 C9 -31 2 -29 0 -33"/>
           </g>
         </g>
         <g transform="translate(34 438) scale(.73)">
           <g className="pea-sprig pea-sprig--1">
             <path className="pea-petiole" d="M0 0 Q-12 -12 -22 -17 M0 0 Q10 -15 23 -18"/>
-            <path className="pea-leaflet" d="M-21 -17 C-33 -32 -47 -30 -46 -18 C-44 -8 -31 -9 -21 -17 Z"/>
-            <path className="pea-leaflet" d="M22 -17 C32 -30 49 -31 49 -21 C47 -9 34 -9 22 -17 Z"/>
+            <path className="pea-leaflet pea-leaflet--pea" d="M-21 -17 C-33 -32 -47 -30 -46 -18 C-44 -8 -31 -9 -21 -17 Z"/>
+            <path className="pea-leaflet pea-leaflet--hybrid" d="M22 -17 C32 -32 50 -33 53 -25 Q46 -23 44 -21 Q52 -20 49 -16 C44 -9 34 -9 22 -17 Z"/>
             <path className="pea-tendril" d="M0 0 Q-4 -20 3 -32 C10 -41 20 -33 15 -27 C12 -24 7 -28 10 -30"/>
           </g>
         </g>

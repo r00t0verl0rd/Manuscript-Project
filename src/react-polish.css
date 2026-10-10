@@ -151,8 +151,8 @@ main.main-wrapper { overflow:visible; -webkit-overflow-scrolling:auto; }
  .biosphere__botanical--right { opacity:.21; }
  .biosphere__sun { top:82px; }
 }
-/* PEA-VINE GARDEN — translucent fine-line botanical drawing.
-   No filled broad leaves, bark shading, shadows or canvas animation. */
+/* PEA + MINI MONSTERA — a few organic leaf splits, not heavy jungle foliage.
+   No bark shadows or large filled shapes; retain light climbing tendrils. */
 .biosphere__botanical {
   opacity: .64;
   color: #9cddb4;
@@ -178,6 +178,14 @@ main.main-wrapper { overflow:visible; -webkit-overflow-scrolling:auto; }
   stroke: rgba(184, 241, 181, .87);
   stroke-width: 1.08;
   stroke-linejoin: round;
+}
+.pea-leaflet--hybrid {
+  fill: rgba(125, 220, 167, .055);
+  stroke: rgba(189, 249, 185, .92);
+}
+.pea-leaflet--fenestrated {
+  fill: rgba(113, 218, 176, .075);
+  stroke: rgba(154, 244, 208, .95);
 }
 .pea-midrib {
   stroke: rgba(119, 224, 191, .5);

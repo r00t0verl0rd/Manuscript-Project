@@ -77,13 +77,16 @@ test('resize keeps original star objects and positions', () => {
 });
 
 
-test('desktop window resizing reshuffles stars but mobile scrolling never does', () => {
-  assert.equal(shouldReseedSky(1440, 1100), true);
-  assert.equal(shouldReseedSky(1100, 1440), true);
-  assert.equal(shouldReseedSky(1440, 1430), false);
-  assert.equal(shouldReseedSky(1440, 1440), false);
-  assert.equal(shouldReseedSky(1440, 600), false);
+test('starfield reshuffles after three pixels of width change, even on mobile', () => {
+  assert.equal(shouldReseedSky(1440, 1439), false);
+  assert.equal(shouldReseedSky(1440, 1438), false);
+  assert.equal(shouldReseedSky(1440, 1437), true);
+  assert.equal(shouldReseedSky(1440, 1443), true);
+  assert.equal(shouldReseedSky(390, 391), false);
+  assert.equal(shouldReseedSky(390, 392), false);
+  assert.equal(shouldReseedSky(390, 393), true);
+  assert.equal(shouldReseedSky(390, 430), true);
   assert.equal(shouldReseedSky(390, 390), false);
-  assert.equal(shouldReseedSky(390, 393), false);
-  assert.equal(shouldReseedSky(390, 430), false);
+  // Height-only changes preserve width, so they cannot trigger reseeding.
+  assert.equal(shouldReseedSky(390, 390), false);
 });
