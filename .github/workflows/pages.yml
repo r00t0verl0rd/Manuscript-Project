@@ -2,12 +2,11 @@ name: Build and deploy React to GitHub Pages
 
 on:
   push:
-    branches:
-      - feature/react-solar-spring-20261010
+    branches: [feature/react-solar-spring-20261010]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -21,6 +20,8 @@ jobs:
     steps:
       - name: Checkout React source
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -34,18 +35,39 @@ jobs:
         run: npm test
 
       - name: Compile React for GitHub Pages
-        run: npm run build
+        run: |
+          npm run build
+          mv dist/react.index.html dist/index.html
 
-      - name: Verify production files and custom domain
-        shell: bash
+      - name: Verify production entry and domain
         run: |
           test -s dist/index.html
-          test -f dist/CNAME
+          test -s dist/CNAME
           grep -Fxq "manuscript.world" dist/CNAME
-          ! grep -q 'src="/src/main.jsx"' dist/index.html
-          ls -lah dist dist/assets
+          grep -q 'assets/index-' dist/index.html
+          ! grep -q '/src/main.jsx' dist/index.html
+          test -n "$(find dist/assets -name '*.js' -print -quit)"
+          test -n "$(find dist/assets -name '*.css' -print -quit)"
 
-      - name: Upload built site
+      # Pages settings currently select a source branch rather than GitHub Actions.
+      # Publish the compiled index and assets into that same branch so branch Pages
+      # cannot show uncompiled React/JSX. GITHUB_TOKEN commits don't recurse Actions.
+      - name: Synchronize built site to Pages branch root
+        shell: bash
+        run: |
+          mkdir -p assets
+          rm -f assets/index-*.js assets/index-*.css
+          cp dist/index.html index.html
+          cp -R dist/assets/. assets/
+          git add -A index.html assets
+          if ! git diff --cached --quiet; then
+            git -c user.name="github-actions[bot]" \
+                -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+                commit -m "deploy: publish compiled React site [skip ci]"
+            git push origin HEAD:feature/react-solar-spring-20261010
+          fi
+
+      - name: Upload compiled site for Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/
@@ -57,14 +79,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Select GitHub Actions as Pages publishing source
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api -X PUT "repos/${GITHUB_REPOSITORY}/pages" -f build_type=workflow || {
-            echo "::warning::Could not switch Pages source automatically. In Settings -> Pages -> Build and deployment select 'GitHub Actions'."
-          }
-
-      - name: Deploy build
+      - name: Deploy compiled React site
         id: deployment
         uses: actions/deploy-pages@v4
