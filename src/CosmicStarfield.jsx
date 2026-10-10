@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react';
 import {
-  starBudget, moveStars, proximityLinks, reconcileStarPool,
+  createStars, starBudget, moveStars, proximityLinks, reconcileStarPool, shouldReseedSky,
 } from './starfield-model.js';
 
 // A single Canvas 2D with gently evolving proximity links, inspired by the
@@ -131,8 +131,9 @@ const CosmicStarfield = memo(function CosmicStarfield() {
       const mobile = nextWidth <= 640;
       const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1 : 1.5);
 
-      // Do not clear the canvas or randomize stars on unchanged dimensions.
+      // Identical dimensions are ignored; desktop width changes can refresh the sky.
       if (nextWidth === width && nextHeight === height && dpr === lastDpr) return;
+      const reshuffle = shouldReseedSky(width, nextWidth);
       width = nextWidth;
       height = nextHeight;
       lastDpr = dpr;
@@ -140,7 +141,8 @@ const CosmicStarfield = memo(function CosmicStarfield() {
       canvas.height = Math.round(height * dpr);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       frameInterval = 1000 / (mobile || lowPower ? 20 : 24);
-      stars = reconcileStarPool(stars, starBudget(width, height, lowPower));
+      const budget = starBudget(width, height, lowPower);
+      stars = reshuffle ? createStars(budget) : reconcileStarPool(stars, budget);
       paint(elapsedMs, 0);
     };
 

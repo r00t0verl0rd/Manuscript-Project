@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STAR_PALETTE, starBudget, createStars, moveStars, proximityLinks, reconcileStarPool } from '../src/starfield-model.js';
+import { STAR_PALETTE, starBudget, createStars, moveStars, proximityLinks, reconcileStarPool, shouldReseedSky } from '../src/starfield-model.js';
 
 test('mobile and low-power screens have bounded particle counts', () => {
   assert.ok(starBudget(390, 844) <= 52);
@@ -74,4 +74,16 @@ test('resize keeps original star objects and positions', () => {
   reconcileStarPool(stars, 5);
   assert.equal(stars.length, 5);
   assert.strictEqual(stars[0], original);
+});
+
+
+test('desktop window resizing reshuffles stars but mobile scrolling never does', () => {
+  assert.equal(shouldReseedSky(1440, 1100), true);
+  assert.equal(shouldReseedSky(1100, 1440), true);
+  assert.equal(shouldReseedSky(1440, 1430), false);
+  assert.equal(shouldReseedSky(1440, 1440), false);
+  assert.equal(shouldReseedSky(1440, 600), false);
+  assert.equal(shouldReseedSky(390, 390), false);
+  assert.equal(shouldReseedSky(390, 393), false);
+  assert.equal(shouldReseedSky(390, 430), false);
 });

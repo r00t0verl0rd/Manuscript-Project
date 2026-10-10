@@ -151,31 +151,80 @@ main.main-wrapper { overflow:visible; -webkit-overflow-scrolling:auto; }
  .biosphere__botanical--right { opacity:.21; }
  .biosphere__sun { top:82px; }
 }
-/* The root SVG stays still: each rooted stalk and each leaf sways separately. */
-.garden-stalk,.garden-grass,.garden-leaf {
- transform-box:view-box;
- animation:garden-breeze 12s ease-in-out infinite alternate;
+/* PEA-VINE GARDEN — translucent fine-line botanical drawing.
+   No filled broad leaves, bark shading, shadows or canvas animation. */
+.biosphere__botanical {
+  opacity: .64;
+  color: #9cddb4;
+  filter: none !important;
+  overflow: visible;
 }
-.garden-stalk--tall { transform-origin:29px 718px; animation-duration:12.3s; animation-delay:-3s; }
-.garden-stalk--broad { transform-origin:14px 718px; animation-duration:15.2s; animation-delay:-7s; }
-.garden-grass--left { transform-origin:18px 719px; animation-duration:8.6s; animation-delay:-2s; }
-.garden-grass--right { transform-origin:127px 719px; animation-duration:10.4s; animation-delay:-6s; }
-.garden-leaf { animation-name:garden-leaf-breeze; }
-.garden-leaf--1 { transform-origin:141px 460px; animation-duration:8.5s; animation-delay:-2s; }
-.garden-leaf--2 { transform-origin:20px 348px; animation-duration:9.8s; animation-delay:-4.5s; }
-.garden-leaf--3 { transform-origin:182px 246px; animation-duration:11.1s; animation-delay:-7s; }
-.garden-leaf--4 { transform-origin:68px 96px; animation-duration:8.7s; animation-delay:-6s; }
-.garden-leaf--5 { transform-origin:133px 50px; animation-duration:12.9s; animation-delay:-9s; }
-.garden-leaf--6 { transform-origin:92px 400px; animation-duration:9.6s; animation-delay:-1s; }
-.garden-leaf--7 { transform-origin:119px 464px; animation-duration:10.3s; animation-delay:-5s; }
-@keyframes garden-breeze { from{transform:rotate(-1.3deg)} to{transform:rotate(1.4deg)} }
-@keyframes garden-leaf-breeze { from{transform:rotate(-2deg)} to{transform:rotate(2.1deg)} }
-.garden-leaf-fill { stroke:#b4ef9a; stroke-width:1.4; stroke-linejoin:round; }
-.garden-vein { fill:none; stroke:rgba(183,249,211,.66); stroke-width:.9; stroke-linecap:round; }
-.garden-circuit { fill:none; stroke:rgba(151,226,188,.52); stroke-width:1.2; stroke-dasharray:4 5; }
-.garden-node { fill:#ffe6a6; stroke:#103b2b; stroke-width:1.6; }
-.garden-blade { fill:rgba(102,203,132,.12); stroke:rgba(142,239,161,.72); stroke-width:1.4; }
-.garden-root { stroke:rgba(88,176,124,.25); stroke-width:1; }
+.biosphere__botanical--right { opacity: .48; }
+.pea-stem,.pea-petiole,.pea-tendril,.pea-midrib,.pea-grass path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pea-stem {
+  stroke: rgba(127, 220, 163, .84);
+  stroke-width: 1.45;
+}
+.pea-petiole {
+  stroke: rgba(132, 218, 174, .69);
+  stroke-width: 1.05;
+}
+.pea-leaflet {
+  fill: rgba(133, 226, 168, .035);
+  stroke: rgba(184, 241, 181, .87);
+  stroke-width: 1.08;
+  stroke-linejoin: round;
+}
+.pea-midrib {
+  stroke: rgba(119, 224, 191, .5);
+  stroke-width: .55;
+}
+.pea-tendril {
+  stroke: rgba(148, 225, 204, .93);
+  stroke-width: 1.12;
+}
+.pea-tendril--tip { stroke-width: 1.2; }
+.pea-bud { fill: rgba(248, 220, 148, .65); }
+.pea-grass path {
+  stroke: rgba(146, 218, 162, .51);
+  stroke-width: 1.0;
+}
+/* Only thin stems bend about their fixed roots; tiny leaves and curling
+   tendrils vary independently with very small rotations. */
+.pea-vine,.pea-sprig,.pea-grass {
+  transform-box: view-box;
+  animation: pea-breeze 12s ease-in-out infinite alternate;
+}
+.pea-vine--main { transform-origin: 29px 720px; animation-duration: 13.8s; animation-delay: -2s; }
+.pea-vine--small { transform-origin: 15px 720px; animation-duration: 17s; animation-delay: -8s; }
+.pea-grass--a { transform-origin: 4px 720px; animation-duration: 9s; animation-delay: -4s; }
+.pea-grass--b { transform-origin: 117px 720px; animation-duration: 11s; animation-delay: -6s; }
+.pea-sprig { transform-origin: 0px 0px; animation-name: pea-leaf-breeze; }
+.pea-sprig--0 { animation-duration: 9.5s; animation-delay: -3s; }
+.pea-sprig--1 { animation-duration: 12.2s; animation-delay: -5s; }
+.pea-sprig--2 { animation-duration: 10.6s; animation-delay: -7s; }
+.pea-sprig--3 { animation-duration: 14s; animation-delay: -9s; }
+.pea-sprig--4 { animation-duration: 11.8s; animation-delay: -4s; }
+@keyframes pea-breeze {
+  from { transform: rotate(-.95deg); }
+  to { transform: rotate(1.15deg); }
+}
+@keyframes pea-leaf-breeze {
+  from { transform: rotate(-1.8deg); }
+  to { transform: rotate(1.9deg); }
+}
+@media (max-width: 899px) {
+  .biosphere__botanical { opacity: .43; }
+  .biosphere__botanical--right { opacity: .32; }
+}
+@media (max-width: 480px) {
+  .biosphere__botanical { opacity: .32; }
+  .biosphere__botanical--right { opacity: .26; }
+}
 @media (prefers-reduced-motion: reduce) {
- .garden-stalk,.garden-grass,.garden-leaf { animation:none!important; }
+  .pea-vine,.pea-sprig,.pea-grass { animation: none !important; }
 }

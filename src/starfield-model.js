@@ -114,3 +114,11 @@ export function reconcileStarPool(stars, desired, random = Math.random) {
   else if (stars.length < size) stars.push(...createStars(size - stars.length, random));
   return stars;
 }
+
+
+// A deliberate desktop-width change may reshuffle the sky; mobile URL bar
+// collapse and slight width fluctuations must never randomize it.
+export function shouldReseedSky(previousWidth, nextWidth) {
+  return previousWidth > 640 && nextWidth > 640 &&
+    Math.abs(nextWidth - previousWidth) >= 24;
+}
