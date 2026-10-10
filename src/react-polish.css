@@ -125,50 +125,57 @@ footer { position: relative; z-index: 2; }
 }
 
 
-/* ORGANIC WIND — only gentle SVG transforms, never a second animation loop.
-   The whole vines swing softly while individual leaves and grass bend at
-   slightly different rhythms. Right-side mirroring is preserved explicitly. */
+/* Stable background: lvh does not jump as mobile browser toolbars collapse.
+   Keep content in one document scroller, not a nested scrollable flex item. */
+.biosphere { inset:0 0 auto 0; height:100vh; height:100lvh; overflow:hidden; }
+#content { height:auto; min-height:100vh; min-height:100svh; display:block; }
+main.main-wrapper { overflow:visible; -webkit-overflow-scrolling:auto; }
+.biosphere__sun { top:clamp(90px,12svh,150px); }
 .biosphere__botanical {
-  transform-origin: 26px 100%;
-  animation: botanical-wind-left 10.5s ease-in-out infinite alternate;
-  will-change: transform;
+  width:clamp(160px,23vw,320px);
+  height:min(86svh,765px);
+  bottom:0;
+  opacity:.52;
+  transform:none;
+  animation:none;
+  will-change:auto;
 }
-.biosphere__botanical--right {
-  transform-origin: 80% 100%;
-  animation: botanical-wind-right 12.3s ease-in-out infinite alternate;
+.biosphere__botanical--left { left:-12px; }
+.biosphere__botanical--right { right:-12px; transform:scaleX(-1); opacity:.42; }
+@media (max-width:899px) {
+ .biosphere__botanical { width:clamp(158px,25vw,205px); opacity:.34; }
+ .biosphere__botanical--right { opacity:.29; }
 }
-@keyframes botanical-wind-left {
-  from { transform: rotate(-1.6deg); }
-  to   { transform: rotate(1.5deg); }
+@media (max-width:480px) {
+ .biosphere__botanical { width:150px; opacity:.25; }
+ .biosphere__botanical--right { opacity:.21; }
+ .biosphere__sun { top:82px; }
 }
-@keyframes botanical-wind-right {
-  from { transform: scaleX(-1) rotate(-1.4deg); }
-  to   { transform: scaleX(-1) rotate(1.7deg); }
+/* The root SVG stays still: each rooted stalk and each leaf sways separately. */
+.garden-stalk,.garden-grass,.garden-leaf {
+ transform-box:view-box;
+ animation:garden-breeze 12s ease-in-out infinite alternate;
 }
-.wind-leaf, .wind-grass {
-  animation: botanical-leaf-wind 8.7s ease-in-out infinite alternate;
-  transform-box: view-box;
-  transform-origin: var(--wind-origin);
-}
-.wind-leaf--1 { --wind-origin: 134px 485px; animation-duration: 8.2s; }
-.wind-leaf--2 { --wind-origin: 12px 331px; animation-duration: 10.8s; animation-delay: -3s; }
-.wind-leaf--3 { --wind-origin: 174px 252px; animation-duration: 9.4s; animation-delay: -2.6s; }
-.wind-leaf--4 { --wind-origin: 48px 120px; animation-duration: 11.3s; animation-delay: -4s; }
-.wind-leaf--5 { --wind-origin: 117px 68px; animation-duration: 8.6s; animation-delay: -2s; }
-.wind-grass--1 { --wind-origin: 21px 718px; animation-duration: 7.6s; }
-.wind-grass--2 { --wind-origin: 129px 718px; animation-duration: 9.5s; animation-delay: -4.8s; }
-@keyframes botanical-leaf-wind {
-  from { transform: rotate(-2.4deg); }
-  to   { transform: rotate(2.5deg); }
-}
-@media (max-width: 640px) {
-  .biosphere__botanical { animation-duration: 14s; }
-  .wind-leaf, .wind-grass { animation-duration: 13s; }
-}
+.garden-stalk--tall { transform-origin:29px 718px; animation-duration:12.3s; animation-delay:-3s; }
+.garden-stalk--broad { transform-origin:14px 718px; animation-duration:15.2s; animation-delay:-7s; }
+.garden-grass--left { transform-origin:18px 719px; animation-duration:8.6s; animation-delay:-2s; }
+.garden-grass--right { transform-origin:127px 719px; animation-duration:10.4s; animation-delay:-6s; }
+.garden-leaf { animation-name:garden-leaf-breeze; }
+.garden-leaf--1 { transform-origin:141px 460px; animation-duration:8.5s; animation-delay:-2s; }
+.garden-leaf--2 { transform-origin:20px 348px; animation-duration:9.8s; animation-delay:-4.5s; }
+.garden-leaf--3 { transform-origin:182px 246px; animation-duration:11.1s; animation-delay:-7s; }
+.garden-leaf--4 { transform-origin:68px 96px; animation-duration:8.7s; animation-delay:-6s; }
+.garden-leaf--5 { transform-origin:133px 50px; animation-duration:12.9s; animation-delay:-9s; }
+.garden-leaf--6 { transform-origin:92px 400px; animation-duration:9.6s; animation-delay:-1s; }
+.garden-leaf--7 { transform-origin:119px 464px; animation-duration:10.3s; animation-delay:-5s; }
+@keyframes garden-breeze { from{transform:rotate(-1.3deg)} to{transform:rotate(1.4deg)} }
+@keyframes garden-leaf-breeze { from{transform:rotate(-2deg)} to{transform:rotate(2.1deg)} }
+.garden-leaf-fill { stroke:#b4ef9a; stroke-width:1.4; stroke-linejoin:round; }
+.garden-vein { fill:none; stroke:rgba(183,249,211,.66); stroke-width:.9; stroke-linecap:round; }
+.garden-circuit { fill:none; stroke:rgba(151,226,188,.52); stroke-width:1.2; stroke-dasharray:4 5; }
+.garden-node { fill:#ffe6a6; stroke:#103b2b; stroke-width:1.6; }
+.garden-blade { fill:rgba(102,203,132,.12); stroke:rgba(142,239,161,.72); stroke-width:1.4; }
+.garden-root { stroke:rgba(88,176,124,.25); stroke-width:1; }
 @media (prefers-reduced-motion: reduce) {
-  .biosphere__botanical, .wind-leaf, .wind-grass {
-    animation: none !important;
-    will-change: auto;
-  }
-  .biosphere__botanical--right { transform: scaleX(-1); }
+ .garden-stalk,.garden-grass,.garden-leaf { animation:none!important; }
 }

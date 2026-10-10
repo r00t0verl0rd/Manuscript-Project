@@ -105,3 +105,12 @@ export function proximityLinks(positions, radius, seconds, limit = 260) {
   }
   return links;
 }
+
+
+// Preserve the existing stars and their positions through viewport changes.
+export function reconcileStarPool(stars, desired, random = Math.random) {
+  const size = Math.max(0, Math.floor(Number.isFinite(desired) ? desired : 0));
+  if (stars.length > size) stars.length = size;
+  else if (stars.length < size) stars.push(...createStars(size - stars.length, random));
+  return stars;
+}

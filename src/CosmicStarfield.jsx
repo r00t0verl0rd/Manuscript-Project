@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react';
 import {
-  createStars, starBudget, moveStars, proximityLinks,
+  starBudget, moveStars, proximityLinks, reconcileStarPool,
 } from './starfield-model.js';
 
 // A single Canvas 2D with gently evolving proximity links, inspired by the
@@ -36,6 +36,9 @@ const CosmicStarfield = memo(function CosmicStarfield() {
     let targetX = 0;
     let targetY = 0;
     let frameInterval = 1000 / 24;
+    let lastDpr = 0;
+    let resizeTimer = 0;
+    let resizeObserver;
 
     const paint = (time, delta) => {
       context.clearRect(0, 0, width, height);
@@ -120,17 +123,35 @@ const CosmicStarfield = memo(function CosmicStarfield() {
     };
 
     const resize = () => {
-      width = Math.max(1, window.innerWidth);
-      height = Math.max(1, window.innerHeight);
-      const mobile = width <= 640;
-      // Avoid allocating millions of pixels on high-DPI phones.
+      // The visual viewport changes while mobile browser chrome hides.
+      // Use our CSS-stabilized canvas box, not window.innerHeight.
+      const box = canvas.getBoundingClientRect();
+      const nextWidth = Math.max(1, Math.round(box.width));
+      const nextHeight = Math.max(1, Math.round(box.height));
+      const mobile = nextWidth <= 640;
       const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1 : 1.5);
+
+      // Do not clear the canvas or randomize stars on unchanged dimensions.
+      if (nextWidth === width && nextHeight === height && dpr === lastDpr) return;
+      width = nextWidth;
+      height = nextHeight;
+      lastDpr = dpr;
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       frameInterval = 1000 / (mobile || lowPower ? 20 : 24);
-      stars = createStars(starBudget(width, height, lowPower));
+      stars = reconcileStarPool(stars, starBudget(width, height, lowPower));
       paint(elapsedMs, 0);
+    };
+
+    const scheduleResize = () => {
+      // CSS smoothly stretches the previous frame while dragging the browser.
+      // Reallocate pixels once after resizing settles, not on every event.
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resizeTimer = 0;
+        resize();
+      }, 140);
     };
 
     const onVisibility = () => {
@@ -151,7 +172,9 @@ const CosmicStarfield = memo(function CosmicStarfield() {
 
     resize();
     start();
-    window.addEventListener('resize', resize, { passive: true });
+    resizeObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(scheduleResize) : null;
+    resizeObserver?.observe(canvas);
+    window.addEventListener('resize', scheduleResize, { passive: true });
     window.addEventListener('pointermove', onPointer, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
     if (motion.addEventListener) motion.addEventListener('change', onMotion);
@@ -159,7 +182,9 @@ const CosmicStarfield = memo(function CosmicStarfield() {
 
     return () => {
       stop();
-      window.removeEventListener('resize', resize);
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', scheduleResize);
       window.removeEventListener('pointermove', onPointer);
       document.removeEventListener('visibilitychange', onVisibility);
       if (motion.removeEventListener) motion.removeEventListener('change', onMotion);

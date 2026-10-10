@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STAR_PALETTE, starBudget, createStars, moveStars, proximityLinks } from '../src/starfield-model.js';
+import { STAR_PALETTE, starBudget, createStars, moveStars, proximityLinks, reconcileStarPool } from '../src/starfield-model.js';
 
 test('mobile and low-power screens have bounded particle counts', () => {
   assert.ok(starBudget(390, 844) <= 52);
@@ -59,4 +59,19 @@ test('connection budget and zero-particle fallback remain safe', () => {
   assert.deepEqual(proximityLinks([], 150, 0), []);
   const points = Array.from({ length: 100 }, (_, i) => ({ x: i * 0.2, y: i * 0.2 }));
   assert.ok(proximityLinks(points, 150, 2, 35).length <= 35);
+});
+
+
+test('resize keeps original star objects and positions', () => {
+  const stars = createStars(9, () => 0.25);
+  const original = stars[0];
+  const before = [original.x, original.y];
+  assert.strictEqual(reconcileStarPool(stars, 9), stars);
+  reconcileStarPool(stars, 14, () => 0.75);
+  assert.equal(stars.length, 14);
+  assert.strictEqual(stars[0], original);
+  assert.deepEqual([stars[0].x, stars[0].y], before);
+  reconcileStarPool(stars, 5);
+  assert.equal(stars.length, 5);
+  assert.strictEqual(stars[0], original);
 });
