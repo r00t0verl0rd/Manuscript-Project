@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: github-pages
@@ -93,18 +91,5 @@ jobs:
             git push origin HEAD:feature/react-solar-spring-20261010
           fi
 
-      - name: Upload compiled site for Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy compiled React site
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # GitHub Pages is configured to publish from this branch root.
+      # The branch update above triggers its normal Pages deployment.
