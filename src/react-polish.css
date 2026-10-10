@@ -19,3 +19,65 @@
 @media(prefers-reduced-motion: reduce) {
  .react-atmosphere, #ideas-feed .simple-card, .partner-logo { animation:none!important; transition:none!important; }
 }
+
+/* DEEP COSMOS: stars behind the sun, live ideas above every background layer. */
+.biosphere { z-index: 0; }
+.biosphere::before { z-index: 0; opacity: 0.65; }
+.cosmic-nebula {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 46% 48% at 12% 22%, rgba(108, 81, 192, 0.20), transparent 82%),
+    radial-gradient(ellipse 46% 40% at 84% 35%, rgba(46, 175, 184, 0.14), transparent 81%),
+    radial-gradient(ellipse 48% 43% at 56% 76%, rgba(195, 83, 133, 0.10), transparent 82%),
+    radial-gradient(ellipse 40% 32% at 49% 19%, rgba(240, 149, 75, 0.13), transparent 79%);
+}
+.cosmic-starfield {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 9% 31%, rgba(128, 211, 255, 0.72) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 19%, rgba(194, 150, 255, 0.69) 0 1px, transparent 2px),
+    radial-gradient(circle at 87% 65%, rgba(255, 179, 108, 0.68) 0 1px, transparent 2px),
+    radial-gradient(circle at 27% 81%, rgba(107, 243, 212, 0.65) 0 1px, transparent 2px);
+}
+.biosphere__sun { z-index: 2; }
+.react-atmosphere { z-index: 2; }
+.biosphere__botanical { z-index: 3; }
+#content { z-index: 2; }
+footer { position: relative; z-index: 2; }
+
+/* Cards feel suspended in front of the solar system, without permanent animations. */
+#ideas-feed .idea-card {
+  background: linear-gradient(145deg, rgba(21, 64, 54, 0.91), rgba(9, 32, 35, 0.92));
+  border-color: rgba(205, 226, 174, 0.38);
+  box-shadow:
+    0 20px 28px -22px rgba(0, 8, 20, 0.92),
+    0 13px 38px -28px rgba(102, 211, 195, 0.37),
+    inset 0 1px rgba(248, 225, 172, 0.10);
+}
+@media (hover: hover) and (pointer: fine) {
+  #ideas-feed .idea-card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(248, 212, 145, 0.75);
+    box-shadow:
+      0 23px 34px -16px rgba(0, 10, 27, 0.84),
+      0 0 22px rgba(97, 203, 183, 0.17),
+      inset 0 1px rgba(255, 230, 174, 0.16);
+  }
+}
+@media (max-width: 640px) {
+  .cosmic-nebula { opacity: 0.65; }
+  #ideas-feed .idea-card { box-shadow: 0 9px 20px rgba(0, 10, 22, 0.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-nebula, .cosmic-starfield { animation: none !important; }
+  #ideas-feed .idea-card { transition: none !important; }
+}

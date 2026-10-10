@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import CosmicStarfield from './CosmicStarfield.jsx';
 import { createRoot } from 'react-dom/client';
 import en from '../locales/en.json';
 import ru from '../locales/ru.json';
@@ -25,6 +26,8 @@ function Vines({ right = false }) {
 
 function Biosphere() {
   return <div className="biosphere" aria-hidden="true">
+    <div className="cosmic-nebula"/>
+    <CosmicStarfield/>
     <div className="biosphere__sun"/><Vines/><Vines right/>
     <div className="react-atmosphere"/>
   </div>;
