@@ -63,7 +63,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git -c user.name="github-actions[bot]" \
                 -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-                commit -m "deploy: publish compiled React site [skip ci]"
+                commit -m "Published the latest compiled React website to GitHub Pages [skip ci]"
             git push origin HEAD:feature/react-solar-spring-20261010
           fi
 

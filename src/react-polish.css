@@ -81,3 +81,45 @@ footer { position: relative; z-index: 2; }
   .cosmic-nebula, .cosmic-starfield { animation: none !important; }
   #ideas-feed .idea-card { transition: none !important; }
 }
+
+
+/* Violet-blue becomes the third accent, without replacing spring green and gold. */
+:root {
+  --cosmos-violet: #a89aff;
+  --cosmos-violet-bright: #c5afff;
+  --cosmos-ink: rgba(108, 74, 216, 0.19);
+}
+.cosmic-nebula {
+  background:
+    radial-gradient(ellipse 48% 45% at 13% 23%, rgba(105, 79, 232, 0.25), transparent 81%),
+    radial-gradient(ellipse 47% 40% at 87% 37%, rgba(74, 84, 225, 0.23), transparent 81%),
+    radial-gradient(ellipse 42% 35% at 57% 76%, rgba(184, 72, 180, 0.14), transparent 83%),
+    radial-gradient(ellipse 40% 32% at 49% 19%, rgba(240, 149, 75, 0.12), transparent 79%);
+}
+#ideas-feed .idea-card:nth-child(3n + 2) {
+  border-color: rgba(173, 153, 255, 0.50);
+  box-shadow:
+    0 20px 28px -22px rgba(0, 8, 20, 0.92),
+    0 8px 32px -25px rgba(159, 128, 255, 0.50),
+    inset 0 1px rgba(226, 199, 255, 0.11);
+}
+#ideas-feed .idea-card:nth-child(3n + 2)::before {
+  background: linear-gradient(90deg, var(--cosmos-violet-bright), #86d8d4, transparent);
+}
+#road-map-btn {
+  border-color: rgba(173, 154, 251, 0.73);
+  color: #ded1ff;
+  background: linear-gradient(150deg, rgba(114, 91, 197, 0.15), rgba(32, 57, 65, 0.13));
+}
+#road-map-btn:hover,
+#road-map-btn:focus-visible {
+  border-color: var(--cosmos-violet-bright);
+  background: rgba(126, 98, 213, 0.25);
+  box-shadow: 0 0 16px rgba(150, 117, 246, 0.20);
+}
+.type-selector .radio-custom:hover {
+  border-color: rgba(178, 161, 255, 0.70);
+}
+@media (max-width: 640px) {
+  .cosmic-nebula { opacity: 0.72; }
+}

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STAR_PALETTE, starBudget, createStars } from '../src/starfield-model.js';
+import { STAR_PALETTE, starBudget, createStars, createConstellations, constellationPoints } from '../src/starfield-model.js';
 
 test('mobile and low-power screens have bounded particle counts', () => {
   assert.ok(starBudget(390, 844) <= 52);
@@ -29,4 +29,31 @@ test('a seeded source generates normalized, coloured depth layers', () => {
 
 test('zero particles yields an empty field', () => {
   assert.deepEqual(createStars(0), []);
+});
+
+
+test('constellations use sparse fixed edges and a bounded mobile count', () => {
+  const desktop = createConstellations(1440);
+  const mobile = createConstellations(390);
+  assert.equal(desktop.length, 4);
+  assert.equal(mobile.length, 2);
+  for (const group of desktop) {
+    assert.equal(group.points.length, 6);
+    assert.ok(group.edges.length <= 7);
+    for (const [start, end] of group.edges) {
+      assert.ok(start >= 0 && start < group.points.length);
+      assert.ok(end >= 0 && end < group.points.length);
+    }
+  }
+});
+
+test('entire connected constellation visibly changes position over time', () => {
+  const [constellation] = createConstellations(1440);
+  const before = constellationPoints(constellation, 1440, 900, 0);
+  const after = constellationPoints(constellation, 1440, 900, 12);
+  assert.equal(before.length, after.length);
+  assert.ok(Math.hypot(after[0].x - before[0].x, after[0].y - before[0].y) > 8);
+  const beforeDistance = Math.hypot(before[0].x - before[1].x, before[0].y - before[1].y);
+  const afterDistance = Math.hypot(after[0].x - after[1].x, after[0].y - after[1].y);
+  assert.ok(Math.abs(beforeDistance - afterDistance) < 0.000001);
 });

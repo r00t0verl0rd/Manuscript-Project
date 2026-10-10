@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from 'react';
-import { createStars, starBudget } from './starfield-model.js';
+import { createStars, starBudget, createConstellations, constellationPoints } from './starfield-model.js';
 
 // Exactly one Canvas 2D and one requestAnimationFrame loop; no React state
 // updates per frame, no particle package, no WebGL or third-party resources.
@@ -25,6 +25,8 @@ const CosmicStarfield = memo(function CosmicStarfield() {
     let width = 1;
     let height = 1;
     let stars = [];
+    let constellations = [];
+    let elapsedMs = 0;
     let frame = 0;
     let previousFrame = 0;
     let running = false;
@@ -38,6 +40,41 @@ const CosmicStarfield = memo(function CosmicStarfield() {
       context.clearRect(0, 0, width, height);
       pointerX += (targetX - pointerX) * 0.055;
       pointerY += (targetY - pointerY) * 0.055;
+
+      // Constellations travel as small, coherent star maps behind the sun.
+      // Only 2 on mobile / 4 on desktop, with 7 direct edges per group.
+      const seconds = time / 1000;
+      for (const group of constellations) {
+        const points = constellationPoints(group, width, height, seconds);
+        const offsetX = pointerX * 0.35;
+        const offsetY = pointerY * 0.35;
+
+        context.strokeStyle = group.color;
+        context.lineWidth = 0.9;
+        context.globalAlpha = 0.32;
+        context.beginPath();
+        for (const [start, end] of group.edges) {
+          context.moveTo(points[start].x + offsetX, points[start].y + offsetY);
+          context.lineTo(points[end].x + offsetX, points[end].y + offsetY);
+        }
+        context.stroke();
+
+        for (let i = 0; i < points.length; i += 1) {
+          const { x, y } = points[i];
+          context.globalAlpha = (i === 2 ? 0.96 : 0.76) *
+            (0.88 + 0.12 * Math.sin(seconds * 1.15 + group.phase + i));
+          context.fillStyle = group.color;
+          if (i === 2) {
+            context.shadowBlur = 10;
+            context.shadowColor = group.color;
+          }
+          context.beginPath();
+          context.arc(x + offsetX, y + offsetY, i === 2 ? 2.25 : 1.55, 0, Math.PI * 2);
+          context.fill();
+          context.shadowBlur = 0;
+        }
+      }
+      context.globalAlpha = 1;
 
       for (let i = 0; i < stars.length; i += 1) {
         const star = stars[i];
@@ -86,7 +123,8 @@ const CosmicStarfield = memo(function CosmicStarfield() {
       if (!running) return;
       if (!previousFrame || time - previousFrame >= frameInterval) {
         const delta = previousFrame ? Math.min(70, time - previousFrame) : 0;
-        paint(time, delta);
+        elapsedMs += delta;
+        paint(elapsedMs, delta);
         previousFrame = time;
       }
       frame = requestAnimationFrame(tick);
@@ -110,7 +148,8 @@ const CosmicStarfield = memo(function CosmicStarfield() {
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       frameInterval = 1000 / (mobile || lowPower ? 20 : 24);
       stars = createStars(starBudget(width, height, lowPower));
-      paint(0, 0); // Static stars visible even with reduced motion.
+      constellations = createConstellations(width);
+      paint(elapsedMs, 0); // Static stars visible even with reduced motion.
     };
 
     const onVisibility = () => {
@@ -120,7 +159,7 @@ const CosmicStarfield = memo(function CosmicStarfield() {
     const onMotion = () => {
       if (motion.matches) {
         stop();
-        paint(0, 0);
+        paint(elapsedMs, 0);
       } else start();
     };
     const onPointer = (event) => {

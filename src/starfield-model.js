@@ -33,3 +33,43 @@ export function createStars(count, random = Math.random) {
     };
   });
 }
+
+
+// Small fixed star maps form readable, moving constellations. We connect
+// neighbours by index (linear cost), never search all star pairs each frame.
+const CONSTELLATION_SHAPES = [
+  { x: 0.19, y: 0.29, color: '#a798ff', phase: 0.2,
+    points: [[-52,-8],[-23,-38],[21,-43],[50,-12],[26,35],[-17,39]],
+    edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[1,5]] },
+  { x: 0.79, y: 0.32, color: '#8ecbff', phase: 1.7,
+    points: [[-50,-24],[-15,-39],[16,-9],[56,8],[24,39],[-30,32]],
+    edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[2,5]] },
+  { x: 0.22, y: 0.75, color: '#e5a0ff', phase: 3.1,
+    points: [[-38,30],[-29,-24],[0,-47],[35,-22],[52,30],[5,48]],
+    edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[2,5]] },
+  { x: 0.78, y: 0.76, color: '#80eddd', phase: 4.5,
+    points: [[-52,9],[-21,-35],[18,-40],[54,-6],[21,43],[-20,32]],
+    edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[1,4]] },
+];
+
+export function createConstellations(width) {
+  // Two compact constellations on narrow screens instead of four.
+  const selected = width <= 640 ? [0, 3] : [0, 1, 2, 3];
+  return selected.map(index => CONSTELLATION_SHAPES[index]);
+}
+
+export function constellationPoints(group, width, height, seconds) {
+  // A coordinated orbital movement makes the entire constellation glide.
+  // Small rotations keep the connections recognizable rather than noisy.
+  const mobile = width <= 640;
+  const scale = mobile ? 0.60 : Math.max(0.78, Math.min(1.18, width / 1200));
+  const orbitX = Math.sin(seconds * 0.34 + group.phase) * (mobile ? 12 : 30);
+  const orbitY = Math.cos(seconds * 0.26 + group.phase) * (mobile ? 9 : 20);
+  const rotation = Math.sin(seconds * 0.22 + group.phase) * 0.16;
+  const sin = Math.sin(rotation);
+  const cos = Math.cos(rotation);
+  return group.points.map(([localX, localY]) => ({
+    x: group.x * width + orbitX + scale * (localX * cos - localY * sin),
+    y: group.y * height + orbitY + scale * (localX * sin + localY * cos),
+  }));
+}
