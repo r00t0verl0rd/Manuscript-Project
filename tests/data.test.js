@@ -20,7 +20,7 @@ test('all original sort modes still work', () => {
 
 test('date and id format remains unchanged', () => {
   assert.equal(shortenId('1234567890'), '1234...7890');
-  assert.match(dateLabel(Date.now()), /^\\d{4}-\\d{2}-\\d{2}$/);
+  assert.match(dateLabel(Date.now()), /^\d{4}-\d{2}-\d{2}$/);
 });
 
 test('RU/EN translations have identical keys', () => {
