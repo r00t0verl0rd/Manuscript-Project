@@ -1,0 +1,514 @@
+/*
+ * MANUSCRIPT — SOLAR BIOPUNK
+ * Self-contained visual layer over the original responsive styles.
+ * Organic circuit patterns, a CSS sun, and high-contrast botanical UI.
+ * No images, fonts, animation libraries or JS required by this stylesheet.
+ */
+:root {
+    --neon-green: #b4f28c;
+    --neon-purple: #dabf83;
+    --neon-cyan: #8ad9c6;
+    --neon-orange: #f4b75e;
+    --bio-night: #061914;
+    --bio-forest: #10392d;
+    --bio-leaf: #b4f28c;
+    --bio-gold: #f4cd7a;
+    --bio-line: rgba(155, 231, 171, 0.28);
+    --bio-text: #ecf9e9;
+    --bio-muted: #aec8ba;
+}
+
+html {
+    background: var(--bio-night);
+    color-scheme: dark;
+}
+
+body {
+    color: var(--bio-text);
+    background:
+        radial-gradient(ellipse 48% 30% at 50% 10%, rgba(239, 179, 84, 0.17), transparent 76%),
+        radial-gradient(ellipse 55% 55% at -10% 76%, rgba(48, 148, 91, 0.18), transparent 80%),
+        radial-gradient(ellipse 52% 50% at 105% 82%, rgba(38, 134, 102, 0.16), transparent 78%),
+        linear-gradient(165deg, #071d18 0%, #0c2a23 49%, #041410 100%) fixed;
+    background-attachment: scroll;
+}
+
+#particles-js {
+    opacity: 0.4;
+    z-index: 0;
+}
+
+/* Static botanical-circuit scenery: visually rich, nearly zero runtime cost. */
+.biosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.biosphere::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(133, 206, 164, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(133, 206, 164, 0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 4%, #000 35%, #000 80%, transparent);
+    mask-image: linear-gradient(to bottom, transparent 4%, #000 35%, #000 80%, transparent);
+}
+
+.biosphere__sun {
+    position: absolute;
+    top: clamp(90px, 12vh, 150px);
+    left: 50%;
+    width: min(55vw, 440px);
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    opacity: 0.9;
+    background:
+        radial-gradient(circle, rgba(255, 230, 158, 0.52) 0 10%, rgba(247, 191, 97, 0.20) 15%, transparent 35%),
+        repeating-conic-gradient(from -6deg, rgba(246, 202, 114, 0.17) 0deg 1deg, transparent 1deg 19deg);
+    -webkit-mask-image: radial-gradient(circle, #000 0%, #000 47%, transparent 76%);
+    mask-image: radial-gradient(circle, #000 0%, #000 47%, transparent 76%);
+}
+
+.biosphere__sun::before,
+.biosphere__sun::after {
+    content: "";
+    position: absolute;
+    inset: 16%;
+    border-radius: 50%;
+    border: 1px solid rgba(249, 202, 118, 0.5);
+    box-shadow: 0 0 34px rgba(252, 194, 88, 0.10), inset 0 0 26px rgba(252, 194, 88, 0.11);
+}
+
+.biosphere__sun::after {
+    inset: 27%;
+    border: 1px dashed rgba(246, 198, 111, 0.70);
+    background: radial-gradient(circle, rgba(255, 223, 147, 0.20), transparent 72%);
+}
+
+.biosphere__botanical {
+    position: absolute;
+    bottom: -3vh;
+    width: clamp(150px, 24vw, 380px);
+    height: min(88vh, 790px);
+    overflow: visible;
+    color: #83d99f;
+    opacity: 0.48;
+}
+
+.biosphere__botanical--left {
+    left: -16px;
+}
+
+.biosphere__botanical--right {
+    right: -16px;
+    transform: scaleX(-1);
+    opacity: 0.36;
+}
+
+.bio-stem {
+    stroke: #79d6a1;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.bio-branch {
+    stroke: #7ccba7;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-dasharray: 4 5;
+}
+
+.bio-leaf {
+    fill: rgba(81, 169, 113, 0.11);
+    stroke: #a8e78f;
+    stroke-width: 1.6;
+}
+
+.bio-vein {
+    stroke: #77c6a4;
+    stroke-width: 1;
+    stroke-linecap: round;
+}
+
+.bio-node {
+    fill: #f1c873;
+    stroke: #16372a;
+    stroke-width: 2;
+}
+
+.header-container {
+    background: rgba(5, 28, 23, 0.93);
+    border-bottom: 1px solid rgba(190, 233, 158, 0.29);
+    box-shadow: 0 8px 36px rgba(0, 12, 10, 0.30), inset 0 -1px rgba(245, 205, 122, 0.08);
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+}
+
+.header-container::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bio-gold), var(--bio-leaf), transparent);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.wallet-info {
+    color: #e0e9d4;
+    background: rgba(110, 184, 140, 0.10);
+    border-color: rgba(151, 220, 172, 0.35);
+}
+
+h1 {
+    background: linear-gradient(112deg, #e1f8c6 6%, #f9d58c 46%, #bdf6ba 87%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: none;
+    filter: drop-shadow(0 0 15px rgba(245, 193, 103, 0.20));
+    letter-spacing: clamp(1px, 0.45vw, 4px);
+}
+
+h2,
+.feed-column h3 {
+    background: none;
+    color: var(--bio-leaf);
+    -webkit-text-fill-color: currentColor;
+    animation: none;
+    text-shadow: 0 0 14px rgba(150, 224, 150, 0.20);
+}
+
+h2,
+.partners-section h2 {
+    border-bottom-color: rgba(171, 230, 147, 0.63);
+}
+
+.simple-card {
+    background: linear-gradient(155deg, rgba(19, 59, 43, 0.91), rgba(7, 34, 29, 0.91));
+    border: 1px solid var(--bio-line);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    box-shadow: 0 12px 32px rgba(0, 10, 7, 0.26), inset 0 1px rgba(230, 255, 221, 0.06);
+    color: var(--bio-text);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.simple-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 28px;
+    width: min(45%, 180px);
+    height: 2px;
+    background: linear-gradient(90deg, var(--bio-gold), var(--bio-leaf), transparent);
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.simple-card:hover {
+    background: linear-gradient(155deg, rgba(23, 72, 51, 0.96), rgba(8, 39, 33, 0.97));
+    transform: translateY(-3px);
+    border-color: rgba(196, 242, 168, 0.65);
+    box-shadow: 0 13px 38px rgba(6, 27, 17, 0.50), 0 0 21px rgba(142, 224, 147, 0.08);
+}
+
+.simple-btn {
+    background: linear-gradient(160deg, rgba(69, 129, 93, 0.20), rgba(19, 69, 51, 0.10));
+    border-color: rgba(168, 227, 149, 0.58);
+    color: #d6f4be;
+    text-shadow: none;
+    letter-spacing: 0.035em;
+    transition: background 0.20s ease, border-color 0.20s ease, color 0.20s ease, transform 0.20s ease;
+}
+
+.simple-btn:hover,
+.simple-btn:focus-visible {
+    background: rgba(178, 242, 140, 0.20);
+    border-color: var(--bio-leaf);
+    color: #fff9df;
+    box-shadow: 0 0 15px rgba(169, 235, 139, 0.15);
+    transform: translateY(-1px);
+}
+
+#connect-wallet-btn {
+    background: linear-gradient(135deg, rgba(242, 199, 102, 0.27), rgba(154, 127, 63, 0.12));
+    border-color: rgba(250, 210, 128, 0.78);
+    color: #ffdf99;
+    --pulse-glow: 241, 195, 101;
+    animation: none;
+}
+
+#connect-wallet-btn:hover {
+    background: rgba(250, 209, 117, 0.28);
+    border-color: #ffe5a8;
+    color: #fffbe9;
+    box-shadow: 0 0 17px rgba(248, 200, 102, 0.22);
+}
+
+.header-row-bottom #meme-part-btn {
+    background: rgba(131, 187, 105, 0.13);
+    border-color: rgba(178, 235, 133, 0.55);
+    color: #c2ed99;
+    text-shadow: none;
+    animation: none;
+}
+
+.header-row-bottom #meme-part-btn:hover {
+    background: rgba(153, 221, 121, 0.26);
+    border-color: var(--bio-leaf);
+    color: #fff;
+    box-shadow: 0 0 18px rgba(153, 221, 121, 0.17);
+}
+
+#ideas-feed .idea-text {
+    color: #f0f7e9;
+    text-shadow: none;
+}
+
+#ideas-feed .idea-meta .author-meta,
+#ideas-feed .idea-meta .created-at {
+    color: var(--bio-muted);
+}
+
+#ideas-feed .author-id-label-text {
+    color: var(--bio-gold);
+}
+
+#ideas-feed .author-id-value {
+    color: var(--bio-leaf);
+}
+
+.like-badge {
+    background: rgba(77, 155, 118, 0.17);
+    border-color: rgba(140, 215, 161, 0.45);
+    color: #c3eecb;
+    box-shadow: none;
+}
+
+.vote-btn {
+    background: rgba(68, 138, 100, 0.16);
+    border-color: rgba(137, 210, 154, 0.42);
+}
+
+.vote-btn svg {
+    color: var(--bio-leaf);
+    filter: none;
+}
+
+.vote-btn path {
+    fill: rgba(141, 224, 139, 0.15);
+    stroke: var(--bio-leaf);
+}
+
+.vote-btn.up:hover {
+    background: rgba(157, 233, 144, 0.20);
+    border-color: var(--bio-leaf);
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(163, 232, 148, 0.17);
+}
+
+.vote-btn.up:hover svg {
+    filter: none;
+}
+
+.vote-btn.up:hover path {
+    fill: rgba(157, 233, 144, 0.33);
+}
+
+.close-icon {
+    background: rgba(7, 34, 28, 0.92);
+    border-color: var(--bio-gold);
+    color: var(--bio-gold);
+}
+
+.close-icon:hover {
+    background: rgba(244, 205, 122, 0.30);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(244, 205, 122, 0.22);
+}
+
+.type-selector .radio-custom {
+    background: rgba(7, 29, 25, 0.78);
+    border-color: rgba(119, 177, 142, 0.35);
+    color: #bbcfbe;
+}
+
+.radio-label input:checked + .radio-custom {
+    background: rgba(179, 233, 138, 0.18);
+    border-color: var(--bio-leaf);
+    color: #dbffbb;
+}
+
+.radio-label input:focus-visible + .radio-custom,
+button:focus-visible,
+.partner-logo:focus-visible {
+    outline: 2px solid var(--bio-gold);
+    outline-offset: 3px;
+}
+
+.sort-label::before {
+    filter: none;
+}
+
+.partners-section {
+    background: linear-gradient(145deg, rgba(24, 64, 43, 0.82), rgba(7, 30, 26, 0.91));
+    border-color: rgba(168, 223, 157, 0.30);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+.partner-logo {
+    background: rgba(20, 67, 47, 0.25);
+    border-color: rgba(155, 210, 159, 0.22);
+    color: #e6efdf;
+}
+
+.partner-logo:hover,
+.partner-logo:focus-visible {
+    color: #fff2c9;
+    border-color: var(--bio-gold);
+}
+
+footer {
+    color: #aac4ae;
+}
+
+.roadmap-bg-glow {
+    background: radial-gradient(ellipse, rgba(215, 176, 96, 0.10), transparent 70%);
+    animation: none;
+}
+
+.roadmap-snake-track::before {
+    background: linear-gradient(180deg, var(--bio-gold), var(--bio-leaf), var(--neon-cyan), var(--bio-leaf));
+    background-size: 100% 100%;
+    animation: none;
+    box-shadow: 0 0 13px rgba(176, 230, 146, 0.19);
+}
+
+.step-marker {
+    background: #0c2d25;
+    border-color: var(--bio-gold);
+    box-shadow: 0 0 12px rgba(246, 207, 131, 0.12);
+}
+
+.roadmap-step:hover .step-marker {
+    border-color: var(--bio-leaf);
+    box-shadow: 0 0 17px rgba(175, 231, 151, 0.20);
+}
+
+.step-num {
+    color: var(--bio-gold);
+    text-shadow: none;
+}
+
+.step-card {
+    background: linear-gradient(145deg, rgba(19, 64, 45, 0.91), rgba(9, 35, 29, 0.93));
+    border-color: var(--bio-line);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+.roadmap-step:hover .step-card {
+    background: rgba(22, 70, 51, 0.97);
+    border-color: rgba(175, 231, 151, 0.53);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(2, 20, 13, 0.38);
+}
+
+.step-desc {
+    color: #c5dace;
+}
+
+.step-connector,
+.step-connector.arrow-left,
+.step-connector::after,
+.step-connector.arrow-left::after {
+    color: rgba(179, 233, 158, 0.55);
+}
+
+.step-connector svg {
+    filter: none;
+    animation: none;
+}
+
+.status-completed {
+    background: rgba(154, 229, 143, 0.10);
+    border-color: rgba(156, 227, 151, 0.4);
+    box-shadow: none;
+}
+
+.status-in_progress {
+    background: rgba(239, 197, 111, 0.11);
+    border-color: rgba(239, 197, 111, 0.38);
+    color: var(--bio-gold);
+    box-shadow: none;
+    animation: none;
+}
+
+.status-upcoming {
+    background: rgba(129, 206, 175, 0.11);
+    border-color: rgba(129, 206, 175, 0.37);
+    color: var(--neon-cyan);
+    box-shadow: none;
+}
+
+@media (hover: none) {
+    .simple-card:hover,
+    .roadmap-step:hover .step-card {
+        transform: none;
+    }
+}
+
+@media (max-width: 899px) {
+    .biosphere__botanical {
+        opacity: 0.27;
+        width: 210px;
+    }
+    .biosphere__sun {
+        width: min(78vw, 400px);
+    }
+    .simple-card,
+    .step-card,
+    .partners-section {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .biosphere__sun {
+        top: 82px;
+        width: 84vw;
+    }
+    .biosphere__botanical {
+        width: 145px;
+        opacity: 0.18;
+    }
+    .simple-card {
+        box-shadow: 0 5px 14px rgba(0, 15, 11, 0.24);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .biosphere *,
+    h1,
+    h2,
+    .simple-card,
+    .roadmap-step,
+    .step-connector,
+    .simple-btn,
+    #connect-wallet-btn {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+    }
+}
