@@ -123,3 +123,52 @@ footer { position: relative; z-index: 2; }
 @media (max-width: 640px) {
   .cosmic-nebula { opacity: 0.72; }
 }
+
+
+/* ORGANIC WIND — only gentle SVG transforms, never a second animation loop.
+   The whole vines swing softly while individual leaves and grass bend at
+   slightly different rhythms. Right-side mirroring is preserved explicitly. */
+.biosphere__botanical {
+  transform-origin: 26px 100%;
+  animation: botanical-wind-left 10.5s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.biosphere__botanical--right {
+  transform-origin: 80% 100%;
+  animation: botanical-wind-right 12.3s ease-in-out infinite alternate;
+}
+@keyframes botanical-wind-left {
+  from { transform: rotate(-1.6deg); }
+  to   { transform: rotate(1.5deg); }
+}
+@keyframes botanical-wind-right {
+  from { transform: scaleX(-1) rotate(-1.4deg); }
+  to   { transform: scaleX(-1) rotate(1.7deg); }
+}
+.wind-leaf, .wind-grass {
+  animation: botanical-leaf-wind 8.7s ease-in-out infinite alternate;
+  transform-box: view-box;
+  transform-origin: var(--wind-origin);
+}
+.wind-leaf--1 { --wind-origin: 134px 485px; animation-duration: 8.2s; }
+.wind-leaf--2 { --wind-origin: 12px 331px; animation-duration: 10.8s; animation-delay: -3s; }
+.wind-leaf--3 { --wind-origin: 174px 252px; animation-duration: 9.4s; animation-delay: -2.6s; }
+.wind-leaf--4 { --wind-origin: 48px 120px; animation-duration: 11.3s; animation-delay: -4s; }
+.wind-leaf--5 { --wind-origin: 117px 68px; animation-duration: 8.6s; animation-delay: -2s; }
+.wind-grass--1 { --wind-origin: 21px 718px; animation-duration: 7.6s; }
+.wind-grass--2 { --wind-origin: 129px 718px; animation-duration: 9.5s; animation-delay: -4.8s; }
+@keyframes botanical-leaf-wind {
+  from { transform: rotate(-2.4deg); }
+  to   { transform: rotate(2.5deg); }
+}
+@media (max-width: 640px) {
+  .biosphere__botanical { animation-duration: 14s; }
+  .wind-leaf, .wind-grass { animation-duration: 13s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .biosphere__botanical, .wind-leaf, .wind-grass {
+    animation: none !important;
+    will-change: auto;
+  }
+  .biosphere__botanical--right { transform: scaleX(-1); }
+}

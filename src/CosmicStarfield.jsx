@@ -1,8 +1,10 @@
 import { memo, useEffect, useRef } from 'react';
-import { createStars, starBudget, createConstellations, constellationPoints } from './starfield-model.js';
+import {
+  createStars, starBudget, moveStars, proximityLinks,
+} from './starfield-model.js';
 
-// Exactly one Canvas 2D and one requestAnimationFrame loop; no React state
-// updates per frame, no particle package, no WebGL or third-party resources.
+// A single Canvas 2D with gently evolving proximity links, inspired by the
+// original main-branch particle system. No third-party renderers or frame state.
 const CosmicStarfield = memo(function CosmicStarfield() {
   const canvasRef = useRef(null);
 
@@ -14,7 +16,7 @@ const CosmicStarfield = memo(function CosmicStarfield() {
     try {
       context = canvas.getContext('2d', { alpha: true, desynchronized: true });
     } catch {
-      return undefined; // Browser still shows the CSS nebula fallback.
+      return undefined;
     }
     if (!context) return undefined;
 
@@ -25,7 +27,6 @@ const CosmicStarfield = memo(function CosmicStarfield() {
     let width = 1;
     let height = 1;
     let stars = [];
-    let constellations = [];
     let elapsedMs = 0;
     let frame = 0;
     let previousFrame = 0;
@@ -38,61 +39,43 @@ const CosmicStarfield = memo(function CosmicStarfield() {
 
     const paint = (time, delta) => {
       context.clearRect(0, 0, width, height);
+      const seconds = time / 1000;
+      moveStars(stars, seconds, width, height, delta / 1000);
+
       pointerX += (targetX - pointerX) * 0.055;
       pointerY += (targetY - pointerY) * 0.055;
 
-      // Constellations travel as small, coherent star maps behind the sun.
-      // Only 2 on mobile / 4 on desktop, with 7 direct edges per group.
-      const seconds = time / 1000;
-      for (const group of constellations) {
-        const points = constellationPoints(group, width, height, seconds);
-        const offsetX = pointerX * 0.35;
-        const offsetY = pointerY * 0.35;
+      const points = stars.map(star => ({
+        x: star.x * width + pointerX * star.depth,
+        y: star.y * height + pointerY * star.depth,
+      }));
 
-        context.strokeStyle = group.color;
-        context.lineWidth = 0.9;
-        context.globalAlpha = 0.32;
+      // Rebuild only nearby neighbours. Links weave together and gently fade
+      // as distances and pair-specific random phases change.
+      const mobile = width <= 640;
+      const distance = mobile ? 132 : 158;
+      const links = proximityLinks(points, distance, seconds, mobile ? 90 : lowPower ? 140 : 260);
+      context.lineWidth = mobile ? 0.8 : 0.95;
+      for (const link of links) {
+        const start = points[link.a];
+        const end = points[link.b];
+        context.globalAlpha = Math.min(0.58, link.strength * 0.57);
+        context.strokeStyle = stars[link.a].color;
         context.beginPath();
-        for (const [start, end] of group.edges) {
-          context.moveTo(points[start].x + offsetX, points[start].y + offsetY);
-          context.lineTo(points[end].x + offsetX, points[end].y + offsetY);
-        }
+        context.moveTo(start.x, start.y);
+        context.lineTo(end.x, end.y);
         context.stroke();
-
-        for (let i = 0; i < points.length; i += 1) {
-          const { x, y } = points[i];
-          context.globalAlpha = (i === 2 ? 0.96 : 0.76) *
-            (0.88 + 0.12 * Math.sin(seconds * 1.15 + group.phase + i));
-          context.fillStyle = group.color;
-          if (i === 2) {
-            context.shadowBlur = 10;
-            context.shadowColor = group.color;
-          }
-          context.beginPath();
-          context.arc(x + offsetX, y + offsetY, i === 2 ? 2.25 : 1.55, 0, Math.PI * 2);
-          context.fill();
-          context.shadowBlur = 0;
-        }
       }
-      context.globalAlpha = 1;
 
+      // Stars stay crisp; only a few have a glow to avoid costly shadows.
       for (let i = 0; i < stars.length; i += 1) {
         const star = stars[i];
-        if (delta) {
-          star.x += star.drift * (delta / 1000);
-          if (star.x < 0) star.x += 1;
-          else if (star.x > 1) star.x -= 1;
-        }
-
-        const x = star.x * width + pointerX * star.depth;
-        const y = star.y * height + pointerY * star.depth;
-        const twinkle = 0.78 + 0.22 * Math.sin(time * 0.001 * star.pulse + star.phase);
+        const { x, y } = points[i];
+        const twinkle = 0.81 + 0.19 * Math.sin(seconds * star.pulse + star.phase);
         const radius = star.radius * (0.96 + 0.04 * twinkle);
 
         context.globalAlpha = star.opacity * twinkle;
         context.fillStyle = star.color;
-
-        // A small subset has a soft aura; most stars are a single cheap arc.
         if (i % 13 === 0) {
           context.shadowBlur = 8;
           context.shadowColor = star.color;
@@ -102,7 +85,6 @@ const CosmicStarfield = memo(function CosmicStarfield() {
         context.fill();
         context.shadowBlur = 0;
 
-        // Rare distant cross-shaped glints enrich the depth without sprites.
         if (i % 29 === 0) {
           context.globalAlpha *= 0.38;
           context.fillRect(x - radius * 3.6, y - 0.35, radius * 7.2, 0.7);
@@ -141,15 +123,14 @@ const CosmicStarfield = memo(function CosmicStarfield() {
       width = Math.max(1, window.innerWidth);
       height = Math.max(1, window.innerHeight);
       const mobile = width <= 640;
-      // High-DPI phones can otherwise allocate millions of needless pixels.
+      // Avoid allocating millions of pixels on high-DPI phones.
       const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1 : 1.5);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       frameInterval = 1000 / (mobile || lowPower ? 20 : 24);
       stars = createStars(starBudget(width, height, lowPower));
-      constellations = createConstellations(width);
-      paint(elapsedMs, 0); // Static stars visible even with reduced motion.
+      paint(elapsedMs, 0);
     };
 
     const onVisibility = () => {

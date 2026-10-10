@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STAR_PALETTE, starBudget, createStars, createConstellations, constellationPoints } from '../src/starfield-model.js';
+import { STAR_PALETTE, starBudget, createStars, moveStars, proximityLinks } from '../src/starfield-model.js';
 
 test('mobile and low-power screens have bounded particle counts', () => {
   assert.ok(starBudget(390, 844) <= 52);
@@ -9,7 +9,7 @@ test('mobile and low-power screens have bounded particle counts', () => {
   assert.ok(starBudget(1920, 1080, true) < starBudget(1920, 1080));
 });
 
-test('a seeded source generates normalized, coloured depth layers', () => {
+test('seeded stars have color, direction, radius and depth', () => {
   let seed = 12345;
   const seeded = () => {
     seed = (seed * 1664525 + 1013904223) >>> 0;
@@ -23,37 +23,40 @@ test('a seeded source generates normalized, coloured depth layers', () => {
     assert.ok(star.depth > 0 && star.depth <= 1);
     assert.ok(STAR_PALETTE.includes(star.color));
     assert.ok(star.radius > 0);
+    assert.ok(star.speed > 0);
   }
   assert.ok(new Set(stars.map(s => s.color)).size >= 4);
 });
 
-test('zero particles yields an empty field', () => {
-  assert.deepEqual(createStars(0), []);
-});
-
-
-test('constellations use sparse fixed edges and a bounded mobile count', () => {
-  const desktop = createConstellations(1440);
-  const mobile = createConstellations(390);
-  assert.equal(desktop.length, 4);
-  assert.equal(mobile.length, 2);
-  for (const group of desktop) {
-    assert.equal(group.points.length, 6);
-    assert.ok(group.edges.length <= 7);
-    for (const [start, end] of group.edges) {
-      assert.ok(start >= 0 && start < group.points.length);
-      assert.ok(end >= 0 && end < group.points.length);
-    }
+test('flow changes particle positions, without changing quantity', () => {
+  const stars = createStars(16, () => 0.35);
+  const before = stars.map(star => [star.x, star.y]);
+  for (let second = 0; second < 120; second += 1) {
+    moveStars(stars, second, 1400, 900, 0.07);
   }
+  assert.equal(stars.length, 16);
+  assert.ok(stars.some((star, i) => star.x !== before[i][0] || star.y !== before[i][1]));
 });
 
-test('entire connected constellation visibly changes position over time', () => {
-  const [constellation] = createConstellations(1440);
-  const before = constellationPoints(constellation, 1440, 900, 0);
-  const after = constellationPoints(constellation, 1440, 900, 12);
-  assert.equal(before.length, after.length);
-  assert.ok(Math.hypot(after[0].x - before[0].x, after[0].y - before[0].y) > 8);
-  const beforeDistance = Math.hypot(before[0].x - before[1].x, before[0].y - before[1].y);
-  const afterDistance = Math.hypot(after[0].x - after[1].x, after[0].y - after[1].y);
-  assert.ok(Math.abs(beforeDistance - afterDistance) < 0.000001);
+test('connections appear only for nearby stars and fade smoothly over time', () => {
+  const points = [
+    { x: 25, y: 25 }, { x: 70, y: 55 }, { x: 119, y: 35 },
+    { x: 1160, y: 680 },
+  ];
+  const first = proximityLinks(points, 160, 0);
+  const later = proximityLinks(points, 160, 12);
+  assert.ok(first.length > 0);
+  assert.ok(first.every(link => link.a !== 3 && link.b !== 3));
+  assert.ok(first.every(link => link.strength > 0 && link.strength <= 1));
+  const shared = first.find(link => later.some(other => other.a === link.a && other.b === link.b));
+  assert.ok(shared);
+  const match = later.find(link => link.a === shared.a && link.b === shared.b);
+  assert.ok(Math.abs(shared.strength - match.strength) > 0.02);
+});
+
+test('connection budget and zero-particle fallback remain safe', () => {
+  assert.deepEqual(createStars(0), []);
+  assert.deepEqual(proximityLinks([], 150, 0), []);
+  const points = Array.from({ length: 100 }, (_, i) => ({ x: i * 0.2, y: i * 0.2 }));
+  assert.ok(proximityLinks(points, 150, 2, 35).length <= 35);
 });

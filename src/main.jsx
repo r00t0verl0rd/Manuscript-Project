@@ -18,8 +18,34 @@ function Vines({ right = false }) {
   return <svg className={'biosphere__botanical ' + (right ? 'biosphere__botanical--right' : 'biosphere__botanical--left')} viewBox="0 0 220 720" fill="none" aria-hidden="true">
     <path className="bio-stem" d="M16 720 C25 585 38 463 72 330 C94 235 96 146 117 30"/>
     <path className="bio-branch" d="M47 515 C75 485 92 480 134 485 M60 425 C29 380 28 350 12 331 M82 320 C130 304 145 278 174 252 M98 205 C67 180 58 145 48 120 M72 360 H18 V328 M90 275 H147 V234 M37 563 H96 V586"/>
-    <path className="bio-leaf" d="M134 485 C151 446 190 437 204 446 C190 482 158 499 134 485 Z M12 331 C31 300 28 276 10 257 C-4 287 -3 307 12 331 Z M174 252 C155 213 163 188 197 174 C212 208 203 236 174 252 Z M48 120 C39 91 15 80 0 93 C7 120 25 138 48 120 Z M117 68 C116 41 133 17 151 12 C151 44 141 64 117 68 Z"/>
-    <path className="bio-vein" d="M134 485 L192 451 M12 331 L11 270 M174 252 L195 186 M48 120 L8 96 M117 68 L145 22"/>
+    <g className="wind-leaf wind-leaf--1">
+      <path className="bio-leaf" d="M134 485 C151 446 190 437 204 446 C190 482 158 499 134 485 Z"/>
+      <path className="bio-vein" d="M134 485 L192 451"/>
+    </g>
+    <g className="wind-leaf wind-leaf--2">
+      <path className="bio-leaf" d="M12 331 C31 300 28 276 10 257 C-4 287 -3 307 12 331 Z"/>
+      <path className="bio-vein" d="M12 331 L11 270"/>
+    </g>
+    <g className="wind-leaf wind-leaf--3">
+      <path className="bio-leaf" d="M174 252 C155 213 163 188 197 174 C212 208 203 236 174 252 Z"/>
+      <path className="bio-vein" d="M174 252 L195 186"/>
+    </g>
+    <g className="wind-leaf wind-leaf--4">
+      <path className="bio-leaf" d="M48 120 C39 91 15 80 0 93 C7 120 25 138 48 120 Z"/>
+      <path className="bio-vein" d="M48 120 L8 96"/>
+    </g>
+    <g className="wind-leaf wind-leaf--5">
+      <path className="bio-leaf" d="M117 68 C116 41 133 17 151 12 C151 44 141 64 117 68 Z"/>
+      <path className="bio-vein" d="M117 68 L145 22"/>
+    </g>
+    <g className="wind-grass wind-grass--1">
+      <path className="bio-stem" d="M21 718 Q-3 649 18 611 M21 718 Q45 646 65 628 M21 718 Q19 669 33 576"/>
+      <path className="bio-vein" d="M21 718 Q2 682 -4 663 M21 718 Q33 661 48 647"/>
+    </g>
+    <g className="wind-grass wind-grass--2">
+      <path className="bio-stem" d="M129 718 Q92 655 106 620 M129 718 Q163 648 189 632 M129 718 Q130 661 143 602"/>
+      <path className="bio-vein" d="M129 718 Q108 679 90 670 M129 718 Q158 674 176 669"/>
+    </g>
     {[['18','328'],['147','234'],['96','586'],['117','30']].map(([cx,cy])=><circle className="bio-node" key={cx} cx={cx} cy={cy} r="4"/>)}
   </svg>;
 }
