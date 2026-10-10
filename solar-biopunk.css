@@ -512,3 +512,171 @@ footer {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ============================================================
+   SPRING SUNLIGHT — WARM ACCENTS
+   A measured honey-yellow glow over the existing green biopunk.
+   Static gradients only: no added JS, images or animations.
+   ============================================================ */
+:root {
+    --bio-gold: #f9d58b;
+    --bio-sunlight: #ffe9b0;
+    --bio-honey: #f2bc63;
+    --bio-spring: #d1f4ab;
+    --bio-line: rgba(215, 221, 159, 0.32);
+}
+
+body {
+    background:
+        radial-gradient(ellipse 50% 34% at 50% 12%, rgba(255, 202, 107, 0.23), transparent 78%),
+        radial-gradient(ellipse 55% 55% at -10% 76%, rgba(66, 157, 87, 0.18), transparent 80%),
+        radial-gradient(ellipse 52% 50% at 105% 82%, rgba(48, 144, 95, 0.16), transparent 78%),
+        linear-gradient(165deg, #0a2219 0%, #11362a 49%, #071b15 100%);
+}
+
+/* Warmer solar disc: a pale-yellow core, amber corona, fine circuit rings. */
+.biosphere__sun {
+    opacity: 1;
+    background:
+        radial-gradient(circle,
+            rgba(255, 244, 195, 0.89) 0 7%,
+            rgba(255, 220, 139, 0.67) 13%,
+            rgba(250, 190, 99, 0.36) 22%,
+            rgba(245, 179, 86, 0.12) 36%,
+            transparent 57%),
+        repeating-conic-gradient(from -6deg,
+            rgba(255, 219, 143, 0.31) 0deg 1deg,
+            transparent 1deg 19deg);
+}
+
+.biosphere__sun::before {
+    border-color: rgba(255, 224, 149, 0.77);
+    box-shadow: 0 0 42px rgba(255, 204, 115, 0.25), inset 0 0 27px rgba(255, 204, 115, 0.18);
+}
+
+.biosphere__sun::after {
+    border-color: rgba(255, 228, 162, 0.85);
+    background: radial-gradient(circle, rgba(255, 224, 154, 0.22), transparent 72%);
+}
+
+/* Main lettering is spring green with a distinct honey-yellow highlight. */
+h1 {
+    background: linear-gradient(106deg,
+        #e7f9c6 5%,
+        #fff0b9 27%,
+        #ffd17e 49%,
+        #fff2c0 66%,
+        #c2f2aa 92%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 0.25px rgba(255, 240, 180, 0.32);
+    filter: drop-shadow(0 0 14px rgba(255, 202, 111, 0.31));
+}
+
+h2,
+.feed-column h3,
+.partners-section h2 {
+    color: #d9f4ad;
+    -webkit-text-fill-color: currentColor;
+    text-shadow: 0 0 12px rgba(246, 203, 124, 0.18);
+}
+
+h2,
+.partners-section h2 {
+    border-bottom: 2px solid var(--bio-honey);
+    border-image: linear-gradient(90deg, var(--bio-honey), rgba(220, 245, 157, 0.75), transparent) 1;
+}
+
+/* Sunlit edges are narrow and quiet until the user interacts. */
+.simple-card {
+    border-color: rgba(240, 212, 139, 0.38);
+    box-shadow: 0 12px 32px rgba(0, 10, 7, 0.26), inset 0 1px rgba(255, 233, 174, 0.11);
+}
+
+.simple-card::before {
+    width: min(58%, 230px);
+    height: 2px;
+    background: linear-gradient(90deg, #ffe5a4 0%, #f6c872 36%, #b7ee9f 73%, transparent 100%);
+}
+
+.simple-card:hover {
+    border-color: rgba(255, 216, 139, 0.66);
+    box-shadow: 0 13px 37px rgba(6, 27, 17, 0.42), 0 0 17px rgba(255, 213, 136, 0.10);
+}
+
+.header-container {
+    border-bottom-color: rgba(242, 214, 139, 0.38);
+}
+
+.header-container::after {
+    background: linear-gradient(90deg, transparent 4%, #e4eea3 24%, #ffe1a0 50%, #b8eea1 78%, transparent 96%);
+    opacity: 0.82;
+}
+
+.simple-btn {
+    border-color: rgba(236, 216, 149, 0.56);
+    color: #edf5c7;
+}
+
+.simple-btn:hover,
+.simple-btn:focus-visible {
+    border-color: #ffe19c;
+    background: rgba(237, 207, 135, 0.15);
+    color: #fff6dc;
+    box-shadow: 0 0 15px rgba(247, 203, 117, 0.15);
+}
+
+#connect-wallet-btn {
+    border-color: #ffe1a0;
+    color: #ffebb8;
+    background: linear-gradient(135deg, rgba(249, 203, 108, 0.34), rgba(151, 126, 65, 0.12));
+}
+
+#connect-wallet-btn:hover {
+    border-color: #fff1bf;
+    background: rgba(255, 212, 123, 0.30);
+}
+
+#ideas-feed .author-id-label-text,
+.step-num {
+    color: var(--bio-sunlight);
+}
+
+.like-badge {
+    border-color: rgba(221, 218, 144, 0.46);
+    background: rgba(144, 173, 101, 0.13);
+}
+
+.radio-label input:checked + .radio-custom {
+    border-color: var(--bio-honey);
+    background: linear-gradient(135deg, rgba(243, 199, 107, 0.16), rgba(127, 198, 106, 0.13));
+    color: #ffebae;
+}
+
+.partners-section,
+.step-card {
+    border-color: rgba(239, 211, 137, 0.34);
+}
+
+.partner-logo:hover,
+.partner-logo:focus-visible {
+    background: rgba(242, 199, 109, 0.12);
+}
+
+.roadmap-snake-track::before {
+    background: linear-gradient(180deg, var(--bio-honey), #d1f0a0 35%, #94e1bd 70%, var(--bio-honey));
+}
+
+.bio-node {
+    fill: var(--bio-sunlight);
+}
+
+@media (max-width: 480px) {
+    .biosphere__sun {
+        opacity: 0.83;
+    }
+    .simple-card {
+        box-shadow: 0 5px 14px rgba(0, 15, 11, 0.23);
+    }
+}
