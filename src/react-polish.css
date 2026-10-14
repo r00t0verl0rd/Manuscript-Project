@@ -1,0 +1,314 @@
+/* Layered polish for React migration: preserve the solar spring palette. */
+#root { min-height: 100vh; position: relative; isolation: isolate; }
+.react-atmosphere { position:absolute; inset:0; pointer-events:none; background:
+  radial-gradient(ellipse 28% 22% at 50% 23%, rgba(255,218,127,.09), transparent),
+  linear-gradient(110deg, transparent 46%, rgba(194,250,174,.014) 50%, transparent 54%); }
+.main-wrapper { scrollbar-color: rgba(190,226,157,.35) transparent; }
+.main-wrapper > h1 { margin-top:clamp(12px,4vh,48px); margin-bottom:clamp(24px,4vw,45px); }
+#project-info { border-radius:6px; background:linear-gradient(140deg,rgba(15,55,41,.92),rgba(9,40,32,.91)); }
+#project-info .content-text { max-width:100ch; margin:0 auto; }
+#ideas-feed .simple-card { border-radius:4px; min-height: 165px; }
+#ideas-feed .simple-card:hover { transform:translateY(-3px); }
+.partner-logo { transition: background .25s, transform .25s, border-color .25s; }
+.partner-logo:hover { transform:translateY(-2px); }
+.simple-btn:focus-visible, .vote-btn:focus-visible { outline: 2px solid #ffe6a7; outline-offset:3px; }
+@media (max-width: 480px) {
+ .main-wrapper > h1 { margin-top:12px; margin-bottom:20px; }
+ #ideas-feed .simple-card { min-height:110px; }
+}
+@media(prefers-reduced-motion: reduce) {
+ .react-atmosphere, #ideas-feed .simple-card, .partner-logo { animation:none!important; transition:none!important; }
+}
+
+/* DEEP COSMOS: stars behind the sun, live ideas above every background layer. */
+.biosphere { z-index: 0; }
+.biosphere::before { z-index: 0; opacity: 0.65; }
+.cosmic-nebula {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 46% 48% at 12% 22%, rgba(108, 81, 192, 0.20), transparent 82%),
+    radial-gradient(ellipse 46% 40% at 84% 35%, rgba(46, 175, 184, 0.14), transparent 81%),
+    radial-gradient(ellipse 48% 43% at 56% 76%, rgba(195, 83, 133, 0.10), transparent 82%),
+    radial-gradient(ellipse 40% 32% at 49% 19%, rgba(240, 149, 75, 0.13), transparent 79%);
+}
+.cosmic-starfield {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 9% 31%, rgba(128, 211, 255, 0.72) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 19%, rgba(194, 150, 255, 0.69) 0 1px, transparent 2px),
+    radial-gradient(circle at 87% 65%, rgba(255, 179, 108, 0.68) 0 1px, transparent 2px),
+    radial-gradient(circle at 27% 81%, rgba(107, 243, 212, 0.65) 0 1px, transparent 2px);
+}
+.biosphere__sun { z-index: 2; }
+.react-atmosphere { z-index: 2; }
+.biosphere__botanical { z-index: 3; }
+#content { z-index: 2; }
+footer { position: relative; z-index: 2; }
+
+/* Cards feel suspended in front of the solar system, without permanent animations. */
+#ideas-feed .idea-card {
+  background: linear-gradient(145deg, rgba(21, 64, 54, 0.91), rgba(9, 32, 35, 0.92));
+  border-color: rgba(205, 226, 174, 0.38);
+  box-shadow:
+    0 20px 28px -22px rgba(0, 8, 20, 0.92),
+    0 13px 38px -28px rgba(102, 211, 195, 0.37),
+    inset 0 1px rgba(248, 225, 172, 0.10);
+}
+@media (hover: hover) and (pointer: fine) {
+  #ideas-feed .idea-card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(248, 212, 145, 0.75);
+    box-shadow:
+      0 23px 34px -16px rgba(0, 10, 27, 0.84),
+      0 0 22px rgba(97, 203, 183, 0.17),
+      inset 0 1px rgba(255, 230, 174, 0.16);
+  }
+}
+@media (max-width: 640px) {
+  .cosmic-nebula { opacity: 0.65; }
+  #ideas-feed .idea-card { box-shadow: 0 9px 20px rgba(0, 10, 22, 0.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-nebula, .cosmic-starfield { animation: none !important; }
+  #ideas-feed .idea-card { transition: none !important; }
+}
+
+
+/* Violet-blue becomes the third accent, without replacing spring green and gold. */
+:root {
+  --cosmos-violet: #a89aff;
+  --cosmos-violet-bright: #c5afff;
+  --cosmos-ink: rgba(108, 74, 216, 0.19);
+}
+.cosmic-nebula {
+  background:
+    radial-gradient(ellipse 48% 45% at 13% 23%, rgba(105, 79, 232, 0.25), transparent 81%),
+    radial-gradient(ellipse 47% 40% at 87% 37%, rgba(74, 84, 225, 0.23), transparent 81%),
+    radial-gradient(ellipse 42% 35% at 57% 76%, rgba(184, 72, 180, 0.14), transparent 83%),
+    radial-gradient(ellipse 40% 32% at 49% 19%, rgba(240, 149, 75, 0.12), transparent 79%);
+}
+#ideas-feed .idea-card:nth-child(3n + 2) {
+  border-color: rgba(173, 153, 255, 0.50);
+  box-shadow:
+    0 20px 28px -22px rgba(0, 8, 20, 0.92),
+    0 8px 32px -25px rgba(159, 128, 255, 0.50),
+    inset 0 1px rgba(226, 199, 255, 0.11);
+}
+#ideas-feed .idea-card:nth-child(3n + 2)::before {
+  background: linear-gradient(90deg, var(--cosmos-violet-bright), #86d8d4, transparent);
+}
+#road-map-btn {
+  border-color: rgba(173, 154, 251, 0.73);
+  color: #ded1ff;
+  background: linear-gradient(150deg, rgba(114, 91, 197, 0.15), rgba(32, 57, 65, 0.13));
+}
+#road-map-btn:hover,
+#road-map-btn:focus-visible {
+  border-color: var(--cosmos-violet-bright);
+  background: rgba(126, 98, 213, 0.25);
+  box-shadow: 0 0 16px rgba(150, 117, 246, 0.20);
+}
+.type-selector .radio-custom:hover {
+  border-color: rgba(178, 161, 255, 0.70);
+}
+@media (max-width: 640px) {
+  .cosmic-nebula { opacity: 0.72; }
+}
+
+
+/* Stable background: lvh does not jump as mobile browser toolbars collapse.
+   Keep content in one document scroller, not a nested scrollable flex item. */
+.biosphere { inset:0 0 auto 0; height:100vh; height:100lvh; overflow:hidden; }
+#content { height:auto; min-height:100vh; min-height:100svh; display:block; }
+main.main-wrapper { overflow:visible; -webkit-overflow-scrolling:auto; }
+.biosphere__sun { top:clamp(90px,12svh,150px); }
+.biosphere__botanical {
+  width:clamp(160px,23vw,320px);
+  height:min(86svh,765px);
+  bottom:0;
+  opacity:.52;
+  transform:none;
+  animation:none;
+  will-change:auto;
+}
+.biosphere__botanical--left { left:-12px; }
+.biosphere__botanical--right { right:-12px; transform:scaleX(-1); opacity:.42; }
+@media (max-width:899px) {
+ .biosphere__botanical { width:clamp(158px,25vw,205px); opacity:.34; }
+ .biosphere__botanical--right { opacity:.29; }
+}
+@media (max-width:480px) {
+ .biosphere__botanical { width:150px; opacity:.25; }
+ .biosphere__botanical--right { opacity:.21; }
+ .biosphere__sun { top:82px; }
+}
+/* PEA + MINI MONSTERA — a few organic leaf splits, not heavy jungle foliage.
+   No bark shadows or large filled shapes; retain light climbing tendrils. */
+.biosphere__botanical {
+  opacity: .64;
+  color: #9cddb4;
+  filter: none !important;
+  overflow: visible;
+}
+.biosphere__botanical--right { opacity: .48; }
+.pea-stem,.pea-petiole,.pea-tendril,.pea-midrib,.pea-grass path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pea-stem {
+  stroke: rgba(127, 220, 163, .84);
+  stroke-width: 1.45;
+}
+.pea-petiole {
+  stroke: rgba(132, 218, 174, .69);
+  stroke-width: 1.05;
+}
+.pea-leaflet {
+  fill: rgba(133, 226, 168, .035);
+  stroke: rgba(184, 241, 181, .87);
+  stroke-width: 1.08;
+  stroke-linejoin: round;
+}
+.pea-leaflet--hybrid {
+  fill: rgba(125, 220, 167, .055);
+  stroke: rgba(189, 249, 185, .92);
+}
+.pea-leaflet--fenestrated {
+  fill: rgba(113, 218, 176, .075);
+  stroke: rgba(154, 244, 208, .95);
+}
+.pea-midrib {
+  stroke: rgba(119, 224, 191, .5);
+  stroke-width: .55;
+}
+.pea-tendril {
+  stroke: rgba(148, 225, 204, .93);
+  stroke-width: 1.12;
+}
+.pea-tendril--tip { stroke-width: 1.2; }
+.pea-bud { fill: rgba(248, 220, 148, .65); }
+.pea-grass path {
+  stroke: rgba(146, 218, 162, .51);
+  stroke-width: 1.0;
+}
+/* Only thin stems bend about their fixed roots; tiny leaves and curling
+   tendrils vary independently with very small rotations. */
+.pea-vine,.pea-sprig,.pea-grass {
+  transform-box: view-box;
+  animation: pea-breeze 12s ease-in-out infinite alternate;
+}
+.pea-vine--main { transform-origin: 29px 720px; animation-duration: 13.8s; animation-delay: -2s; }
+.pea-vine--small { transform-origin: 15px 720px; animation-duration: 17s; animation-delay: -8s; }
+.pea-grass--a { transform-origin: 4px 720px; animation-duration: 9s; animation-delay: -4s; }
+.pea-grass--b { transform-origin: 117px 720px; animation-duration: 11s; animation-delay: -6s; }
+.pea-sprig { transform-origin: 0px 0px; animation-name: pea-leaf-breeze; }
+.pea-sprig--0 { animation-duration: 9.5s; animation-delay: -3s; }
+.pea-sprig--1 { animation-duration: 12.2s; animation-delay: -5s; }
+.pea-sprig--2 { animation-duration: 10.6s; animation-delay: -7s; }
+.pea-sprig--3 { animation-duration: 14s; animation-delay: -9s; }
+.pea-sprig--4 { animation-duration: 11.8s; animation-delay: -4s; }
+@keyframes pea-breeze {
+  from { transform: rotate(-.95deg); }
+  to { transform: rotate(1.15deg); }
+}
+@keyframes pea-leaf-breeze {
+  from { transform: rotate(-1.8deg); }
+  to { transform: rotate(1.9deg); }
+}
+@media (max-width: 899px) {
+  .biosphere__botanical { opacity: .43; }
+  .biosphere__botanical--right { opacity: .32; }
+}
+@media (max-width: 480px) {
+  .biosphere__botanical { opacity: .32; }
+  .biosphere__botanical--right { opacity: .26; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pea-vine,.pea-sprig,.pea-grass { animation: none !important; }
+}
+
+
+/* CONTINUOUS RESPONSIVE LAYOUT: background geometry must not step at
+   480px/899px breakpoints. Stable viewport units also resist the browser
+   toolbar's show/hide cycle on iOS and Android. */
+:root {
+  --header-height: clamp(78px, calc(62px + 4vw), 120px);
+  --menu-font-size: clamp(.65rem, calc(.56rem + .38vw), .91rem);
+  --menu-gap: clamp(4px, .5vw, 7px);
+  --menu-padding-y: clamp(4px, .45vw, 8px);
+  --menu-padding-x: clamp(5px, 1vw, 18px);
+}
+.header-container {
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+#content {
+  padding-top: calc(var(--header-height) + clamp(10px, 1.4vw, 20px));
+}
+.biosphere__sun {
+  /* ~300px at 390px, ~440px at 640px and above: no step at 480/899px. */
+  width: clamp(260px, calc(76px + 58vw), 440px);
+  top: clamp(82px, calc(76px + 4vw), 148px);
+  transition: width 140ms linear, top 140ms linear;
+}
+.biosphere__botanical,
+.biosphere__botanical--left,
+.biosphere__botanical--right {
+  width: clamp(145px, calc(104px + 15vw), 320px);
+  height: min(86svh, 765px);
+  bottom: 0;
+  transition: width 140ms linear, opacity 240ms ease;
+}
+.biosphere__botanical {
+  opacity: .50;
+}
+.biosphere__botanical--right {
+  opacity: .38;
+}
+.cosmic-nebula {
+  opacity: .88;
+  transition: opacity 180ms ease;
+}
+
+/* One continuous card list: React never remounts cards when resizing.
+   The browser places the same elements into three or two responsive tracks. */
+.feed-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vw, 20px);
+  align-items: stretch;
+}
+.feed-columns > .idea-card {
+  min-width: 0;
+  width: 100%;
+  height: auto;
+  margin-bottom: 0;
+}
+@media (max-width: 600px) {
+  .feed-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 330px) {
+  .feed-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .biosphere__sun,
+  .biosphere__botanical,
+  .biosphere__botanical--left,
+  .biosphere__botanical--right,
+  .cosmic-nebula,
+  .header-container {
+    transition: none !important;
+  }
+}

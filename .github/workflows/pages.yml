@@ -1,0 +1,126 @@
+name: Build and publish Manuscript from main
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: manuscript-main-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout React source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Preserve old behavior
+        run: npm test
+
+      - name: Compile React for GitHub Pages
+        run: |
+          npm run build
+          mv dist/react.index.html dist/index.html
+
+      - name: Check that the React page actually renders in Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          (npm run preview -- --host 127.0.0.1 --port 4173 --strictPort > /tmp/manuscript-preview.log 2>&1 & echo $! > /tmp/manuscript-preview.pid)
+          trap 'kill "$(cat /tmp/manuscript-preview.pid)" 2>/dev/null || true' EXIT
+          for n in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          CHROME="$(command -v google-chrome || command -v chromium || true)"
+          test -n "$CHROME" || { echo "No Chrome browser for smoke test"; exit 1; }
+          for width in 390 768 1280; do
+            timeout 35 "$CHROME" --headless=new --no-sandbox --disable-dev-shm-usage \
+              --disable-gpu --window-size="$width,900" --virtual-time-budget=3500 \
+              --dump-dom http://127.0.0.1:4173/ > /tmp/manuscript-rendered.html 2> /tmp/manuscript-chrome.log || {
+                tail -50 /tmp/manuscript-chrome.log; exit 1;
+              }
+            if ! grep -q '<h1>MANUSCRIPT PROJECT</h1>' /tmp/manuscript-rendered.html || \
+               ! grep -q 'idea-card' /tmp/manuscript-rendered.html; then
+              echo "React failed to render at viewport width $width."
+              tail -80 /tmp/manuscript-chrome.log
+              head -c 1800 /tmp/manuscript-rendered.html
+              exit 1
+            fi
+            echo "Chrome rendering passed at requested width $width."
+          done
+
+      - name: Verify production entry and domain
+        run: |
+          test -s dist/index.html
+          test -s dist/CNAME
+          grep -Fxq "manuscript.world" dist/CNAME
+          grep -q 'assets/' dist/index.html
+          ! grep -q '/src/main.jsx' dist/index.html
+          test -n "$(find dist/assets -name '*.js' -print -quit)"
+          test -n "$(find dist/assets -name '*.css' -print -quit)"
+
+      # Publish the tested React build to the main branch root. GitHub Pages
+      # must use main/(root) as its single publishing source.
+      - name: Synchronize built site to Pages branch root
+        shell: bash
+        run: |
+          mkdir -p assets
+          rm -f assets/react.index-*.js assets/react-*.css
+          rm -f assets/index-*.js assets/index-*.css
+          cp dist/index.html index.html
+          cp -R dist/assets/. assets/
+          git add -A index.html assets
+          if ! git diff --cached --quiet; then
+            git -c user.name="github-actions[bot]" \
+                -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+                commit -m "Published the tested React build from main to GitHub Pages [skip ci]"
+            git push origin HEAD:main
+          fi
+
+      # The main branch contains both React source code and the built site.
+
+      - name: Verify Pages uses main before retiring the react branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pages_json="$(curl --silent --show-error --fail \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages" || true)"
+          source_branch="$(printf '%s' "$pages_json" | jq -r '.source.branch // "unknown"' 2>/dev/null || echo unknown)"
+          build_type="$(printf '%s' "$pages_json" | jq -r '.build_type // "unknown"' 2>/dev/null || echo unknown)"
+          echo "Pages source branch: $source_branch; build type: $build_type"
+          if [[ "$source_branch" != "main" ]]; then
+            echo "::warning::Keep react branch until Pages is switched to main/(root) in Settings > Pages."
+            exit 0
+          fi
+          if git ls-remote --exit-code --heads origin react > /dev/null; then
+            status="$(curl --silent --show-error -o /tmp/retire-branch.json -w '%{http_code}' \
+              -X DELETE -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/git/refs/heads/react")"
+            if [[ "$status" == "204" ]]; then
+              echo "Safely retired the merged react branch; only main remains."
+            else
+              echo "::warning::Could not retire react branch (HTTP $status)."
+            fi
+          fi
